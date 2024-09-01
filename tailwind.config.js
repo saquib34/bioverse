@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+    
         gray: {
           "100": "#1a1a1a",
           "200": "rgba(255, 255, 255, 0.07)",
@@ -16,6 +17,9 @@ module.exports = {
         white: "#fff",
         whitesmoke: "#e9e9e9",
         darkorchid: "#b95dfe",
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(180deg, hsla(246, 54%, 23%, 1) 70%, hsla(296, 66%, 17%, 1) 100%)',
       },
       spacing: {},
       fontFamily: {

@@ -6,6 +6,12 @@ import {
   useLocation,
 } from "react-router-dom";
 import Frame from "./pages/Frame";
+import RegistrationForm from './components/registration/RegistrationForm';
+import Login from './components/Login';
+import AdditionalDetails from './components/AdditionalDetails';
+import Dashboard from './components/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import Signup from './components/Signup';
 
 function App() {
   const action = useNavigationType();
@@ -45,8 +51,21 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Frame />} />
-    </Routes>
+    <Route path="/" element={<Frame />} />
+    <Route path="/signup" element={<Signup />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/registration" element={<RegistrationForm />} />
+    <Route path="/additional-details" element={
+      <ProtectedRoute>
+        <AdditionalDetails />
+      </ProtectedRoute>
+    } />
+    <Route path="/dashboard" element={
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    } />
+  </Routes>
   );
 }
 export default App;
