@@ -83,9 +83,9 @@ const RegistrationForm = () => {
     // Add any additional validation logic here
  
     const validateForm = () => {
-      console.log('Validating form data:', formData);
-      console.log('Team lead name:', formData.teamLeadName);
-      console.log('Team lead email:', formData.teamLeadEmail);
+      // console.log$&
+      // console.log$&
+      // console.log$&
     
       return formData.teamName && 
              formData.teamLeadName && 
@@ -117,9 +117,9 @@ const RegistrationForm = () => {
         return;
       }
 
-      console.log('Attempting to submit form data:', formData);
+      // console.log$&
       const docRef = await addDoc(collection(db, "registrations"), formData);
-      console.log("Document written with ID: ", docRef.id);
+      // console.log$&
       createUserWithEmailAndPassword(getAuth(), formData.teamLeadEmail, formData.password) .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;

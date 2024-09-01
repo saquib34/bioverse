@@ -4,7 +4,7 @@ const MobileNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = () => {
-    console.log('clicked');
+    // console.log$&
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -173,7 +173,7 @@ const MobileNavbar = () => {
             <li><a href="#faq" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">FAQ</a></li>
             <li>
               <button className="rounded-3xl bg-white text-blue-800 hover:bg-gray-200 transition-all duration-300 mt-6 w-3/4 mx-auto">
-                <a href="#register-login" className="block px-12 py-3 text-lg">Register/Login</a>
+                <a href="/login" className="block px-12 py-3 text-lg">Register/Login</a>
               </button>
             </li>
           </ul>

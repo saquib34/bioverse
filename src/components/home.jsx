@@ -3,7 +3,7 @@ import React from "react";
 const Home = () => {
     return (
         <>
-        <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[7.4%] left-[0%] text-xl">
+        <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[7.4%] left-[0%] text-xl "id="Home">
             <img
               className="absolute h-full w-full top-[10%] right-[0%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-contain"
               alt=""
@@ -21,8 +21,9 @@ const Home = () => {
             <div className="absolute top-[1157.99px] left-[calc(50%_-_160.88px)] rounded-18xl [background:linear-gradient(87.44deg,_#8b4c5e,_#863a7b_3%,_#802a91_13.5%,_#7d219e_13.51%,_#7125c5_49.5%,_#1b298f_73.5%,_#361064)] w-[322.8px] flex flex-col items-center justify-center py-[18px] px-[26px] box-border text-right text-5xl">
               <div className="w-[157px] relative h-9">
                 <div className="absolute top-[0px] left-[0px] font-medium">
-                  Register Now
-                </div>
+                <a href="/login" className=" text-white no-underline">
+  Register Now
+</a>                </div>
               </div>
             </div>
           </div>

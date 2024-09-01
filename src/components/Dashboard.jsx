@@ -23,12 +23,12 @@ const Dashboard = () => {
 
       const decodedToken = decodeToken(token);
       const email = auth.currentUser ? auth.currentUser.email : null;
-      console.log('Decoded token:', decodedToken);
-      console.log('Current user email:', email);
+      // console.log$&
+      // console.log$&
       const registrationsRef = collection(db, 'registrations');
       const q = query(registrationsRef, where("teamLeadEmail", "==", email));
       const querySnapshot = await getDocs(q);
-      console.log('Query snapshot:', querySnapshot);
+      // console.log$&
       const userDoc = querySnapshot.docs[0];
       if (userDoc.exists()) {
         setUserData(userDoc.data());

@@ -2,7 +2,7 @@ import React from "react";
 
 const MidPage = () => {
     return (
-        <div className="absolute top-[1954px] left-[calc(50%_-_1119px)] w-[1836px] h-[1908px] text-5xl">
+        <div className="absolute top-[1954px] left-[calc(50%_-_1119px)] w-[1836px] h-[1908px] text-5xl" id="About">
           <div className="absolute top-[0px] left-[calc(50%_-_918px)] w-[1836px] h-[1378px]">
             <div className="absolute top-[417px] left-[calc(50%_-_918px)] [filter:blur(544px)] rounded-[50%] bg-darkorchid w-[896px] h-[896px] opacity-[0.7]" />
             <img

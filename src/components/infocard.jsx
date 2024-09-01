@@ -2,7 +2,7 @@ import React from "react";
 
 const InfoCard = () => {
     return (
-        <div className="absolute top-[5874px] left-[calc(50%_-_1059px)] w-[2119px] h-[1518px] text-[23.53px] text-whitesmoke">
+        <div className="absolute top-[5874px] left-[calc(50%_-_1059px)] w-[2119px] h-[1518px] text-[23.53px] text-whitesmoke" id="INFO">
         <img
           className="absolute top-[0px] left-[calc(50%_+_94.5px)] w-[965px] h-[1371px]"
           alt=""

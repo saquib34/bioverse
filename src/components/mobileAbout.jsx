@@ -3,7 +3,7 @@ import React from "react";
 const MobileAbout = () => {
     return (
         <>
-            <div className="relative top-[805px] left-[calc(50%_-_31px)] text-[20px] leading-[99%] capitalize font-semibold">
+            <div className="relative top-[805px] left-[calc(50%_-_31px)] text-[20px] leading-[99%] capitalize font-semibold" id="about">
                 About
             </div>
             <div className="relative top-[16.2%] left-[calc(50%_-_176px)] text-[13px] leading-[99%] capitalize">

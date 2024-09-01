@@ -1,12 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const MobileFooter = () => {
+  const navigate = useNavigate();
   const onButtonContainerClick = () => {
-    console.log("Button Container Clicked");
+    // console.log$&
+    navigate("/login");
   };
 
   return (
-    <div className="absolute top-[5200px] bg-gray-400 w-full py-8 px-4 overflow-hidden text-white">
+    <div className="absolute top-[5300px] bg-gray-400 w-full py-8 px-4 overflow-hidden text-white">
       <img
         className="absolute h-full w-full top-0 left-0 object-cover opacity-20"
         alt=""

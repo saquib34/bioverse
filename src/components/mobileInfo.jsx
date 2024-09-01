@@ -2,7 +2,7 @@ import React from "react";
 
 const MobileInfo = () => {
   return (
-    <div className="relative w-full top-[1905px] overflow-x-hidden text-[16px] text-whitesmoke">
+    <div className="relative w-full top-[1905px] overflow-x-hidden text-[16px] text-whitesmoke" id="info">
       <img
         className="absolute top-0 left-0 w-full h-auto"
         alt=""

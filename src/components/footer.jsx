@@ -1,9 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import Home from "./home";
 
 const Footer = () => {
-    const onButtonContainerClick = () => {
-        console.log("Button Container Clicked");
-        }
+  const navigate = useNavigate();
+
+  const onButtonContainerClick = () => {
+      // Navigate to the login page
+      navigate('/login');
+  }
 return (
  
 
@@ -26,16 +31,24 @@ return (
           </b>
           <div className="absolute top-[60px] left-[0px] w-[72px] h-[140px] text-5xl">
             <div className="absolute top-[0px] left-[0.13px] tracking-[-0.03em] leading-[120%] font-semibold">
+              <a href='#Home' className=" text-white no-underline">
               Home
+              </a>
             </div>
             <div className="absolute top-[37px] left-[0px] tracking-[-0.03em] leading-[120%] font-semibold">
-              About
+              <a href='#INFO' className=" text-white no-underline">
+              Info
+              </a>
             </div>
             <div className="absolute top-[74px] left-[0.13px] tracking-[-0.03em] leading-[120%] font-semibold">
-              FAQ
+              <a href='#About' className=" text-white no-underline">
+              About
+              </a>
             </div>
             <div className="absolute top-[111px] left-[0px] tracking-[-0.03em] leading-[120%] font-semibold">
-              Team
+              <a href='#FAQ' className=" text-white no-underline">
+              FAQ
+              </a>
             </div>
           </div>
         </div>
@@ -52,7 +65,7 @@ return (
         className="absolute top-[calc(50%_+_44.5px)] left-[calc(50%_+_394px)] rounded-[34.23px] bg-gray-500 w-[284px] h-[63.4px] flex flex-col items-center justify-center py-[16.7px] px-[24.1px] box-border cursor-pointer text-right text-[22.2px]"
         onClick={onButtonContainerClick}
       >
-        <div className="w-[213px] relative h-[33px]">
+        <div className="w-[213px] relative h-[33px] z-10">
           <div className="absolute top-[0px] left-[0px]">
             Register Now/Login
           </div>

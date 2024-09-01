@@ -1,8 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const MobileMid = () => {
+
+  const navigate = useNavigate();
     const onButtonContainerClick = () => {
-        console.log('clicked');
+        // console.log$&
+        navigate('/login');
         //make bg blur
     };
 
@@ -16,7 +20,7 @@ const MobileMid = () => {
       <img
         className="absolute h-[60.32%] w-[55.59%] top-[0%] right-[-0.01%] bottom-[39.68%] left-[44.42%] max-w-full overflow-hidden max-h-full"
         alt=""
-        src="/group-37376.svg"
+        src="/group-37376.svg" id="home"
       />
       <div className="absolute h-[19.5%] w-[53.09%] top-[21.77%] right-[21.16%] bottom-[58.74%] left-[25.76%] text-left text-[31.07px] font-barlow">
         <img

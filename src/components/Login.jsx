@@ -19,27 +19,27 @@ const Login = () => {
     setError('');
 
     try {
-      console.log('Attempting to sign in with:', email);
+      // console.log$&
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log('User authenticated:', user.uid);
+      // console.log$&
 
       const registrationsQuery = query(
         collection(db, "registrations"),
         where("teamLeadEmail", "==", email)
       );
 
-      console.log('Querying registrations for:', email);
+      // console.log$&
       const querySnapshot = await getDocs(registrationsQuery);
 
       if (querySnapshot.empty) {
-        console.log('No registration found for:', email);
+        // console.log$&
         await auth.signOut();
         setError('No team registration found for this email. Please check your credentials or register if you haven\'t already.');
         return;
       }
 
-      console.log('Registration found:', querySnapshot.docs[0].id);
+      // console.log$&
       const registrationData = querySnapshot.docs[0].data();
 
       if (registrationData.teamLeadEmail === email) {
@@ -49,12 +49,12 @@ const Login = () => {
         if (registrationData.country) {
           navigate('/dashboard');
         } else {
-          console.log('Country data not found, navigating to additional details');
+          // console.log$&
 
           navigate('/additional-details',registrationData.teamLeadEmail);
         }
       } else {
-        console.log('User is not team lead:', email);
+        // console.log$&
         await auth.signOut();
         setError('Only team leads can log in. Please check with your team lead for access.');
       }

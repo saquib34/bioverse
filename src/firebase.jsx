@@ -16,7 +16,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-console.log('Firebase Config:', firebaseConfig); // Add this line for debugging
+// console.log$& // Add this line for debugging
 
 
 // Initialize services

@@ -51,7 +51,7 @@ const Mobilefaq = () => {
     };
   
     return (
-      <div className="relative top-[1850px] left-0 w-auto px-4 text-left text-sm">
+      <div className="relative top-[1850px] left-0 w-auto px-4 text-left text-sm" id="faq">
         <img
           className="absolute top-[0px] left-0 w-full h-auto object-cover"
           alt=""

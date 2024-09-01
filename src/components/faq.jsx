@@ -93,7 +93,7 @@ const FAQ = () => {
   }, [expandedIndex]);
 
   return (
-    <div className="absolute top-[7117px] left-[calc(50%_-_1411px)] w-[2145.2px] h-[1875.7px] text-left text-45xl">
+    <div className="absolute top-[7117px] left-[calc(50%_-_1411px)] w-[2145.2px] h-[1875.7px] text-left text-45xl" id="FAQ">
       <img
         className="absolute top-[0px] left-[calc(50%_-_1072.6px)] w-[1750px] h-[1778.6px] object-contain"
         alt=""
