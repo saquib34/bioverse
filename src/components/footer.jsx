@@ -44,7 +44,7 @@ return (
             Downloads
           </b>
           <div className="absolute top-[60px] left-[0px] text-5xl tracking-[-0.03em] leading-[120%]">
-            Brochuer
+          Broucher
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@
     "vite": "^5.2.3"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "build": "vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
