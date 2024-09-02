@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
-import { verifyToken, decodeToken } from '../utils/jwtUtils';
+import { onAuthStateChanged } from 'firebase/auth';
 import AdditionalDetails from './AdditionalDetails';
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
@@ -11,25 +11,26 @@ import { auth } from '../firebase';
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const db = getFirestore();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('authToken');
-      if (!token || !verifyToken(token)) {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await fetchUserData(user.email);
+      } else {
         navigate('/login');
-        return;
       }
+      setLoading(false);
+    });
 
-      const decodedToken = decodeToken(token);
-      const email = auth.currentUser ? auth.currentUser.email : null;
+    return () => unsubscribe();
+  }, [navigate, db]);
 
-      if (!email) {
-        navigate('/login');
-        return;
-      }
-
+  const fetchUserData = async (email) => {
+    try {
       const registrationsRef = collection(db, 'registrations');
       const q = query(registrationsRef, where("teamLeadEmail", "==", email));
       const querySnapshot = await getDocs(q);
@@ -41,16 +42,23 @@ const Dashboard = () => {
         setPaymentStatus(data.pay === true);
       } else {
         console.error("No matching document found for the current user");
+        setError('No user data found. Please try logging in again.');
         navigate('/login');
       }
-    };
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setError('An error occurred while loading your data. Please try again.');
+    }
+  };
 
-    fetchUserData();
-  }, [navigate, db]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+      setError('Failed to log out. Please try again.');
+    }
   };
 
   const handleViewDocument = (url) => {
@@ -67,17 +75,20 @@ const Dashboard = () => {
   };
 
   const handleEdit = () => {
-    // Implement edit functionality here
     navigate('/edit');
-    console.log("Redirecting to edit page...");
   };
 
   const handleNext = () => {
-    // Implement next step logic here
     navigate('/submissions');
-
-    console.log("Proceeding to next step...");
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <p className="text-white text-2xl">Loading...</p>
+      </div>
+    );
+  }
 
   if (!userData) return <AdditionalDetails />;
 
@@ -115,6 +126,8 @@ const Dashboard = () => {
       <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg border border-gray-700 shadow-md rounded-3xl w-full max-w-4xl">
         <h2 className="text-3xl text-white font-bold mb-6 text-center">Team Dashboard</h2>
         
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <h3 className="text-2xl text-white font-semibold mb-4">Team Information</h3>

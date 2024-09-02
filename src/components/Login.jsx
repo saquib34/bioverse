@@ -22,6 +22,12 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      if(!user.emailVerified) {
+        await auth.signOut();
+        setError('Please verify your email before logging in.');
+        return;
+      }
+      
 
       const registrationsQuery = query(
         collection(db, "registrations"),

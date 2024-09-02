@@ -15,6 +15,7 @@ import Signup from './components/Signup';
 import ContactUsPage from './components/ContactUsPage';
 import SubmissionPage from './components/SubmissionPage';
 import EditPage from "./components/EditPage";
+import EmailVerificationPage from "./components/EmailVerificationPage";
 
 function App() {
   const action = useNavigationType();
@@ -78,6 +79,7 @@ function App() {
         <EditPage />
       </ProtectedRoute>
     } />
+    <Route path="/verify-email" element={<EmailVerificationPage />} />
     <Route path="/contactus" element={<ContactUsPage />} />
   </Routes>
   );

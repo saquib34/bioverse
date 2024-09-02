@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { verifyToken } from '../utils/jwtUtils';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
@@ -14,23 +14,25 @@ const SubmissionPage = () => {
     const [videoLink, setVideoLink] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const db = getFirestore();
 
     useEffect(() => {
-        const checkSubmissionStatus = async () => {
-            const token = localStorage.getItem('authToken');
-            if (!token || !verifyToken(token)) {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await checkSubmissionStatus(user.email);
+            } else {
                 navigate('/login');
-                return;
             }
+            setLoading(false);
+        });
 
-            const email = auth.currentUser ? auth.currentUser.email : null;
-            if (!email) {
-                navigate('/login');
-                return;
-            }
+        return () => unsubscribe();
+    }, [navigate, db]);
 
+    const checkSubmissionStatus = async (email) => {
+        try {
             const registrationsRef = collection(db, 'registrations');
             const q = query(registrationsRef, where("teamLeadEmail", "==", email));
             const querySnapshot = await getDocs(q);
@@ -47,10 +49,11 @@ const SubmissionPage = () => {
                 console.error("No matching document found for the current user");
                 navigate('/login');
             }
-        };
-
-        checkSubmissionStatus();
-    }, [navigate, db]);
+        } catch (error) {
+            console.error("Error checking submission status:", error);
+            setError('An error occurred while loading your data. Please try again.');
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -80,9 +83,14 @@ const SubmissionPage = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('authToken');
-        navigate('/login');
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            navigate('/login');
+        } catch (error) {
+            console.error("Error signing out: ", error);
+            setError('Failed to log out. Please try again.');
+        }
     };
 
     const PageWrapper = ({ children }) => (
@@ -91,17 +99,15 @@ const SubmissionPage = () => {
             <img src={bg} alt="" className="hidden sm:block absolute w-full h-full object-cover" />
             <img src={text} alt="" className="absolute inset-0 w-[300px] sm:w-[500px] md:w-[800px] lg:w-[1000px] xl:w-[1400px] mx-auto top-[240px]" />
             
-            {/* Logout button */}
             <button
                 onClick={handleLogout}
                 className="absolute top-4 right-4 px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-500 transition duration-300 text-sm z-20"
             >
                 Logout
             </button>
-            
 
             {children}
-            {/* go to dashboard */}
+            
             <button
                 onClick={() => navigate('/dashboard')}
                 className="absolute top-20 right-4 px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-500 transition duration-300 text-sm z-20"
@@ -110,6 +116,16 @@ const SubmissionPage = () => {
             </button>
         </div>
     );
+
+    if (loading) {
+        return (
+            <PageWrapper>
+                <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg border border-gray-700 shadow-md rounded-3xl w-full max-w-md">
+                    <p className="text-white text-center">Loading...</p>
+                </div>
+            </PageWrapper>
+        );
+    }
 
     if (isSubmitted) {
         return (
