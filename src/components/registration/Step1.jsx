@@ -1,23 +1,46 @@
-// Step1.jsx
-import React from "react";
+import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
 import text from "/bio-verse.svg";
 
 const Step1 = ({ onNext, onChange, formData }) => {
+  const [error, setError] = useState("");
+
   const handleChange = (member, field, value) => {
+    setError("");
     onChange({ [member]: { ...formData[member], [field]: value } });
+  };
+
+  const checkDuplicates = () => {
+    const regNumbers = [
+      formData.member1.regNumber,
+      formData.member2.regNumber,
+      formData.member3.regNumber
+    ].filter(Boolean);
+
+    const uniqueRegNumbers = new Set(regNumbers);
+
+    if (regNumbers.length !== uniqueRegNumbers.size) {
+      setError("Duplicate registration numbers are not allowed.");
+      return true;
+    }
+
+    return false;
   };
 
   const handleNext = (e) => {
     e.preventDefault();
+    if (checkDuplicates()) {
+      return;
+    }
+
     if (formData.member1.name && formData.member1.regNumber && formData.member1.email && formData.member1.mobile &&
         formData.member2.name && formData.member2.regNumber && formData.member2.email && formData.member2.mobile &&
         formData.member3.name && formData.member3.regNumber && formData.member3.email && formData.member3.mobile) {
       onNext();
     } else {
-      alert("All fields are required");
+      setError("All fields are required");
     }
   };
 
@@ -31,6 +54,7 @@ const Step1 = ({ onNext, onChange, formData }) => {
         <ProgressBar currentStep={0} />
         <h2 className="text-xl text-white font-bold mb-4">Registration details</h2>
         <p className="font-semibold mb-4 text-center sm:text-left">Please fill your information so we know you registered for the event.</p>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         <form onSubmit={handleNext}>
           <div className="flex flex-col space-y-4">
             {['member1', 'member2', 'member3'].map((member, index) => (
