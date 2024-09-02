@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getAuth, applyActionCode } from 'firebase/auth';
-import { app } from '../config/firebase'; // Adjust the import path as necessary
+import app from '../config/firebase'; // Corrected import statement
 import { CheckCircle, XCircle, Loader, Home } from 'lucide-react'; // Make sure to install lucide-react
 
 const auth = getAuth(app);
