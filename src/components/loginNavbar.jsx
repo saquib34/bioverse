@@ -5,7 +5,7 @@ const LoginNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-transparent text-white p-4">
+    <nav className="bg-transparent text-white p-4 z-20">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <div className="text-2xl font-bold">BioVerse</div>
@@ -22,16 +22,16 @@ const LoginNavbar = () => {
 
           {/* Desktop menu */}
           <div className="hidden lg:flex space-x-4">
-            <Link to="/" className="hover:text-purple-300 text-white">Home</Link>
-            <Link to="/contactUs" className="hover:text-purple-300 text-white">Contact Us</Link>
+            <Link to="/" className="hover:text-purple-300 text-white px-3 py-2">Home</Link>
+            <Link to="/contactUs" className="hover:text-purple-300 text-white px-3 py-2">Contact Us</Link>
           </div>
         </div>
 
         {/* Mobile menu */}
         {isOpen && (
           <div className="lg:hidden mt-4 bg-purple-900 bg-opacity-75 rounded-lg p-2">
-            <Link to="/" className="block py-2 hover:text-purple-300 text-white" onClick={() => setIsOpen(false)}>Home</Link>
-            <Link to="/contactUs" className="block py-2 hover:text-purple-300 text-white" onClick={() => setIsOpen(false)}>Contact Us</Link>
+            <Link to="/" className="block py-2 px-4 hover:text-purple-300 text-white" onClick={() => setIsOpen(false)}>Home</Link>
+            <Link to="/contactUs" className="block py-2 px-4 hover:text-purple-300 text-white" onClick={() => setIsOpen(false)}>Contact Us</Link>
           </div>
         )}
       </div>

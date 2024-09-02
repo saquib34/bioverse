@@ -1,34 +1,19 @@
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 import ProgressBar from "./ProgressBar";
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
 import text from "/bio-verse.svg";
 
-const Step3 = ({ onNext, onChange, formData }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (field, value) => {
+const Step3 = ({ onNext, onPrev, onChange, formData, isSubmitting }) => {
+  const handleChange = useCallback((field, value) => {
     onChange({ [field]: value });
-  };
+  }, [onChange]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    if (isSubmitting) return; // Prevent multiple submissions
-
-    if (formData.projectTheme && formData.projectDescription) {
-      setIsSubmitting(true);
-      try {
-        await onNext();
-      } catch (error) {
-        console.error("Submission error:", error);
-        alert("An error occurred during submission. Please try again.");
-      } finally {
-        setIsSubmitting(false);
-      }
-    } else {
-      alert("All fields are required");
-    }
-  };
+    if (isSubmitting) return;
+    await onNext();
+  }, [onNext, isSubmitting]);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-custom-gradient px-4 sm:px-6 md:px-8 lg:px-10">
@@ -55,10 +40,17 @@ const Step3 = ({ onNext, onChange, formData }) => {
               onChange={(e) => handleChange('projectDescription', e.target.value)}
               placeholder="Description"
               required
-              className="flex-1 h-[110px] p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white  backdrop-blur-xs rounded-3xl resize-none"
+              className="flex-1 h-[110px] p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white backdrop-blur-xs rounded-3xl resize-none"
             />
           </div>
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-between mt-6">
+            <button 
+              type="button" 
+              onClick={onPrev}
+              className="w-[100px] p-2 bg-gray-500 text-white rounded-3xl hover:bg-gray-600"
+            >
+              Previous
+            </button>
             <button 
               type="submit" 
               className="w-[100px] p-2 bg-purple-900 text-white rounded-3xl hover:bg-purple-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"

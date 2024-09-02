@@ -27,7 +27,7 @@ const Login = () => {
         setError('Please verify your email before logging in.');
         return;
       }
-      
+
 
       const registrationsQuery = query(
         collection(db, "registrations"),
@@ -65,7 +65,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-custom-gradient relative overflow-hidden">
-      <LoginNavbar className="z-10" />
+      <LoginNavbar className="z-20" />
       
       {/* Background images */}
       <img src={bg} alt="" className="absolute inset-0 w-full h-full object-cover" />

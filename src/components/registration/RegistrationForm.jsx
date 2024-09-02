@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import { db } from '../../config/firebase'; // Updated import path
+import { db } from '../../config/firebase';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -15,41 +15,36 @@ const RegistrationForm = () => {
     member3: { name: '', regNumber: '', email: '', mobile: '' },
     teamName: '',
     teamLeadName: '',
-    teamLeadEmail: '', // Add team lead email field
+    teamLeadEmail: '',
     password: '',
     projectTheme: '',
     projectDescription: ''
   });
-  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const [submissionStatus, setSubmissionStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const isSubmittingRef = useRef(false);
 
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
+  const nextStep = useCallback(() => setStep(prevStep => prevStep + 1), []);
+  const prevStep = useCallback(() => setStep(prevStep => prevStep - 1), []);
 
-  const handleChange = (stepData) => {
+  const handleChange = useCallback((stepData) => {
     setFormData(prevData => ({ ...prevData, ...stepData }));
-  };
+  }, []);
 
-  const setTeamLeadEmail = () => {
-    const { teamLeadName, member1, member2, member3 } = formData;
-    let teamLeadEmail = '';
+  const setTeamLeadEmail = useCallback(() => {
+    setFormData(prevData => {
+      const { teamLeadName, member1, member2, member3 } = prevData;
+      let teamLeadEmail = '';
 
-    if (member1.name.toString() === teamLeadName.toString()) {
-      teamLeadEmail = member1.email;
-    } else if (member2.name.toString() === teamLeadName.toString()) {
-      teamLeadEmail = member2.email;
-    } else if (member3.name.toString() === teamLeadName.toString()) {
-      teamLeadEmail = member3.email;
-    }
+      if (member1.name === teamLeadName) teamLeadEmail = member1.email;
+      else if (member2.name === teamLeadName) teamLeadEmail = member2.email;
+      else if (member3.name === teamLeadName) teamLeadEmail = member3.email;
 
-    setFormData(prevData => ({
-      ...prevData,
-      teamLeadEmail
-    }));
+      return { ...prevData, teamLeadEmail };
+    });
+  }, []);
 
-    return teamLeadEmail;
-  };
-  const checkExistingMembers = async () => {
+  const checkExistingMembers = useCallback(async () => {
     const members = [formData.member1, formData.member2, formData.member3];
     for (const member of members) {
       const regQuery = query(collection(db, "registrations"),
@@ -76,28 +71,23 @@ const RegistrationForm = () => {
       }
     }
     return null;
-  };
+  }, [formData]);
 
+  const validateForm = useCallback(() => {
+    const { member1, member2, member3, teamName, teamLeadName, teamLeadEmail, password, projectTheme, projectDescription } = formData;
+    return teamName && teamLeadName && teamLeadEmail && password && projectTheme && projectDescription &&
+      member1.name && member1.regNumber && member1.email && member1.mobile &&
+      member2.name && member2.regNumber && member2.email && member2.mobile &&
+      member3.name && member3.regNumber && member3.email && member3.mobile;
+  }, [formData]);
 
-  // Add any additional validation logic here
+  const handleSubmit = useCallback(async () => {
+    if (isSubmittingRef.current) {
+      console.log('Submission already in progress');
+      return;
+    }
 
-  const validateForm = () => {
-    // console.log$&
-    // console.log$&
-    // console.log$&
-
-    return formData.teamName &&
-      formData.teamLeadName &&
-      formData.teamLeadEmail &&
-      formData.password &&
-      formData.projectTheme &&
-      formData.projectDescription &&
-      formData.member1.name && formData.member1.regNumber && formData.member1.email && formData.member1.mobile &&
-      formData.member2.name && formData.member2.regNumber && formData.member2.email && formData.member2.mobile &&
-      formData.member3.name && formData.member3.regNumber && formData.member3.email && formData.member3.mobile;
-  };
-
-  const handleSubmit = async () => {
+    isSubmittingRef.current = true;
     setSubmissionStatus('submitting');
     setErrorMessage('');
     setTeamLeadEmail();
@@ -105,6 +95,7 @@ const RegistrationForm = () => {
     if (!validateForm()) {
       setSubmissionStatus('error');
       setErrorMessage('Please fill in all required fields.');
+      isSubmittingRef.current = false;
       return;
     }
 
@@ -113,60 +104,47 @@ const RegistrationForm = () => {
       if (existingMemberError) {
         setSubmissionStatus('error');
         setErrorMessage(existingMemberError);
+        isSubmittingRef.current = false;
         return;
       }
 
-      // console.log$&
-      const docRef = await addDoc(collection(db, "registrations"), formData);
-      // console.log$&
-      createUserWithEmailAndPassword(getAuth(), formData.teamLeadEmail, formData.password)
-        .then((userCredential) => {
-          // Signed up 
-          const user = userCredential.user;
-          sendEmailVerification(user).then(() => {
-            getAuth().signOut();
-            alert("Email Verification Link Successfully Sent to your Email Address");
-          }).catch((error) => {
-            console.error("Error sending verification email: ", error);
-          });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.error("Error creating user: ", error);
-          console.error("Error code: ", errorCode);
-          console.error("Error message: ", errorMessage);
-        });
+      await addDoc(collection(db, "registrations"), formData);
+      
+      const auth = getAuth();
+      await createUserWithEmailAndPassword(auth, formData.teamLeadEmail, formData.password);
+      await sendEmailVerification(auth.currentUser);
+      await auth.signOut();
 
-
+      alert("Email Verification Link Successfully Sent to your Email Address");
       setSubmissionStatus('success');
       nextStep(); // Move to completion step
     } catch (e) {
-      console.error("Error adding document: ", e);
-      console.error("Error creating user: ", e);
+      console.error("Error during submission: ", e);
       setSubmissionStatus('error');
       setErrorMessage(`An error occurred while submitting the form: ${e.message}`);
+    } finally {
+      isSubmittingRef.current = false;
     }
-  };
+  }, [formData, validateForm, checkExistingMembers, setTeamLeadEmail, nextStep]);
 
-  const renderStep = () => {
+  const renderStep = useMemo(() => {
     switch (step) {
       case 1:
         return <Step1 onNext={nextStep} onChange={handleChange} formData={formData} />;
       case 2:
         return <Step2 onNext={nextStep} onPrev={prevStep} onChange={handleChange} formData={formData} />;
       case 3:
-        return <Step3 onNext={handleSubmit} onPrev={prevStep} onChange={handleChange} formData={formData} />;
+        return <Step3 onNext={handleSubmit} onPrev={prevStep} onChange={handleChange} formData={formData} isSubmitting={isSubmittingRef.current} />;
       case 4:
         return <Completion formData={formData} submissionStatus={submissionStatus} errorMessage={errorMessage} />;
       default:
         return <div>Error: Unknown step</div>;
     }
-  };
+  }, [step, nextStep, prevStep, handleChange, handleSubmit, formData, submissionStatus, errorMessage, isSubmittingRef]);
 
   return (
     <div className="registration-form">
-      {renderStep()}
+      {renderStep}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
     </div>
   );
