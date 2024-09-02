@@ -1,19 +1,30 @@
-// Step3.jsx
-import React from "react";
+import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
 import text from "/bio-verse.svg";
 
 const Step3 = ({ onNext, onChange, formData }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (field, value) => {
     onChange({ [field]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent multiple submissions
+
     if (formData.projectTheme && formData.projectDescription) {
-      onNext();
+      setIsSubmitting(true);
+      try {
+        await onNext();
+      } catch (error) {
+        console.error("Submission error:", error);
+        alert("An error occurred during submission. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       alert("All fields are required");
     }
@@ -48,11 +59,15 @@ const Step3 = ({ onNext, onChange, formData }) => {
             />
           </div>
           <div className="flex justify-center mt-6">
-            <button type="submit" className="w-[100px] p-2 bg-purple-900 text-white rounded-3xl hover:bg-purple-300 hover:text-black">
-              Submit
+            <button 
+              type="submit" 
+              className="w-[100px] p-2 bg-purple-900 text-white rounded-3xl hover:bg-purple-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
             </button>
           </div>
-         </ form>
+        </form>
       </div>
     </div>
   );

@@ -21,9 +21,9 @@ const AdditionalDetails = () => {
     projectDescription: '',
     isStudent: true,
     members: [
-      { name: '', email: '', mobile: '', university: '', profilePic: null, idCard: null },
-      { name: '', email: '', mobile: '', university: '', profilePic: null, idCard: null },
-      { name: '', email: '', mobile: '', university: '', profilePic: null, idCard: null }
+      { name: '', email: '', mobile: '', university: '',regNumber :'', profilePic: null, idCard: null },
+      { name: '', email: '', mobile: '', university: '',regNumber :'', profilePic: null, idCard: null },
+      { name: '', email: '', mobile: '', university: '',regNumber :'', profilePic: null, idCard: null }
     ]
   });
   const [country, setCountry] = useState('India');
@@ -81,6 +81,7 @@ const AdditionalDetails = () => {
                 name: registrationData.member1.name,
                 email: registrationData.member1.email,
                 mobile: registrationData.member1.mobile,
+                regNumber : registrationData.member1.regNumber,
                 university: '',
                 profilePic: null,
                 idCard: null
@@ -89,6 +90,7 @@ const AdditionalDetails = () => {
                 name: registrationData.member2.name,
                 email: registrationData.member2.email,
                 mobile: registrationData.member2.mobile,
+                regNumber : registrationData.member2.regNumber,
                 university: '',
                 profilePic: null,
                 idCard: null
@@ -97,6 +99,7 @@ const AdditionalDetails = () => {
                 name: registrationData.member3.name,
                 email: registrationData.member3.email,
                 mobile: registrationData.member3.mobile,
+                regNumber : registrationData.member3.regNumber,
                 university: '',
                 profilePic: null,
                 idCard: null
@@ -197,6 +200,7 @@ const AdditionalDetails = () => {
           name: member.name,
           email: member.email,
           mobile: member.mobile,
+          regNumber : member.regNumber,
           university: member.university,
           profilePicUrl,
           idCardUrl
@@ -321,6 +325,7 @@ const AdditionalDetails = () => {
                 <p className="text-white">Name: {member.name}</p>
                 <p className="text-white">Email: {member.email}</p>
                 <p className="text-white">Mobile: {member.mobile}</p>
+                <p className="text-white">Registration Number: {member.regNumber}</p>
                 <div>
                   <label className="block text-white mb-2">
                     University:

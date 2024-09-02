@@ -10,6 +10,7 @@ import { auth } from '../firebase';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(false);
   const navigate = useNavigate();
   const db = getFirestore();
 
@@ -23,15 +24,24 @@ const Dashboard = () => {
 
       const decodedToken = decodeToken(token);
       const email = auth.currentUser ? auth.currentUser.email : null;
-      // console.log$&
-      // console.log$&
+
+      if (!email) {
+        navigate('/login');
+        return;
+      }
+
       const registrationsRef = collection(db, 'registrations');
       const q = query(registrationsRef, where("teamLeadEmail", "==", email));
       const querySnapshot = await getDocs(q);
-      // console.log$&
-      const userDoc = querySnapshot.docs[0];
-      if (userDoc.exists()) {
-        setUserData(userDoc.data());
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const data = userDoc.data();
+        setUserData(data);
+        setPaymentStatus(data.pay === true);
+      } else {
+        console.error("No matching document found for the current user");
+        navigate('/login');
       }
     };
 
@@ -49,6 +59,24 @@ const Dashboard = () => {
     } else {
       alert('Document not available');
     }
+  };
+
+  const handlePay = () => {
+    // Implement payment logic here
+    console.log("Redirecting to payment gateway...");
+  };
+
+  const handleEdit = () => {
+    // Implement edit functionality here
+    navigate('/edit');
+    console.log("Redirecting to edit page...");
+  };
+
+  const handleNext = () => {
+    // Implement next step logic here
+    navigate('/submissions');
+
+    console.log("Proceeding to next step...");
   };
 
   if (!userData) return <AdditionalDetails />;
@@ -95,12 +123,6 @@ const Dashboard = () => {
             <p className="text-white"><span className="font-semibold">Email:</span> {userData.teamLeadEmail}</p>
             <p className="text-white"><span className="font-semibold">Status:</span> {userData.isStudent ? 'Students' : 'Professionals'}</p>
             <p className="text-white"><span className="font-semibold">Country:</span> {userData.country}</p>
-            {/* <button 
-              onClick={() => handleViewDocument(userData.profileImageUrl)}
-              className="mt-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
-            >
-              View Team Profile Picture
-            </button> */}
           </div>
           <div>
             <h3 className="text-2xl text-white font-semibold mb-4">Project Details</h3>
@@ -116,12 +138,38 @@ const Dashboard = () => {
           <TeamMemberCard member={userData.member3} index={2} />
         </div>
 
-        <button 
-          onClick={handleLogout}
-          className="w-full p-3 bg-purple-600 text-white rounded-3xl hover:bg-purple-500 transition duration-300 mt-8"
-        >
-          Logout
-        </button>
+        <div className="mt-8 space-y-4">
+          {!paymentStatus && (
+            <>
+              <button 
+                onClick={handlePay}
+                className="w-full p-3 bg-green-600 text-white rounded-3xl hover:bg-green-500 transition duration-300"
+              >
+                Pay Now
+              </button>
+              <button 
+                onClick={handleEdit}
+                className="w-full p-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-500 transition duration-300"
+              >
+                Edit Details
+              </button>
+            </>
+          )}
+          {paymentStatus && (
+            <button 
+              onClick={handleNext}
+              className="w-full p-3 bg-purple-600 text-white rounded-3xl hover:bg-purple-500 transition duration-300"
+            >
+              Next
+            </button>
+          )}
+          <button 
+            onClick={handleLogout}
+            className="w-full p-3 bg-red-600 text-white rounded-3xl hover:bg-red-500 transition duration-300"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );

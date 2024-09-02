@@ -10,8 +10,8 @@ const MobileNavbar = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 bg-gray-200 h-[100px] overflow-hidden text-left font-barlow z-10">
-        <div className="absolute h-3/4 w-auto top-[12.86%] right-[66.14%] bottom-[12.14%] left-[4.42%] scale-125 transform origin-left">
+      <div className="fixed top-0 left-0 right-0 bg-gray-200 h-[100px] overflow-hidden text-left font-barlow z-50">
+      <div className="absolute h-3/4 w-auto top-[12.86%] right-[66.14%] bottom-[12.14%] left-[4.42%] scale-125 transform origin-left">
           <img
             className="absolute h-[96.95%] w-[38.23%] top-[0%] right-[53.21%] bottom-[3.05%] left-[8.56%] max-w-full overflow-hidden max-h-full object-cover"
             alt=""
@@ -167,7 +167,7 @@ const MobileNavbar = () => {
       <div className={`fixed top-[100px] right-0 w-3/4 h-auto bg-black bg-opacity-90 transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <nav className="py-6 h-full flex flex-col justify-center">
           <ul className="text-right list-none">
-            <li><a href="#home" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">Home</a></li>
+            <li><a href="#home" className="block px-12 py-3 text-white text-lg hover:bg-blue-700 ">Home</a></li>
             <li><a href="#about" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">About</a></li>
             <li><a href="#info" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">Info</a></li>
             <li><a href="#faq" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">FAQ</a></li>

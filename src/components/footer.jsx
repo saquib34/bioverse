@@ -50,6 +50,11 @@ return (
               FAQ
               </a>
             </div>
+            <div className="absolute top-[150px] left-[0px] tracking-[-0.03em] leading-[120%] font-semibold">
+              <a href='/contactus' className=" text-white no-underline">
+              Contact
+              </a>
+            </div>
           </div>
         </div>
         <div className="absolute top-[0px] left-[697.13px] w-[177px] h-[89px]">
@@ -60,6 +65,7 @@ return (
           Broucher
           </div>
         </div>
+        
       </div>
       <div
         className="absolute top-[calc(50%_+_44.5px)] left-[calc(50%_+_394px)] rounded-[34.23px] bg-gray-500 w-[284px] h-[63.4px] flex flex-col items-center justify-center py-[16.7px] px-[24.1px] box-border cursor-pointer text-right text-[22.2px]"

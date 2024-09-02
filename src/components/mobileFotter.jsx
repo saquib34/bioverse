@@ -30,6 +30,7 @@ const MobileFooter = () => {
             <a href="#" className="hover:underline">About</a>
             <a href="#" className="hover:underline">FAQ</a>
             <a href="#" className="hover:underline">Team</a>
+            <a href="/contactus" className="hover:underline">Contact</a>
           </div>
           
           <div className="flex flex-col items-center">

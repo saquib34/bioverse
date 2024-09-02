@@ -12,6 +12,9 @@ import AdditionalDetails from './components/AdditionalDetails';
 import Dashboard from './components/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import Signup from './components/Signup';
+import ContactUsPage from './components/ContactUsPage';
+import SubmissionPage from './components/SubmissionPage';
+import EditPage from "./components/EditPage";
 
 function App() {
   const action = useNavigationType();
@@ -65,6 +68,17 @@ function App() {
         <Dashboard />
       </ProtectedRoute>
     } />
+    <Route path="/submissions" element={
+      <ProtectedRoute>
+        <SubmissionPage />
+      </ProtectedRoute>
+    } />
+    <Route path="/edit" element={
+      <ProtectedRoute>
+        <EditPage />
+      </ProtectedRoute>
+    } />
+    <Route path="/contactus" element={<ContactUsPage />} />
   </Routes>
   );
 }
