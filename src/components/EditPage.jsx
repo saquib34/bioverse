@@ -230,6 +230,13 @@ const EditPage = () => {
                     >
                         Save Changes
                     </button>
+                    <button
+                        onClick={() => navigate('/dashboard')}
+                        className="w-full p-3 bg-red-600 text-white rounded-md hover:bg-red-500 transition duration-300"
+                    >
+                        Cancel
+                    </button>
+                    
                 </form>
             </div>
         </div>

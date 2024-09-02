@@ -98,8 +98,16 @@ const SubmissionPage = () => {
             >
                 Logout
             </button>
+            
 
             {children}
+            {/* go to dashboard */}
+            <button
+                onClick={() => navigate('/dashboard')}
+                className="absolute top-20 right-4 px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-500 transition duration-300 text-sm z-20"
+            >
+                Dashboard
+            </button>
         </div>
     );
 
