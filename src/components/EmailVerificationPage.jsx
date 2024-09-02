@@ -33,7 +33,7 @@ function EmailVerificationPage() {
   };
 
   const handleReturn = () => {
-    navigate('/');
+    navigate('/login');
   };
 
   const renderContent = () => {
@@ -77,7 +77,7 @@ function EmailVerificationPage() {
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-full transition duration-300 flex items-center justify-center"
           >
             <Home className="mr-2" size={20} />
-            Return to Home
+            Return to Login Page
           </button>
         </div>
       </div>
