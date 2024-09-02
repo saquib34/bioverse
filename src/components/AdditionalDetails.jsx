@@ -307,7 +307,7 @@ const AdditionalDetails = () => {
               <select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                className="w-full p-3 border text-white bg-gray-700 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+                className="w-full p-3 border text-black bg-gray-700 bg-opacity-40 backdrop-blur-xs rounded-3xl"
                 required
               >
                 <option value="India">India</option>
@@ -364,45 +364,8 @@ const AdditionalDetails = () => {
             ))}
             
             <div className="space-y-4">
-              <div>
-                <label className="block text-white mb-2">
-                  Team Name:
-                </label>
-                <input
-                  type="text"
-                  value={teamData.teamName}
-                  onChange={(e) => handleTeamDataChange('teamName', e.target.value)}
-                  placeholder="Enter team name"
-                  required
-                  className="w-full p-3 border placeholder-gray-400 text-white bg-gray-700 bg-opacity-40 backdrop-blur-xs rounded-3xl"
-                />
-              </div>
-              <div>
-              <label className="block text-white mb-2">
-                  Project Theme:
-                </label>
-                <input
-                  type="text"
-                  value={teamData.projectTheme}
-                  onChange={(e) => handleTeamDataChange('projectTheme', e.target.value)}
-                  placeholder="Enter project theme"
-                  required
-                  className="w-full p-3 border placeholder-gray-400 text-white bg-gray-700 bg-opacity-40 backdrop-blur-xs rounded-3xl"
-                />
-              </div>
-              <div>
-                <label className="block text-white mb-2">
-                  Project Description:
-                </label>
-                <textarea
-                  value={teamData.projectDescription}
-                  onChange={(e) => handleTeamDataChange('projectDescription', e.target.value)}
-                  placeholder="Enter project description"
-                  required
-                  className="w-full p-3 border placeholder-gray-400 text-white bg-gray-700 bg-opacity-40 backdrop-blur-xs rounded-3xl"
-                  rows="4"
-                />
-              </div>
+   
+              
             </div>
             
             <button 

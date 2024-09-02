@@ -70,7 +70,7 @@ const Login = () => {
       <img src={bg} alt="" className="hidden sm:block absolute w-full h-full object-cover" />
       <img src={text} alt="" className="absolute inset-0 w-[300px] sm:w-[500px] md:w-[800px] lg:w-[1000px] xl:w-[1400px] mx-auto top-[240px]" />
 
-      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-gray-300 bg-opacity-40 backdrop-blur-xs border border-gray-200 shadow-md rounded-3xl max-w-md w-full">
+      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-white bg-opacity-40 backdrop-blur-xs border border-gray-200 shadow-md rounded-3xl max-w-md w-full">
         <h2 className="text-2xl text-white font-bold mb-6 text-center">Team Lead Login</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleLogin}>

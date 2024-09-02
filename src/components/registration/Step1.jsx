@@ -27,7 +27,7 @@ const Step1 = ({ onNext, onChange, formData }) => {
       <img src={bg} alt="" className="hidden sm:block absolute w-full h-full object-cover" />
       <img src={text} alt="" className="absolute inset-0 w-[300px] sm:w-[500px] md:w-[800px] lg:w-[1000px] xl:w-[1400px] mx-auto top-[240px]" />
 
-      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-gray-300 bg-opacity-40 backdrop-blur-xs border border-gray-200 shadow-md rounded-3xl max-w-4xl w-full">
+      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-white bg-opacity-40 backdrop-blur-xs border shadow-md rounded-3xl max-w-4xl w-full">
         <ProgressBar currentStep={0} />
         <h2 className="text-xl text-white font-bold mb-4">Registration details</h2>
         <p className="font-semibold mb-4 text-center sm:text-left">Please fill your information so we know you registered for the event.</p>
@@ -42,7 +42,7 @@ const Step1 = ({ onNext, onChange, formData }) => {
                     onChange={(e) => handleChange(member, 'name', e.target.value)}
                     placeholder={`Member Name ${index + 1}`}
                     required
-                    className="flex-1 p-3 border placeholder-gray-900 placeholder:text-sm placeholder:font-semibold bg-gray-300 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white  backdrop-blur-xs rounded-3xl"
                   />
                   <input
                     type="text"
@@ -50,7 +50,7 @@ const Step1 = ({ onNext, onChange, formData }) => {
                     onChange={(e) => handleChange(member, 'regNumber', e.target.value)}
                     placeholder="ID/Registration number"
                     required
-                    className="flex-1 p-3 border placeholder-gray-900 placeholder:text-sm placeholder:font-semibold bg-gray-300 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white backdrop-blur-xs rounded-3xl"
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
@@ -60,7 +60,7 @@ const Step1 = ({ onNext, onChange, formData }) => {
                     onChange={(e) => handleChange(member, 'email', e.target.value)}
                     placeholder="E-mail ID"
                     required
-                    className="flex-1 p-3 border placeholder-gray-900 placeholder:text-sm placeholder:font-semibold bg-gray-300 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white backdrop-blur-xs rounded-3xl"
                   />
                   <input
                     type="tel"
@@ -68,7 +68,7 @@ const Step1 = ({ onNext, onChange, formData }) => {
                     onChange={(e) => handleChange(member, 'mobile', e.target.value)}
                     placeholder="Mobile Number"
                     required
-                    className="flex-1 p-3 border placeholder-gray-900 placeholder:text-sm placeholder:font-semibold bg-gray-300 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white  backdrop-blur-xs rounded-3xl"
                   />
                 </div>
               </div>

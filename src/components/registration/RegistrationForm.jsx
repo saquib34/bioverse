@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { db } from '../../config/firebase'; // Updated import path
 import Step1 from './Step1';
 import Step2 from './Step2';
@@ -48,22 +47,22 @@ const RegistrationForm = () => {
       teamLeadEmail
     }));
 
-    return teamLeadEmail;    
+    return teamLeadEmail;
   };
   const checkExistingMembers = async () => {
     const members = [formData.member1, formData.member2, formData.member3];
     for (const member of members) {
-      const regQuery = query(collection(db, "registrations"), 
+      const regQuery = query(collection(db, "registrations"),
         where("member1.regNumber", "==", member.regNumber),
         where("member2.regNumber", "==", member.regNumber),
         where("member3.regNumber", "==", member.regNumber)
       );
-      const emailQuery = query(collection(db, "registrations"), 
+      const emailQuery = query(collection(db, "registrations"),
         where("member1.email", "==", member.email),
         where("member2.email", "==", member.email),
         where("member3.email", "==", member.email)
       );
-      
+
       const [regQuerySnapshot, emailQuerySnapshot] = await Promise.all([
         getDocs(regQuery),
         getDocs(emailQuery)
@@ -80,23 +79,23 @@ const RegistrationForm = () => {
   };
 
 
-    // Add any additional validation logic here
- 
-    const validateForm = () => {
-      // console.log$&
-      // console.log$&
-      // console.log$&
-    
-      return formData.teamName && 
-             formData.teamLeadName && 
-             formData.teamLeadEmail &&
-             formData.password &&
-             formData.projectTheme && 
-             formData.projectDescription &&
-             formData.member1.name && formData.member1.regNumber && formData.member1.email && formData.member1.mobile &&
-             formData.member2.name && formData.member2.regNumber && formData.member2.email && formData.member2.mobile &&
-             formData.member3.name && formData.member3.regNumber && formData.member3.email && formData.member3.mobile;
-    };
+  // Add any additional validation logic here
+
+  const validateForm = () => {
+    // console.log$&
+    // console.log$&
+    // console.log$&
+
+    return formData.teamName &&
+      formData.teamLeadName &&
+      formData.teamLeadEmail &&
+      formData.password &&
+      formData.projectTheme &&
+      formData.projectDescription &&
+      formData.member1.name && formData.member1.regNumber && formData.member1.email && formData.member1.mobile &&
+      formData.member2.name && formData.member2.regNumber && formData.member2.email && formData.member2.mobile &&
+      formData.member3.name && formData.member3.regNumber && formData.member3.email && formData.member3.mobile;
+  };
 
   const handleSubmit = async () => {
     setSubmissionStatus('submitting');
@@ -120,19 +119,25 @@ const RegistrationForm = () => {
       // console.log$&
       const docRef = await addDoc(collection(db, "registrations"), formData);
       // console.log$&
-      createUserWithEmailAndPassword(getAuth(), formData.teamLeadEmail, formData.password) .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error("Error creating user: ", error);
-        console.error("Error code: ", errorCode);
-        console.error("Error message: ", errorMessage);
-        // ..
-      });
+      createUserWithEmailAndPassword(getAuth(), formData.teamLeadEmail, formData.password)
+        .then((userCredential) => {
+          // Signed up 
+          const user = userCredential.user;
+          sendEmailVerification(user).then(() => {
+            getAuth().signOut();
+            alert("Email Verification Link Successfully Sent to your Email Address");
+          }).catch((error) => {
+            console.error("Error sending verification email: ", error);
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error("Error creating user: ", error);
+          console.error("Error code: ", errorCode);
+          console.error("Error message: ", errorMessage);
+        });
+
 
       setSubmissionStatus('success');
       nextStep(); // Move to completion step
@@ -145,7 +150,7 @@ const RegistrationForm = () => {
   };
 
   const renderStep = () => {
-    switch(step) {
+    switch (step) {
       case 1:
         return <Step1 onNext={nextStep} onChange={handleChange} formData={formData} />;
       case 2:

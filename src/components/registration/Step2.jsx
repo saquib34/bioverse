@@ -33,7 +33,7 @@ const Step2 = ({ onNext, onChange, formData }) => {
       <img src={bg} alt="" className="hidden sm:block absolute w-full h-full object-cover" />
       <img src={text} alt="" className="absolute inset-0 w-[300px] sm:w-[500px] md:w-[800px] lg:w-[1000px] xl:w-[1400px] mx-auto top-[240px]" />
 
-      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-gray-300 bg-opacity-40 backdrop-blur-xs border border-gray-200 shadow-md rounded-3xl max-w-4xl w-full">
+      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-white bg-opacity-40 backdrop-blur-xs border border-gray-200 shadow-md rounded-3xl max-w-4xl w-full">
         <ProgressBar currentStep={1} />
         <h2 className="text-xl text-white font-bold mb-4">Team Details</h2>
         <p className="font-semibold mb-4 text-center sm:text-left">Please fill your team information.</p>
@@ -45,13 +45,13 @@ const Step2 = ({ onNext, onChange, formData }) => {
               onChange={(e) => handleChange('teamName', e.target.value)}
               placeholder="Team Name"
               required
-              className="flex-1 p-3 border placeholder-gray-900 placeholder:text-sm placeholder:font-semibold bg-gray-300 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+              className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white backdrop-blur-xs rounded-3xl"
             />
             <select
               value={formData.teamLeadName}
               onChange={handleTeamLeadChange}
               required
-              className="flex-1 p-3 border placeholder-gray-900 text-sm font-semibold bg-gray-300 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+              className="flex-1 p-3 border placeholder-black text-sm font-semibold bg-white backdrop-blur-xs rounded-3xl"
             >
               <option value="">Select Team Lead</option>
               <option value={formData.member1.name}>{formData.member1.name}</option>
@@ -66,7 +66,7 @@ const Step2 = ({ onNext, onChange, formData }) => {
                 onChange={(e) => handleChange('password', e.target.value)}
                 placeholder="Create Password"
                 required
-                className="flex-1 p-3 border placeholder-gray-900 placeholder:text-sm placeholder:font-semibold bg-gray-300 bg-opacity-40 backdrop-blur-xs rounded-3xl"
+                className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white backdrop-blur-xs rounded-3xl"
               />
             )}
           </div>
