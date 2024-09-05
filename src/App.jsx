@@ -16,7 +16,7 @@ import ContactUsPage from './components/ContactUsPage';
 import SubmissionPage from './components/SubmissionPage';
 import EditPage from "./components/EditPage";
 import EmailVerificationPage from "./components/EmailVerificationPage";
-import EasebuzzDirectPayment from "./components/payment";
+import EasebuzzPayment from "./components/payment/payment";
 import SuccessPage from "./components/payment/SuccessPage";
 import FailurePage from "./components/payment/FailurePage";
 
@@ -84,7 +84,7 @@ function App() {
     } />
     <Route path="/verify-email" element={<EmailVerificationPage />} />
     <Route path="/contactus" element={<ContactUsPage />} />
-    <Route path="/payment" element={<EasebuzzDirectPayment />} />
+    <Route path="/payment" element={<EasebuzzPayment />} />
     <Route path="/payment/success" component={SuccessPage} />
     <Route path="/payment/failure" component={FailurePage} />
   </Routes>
