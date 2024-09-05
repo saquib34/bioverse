@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { getFunctions, httpsCallable } from 'firebase/functions';
+
+const CLOUD_FUNCTION_URL = 'https://us-central1-bioverse-26e90.cloudfunctions.net/initiateEasebuzzPayment';
 
 const EasebuzzDirectPayment = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const EasebuzzDirectPayment = () => {
     email: '',
   });
   const [paymentResponse, setPaymentResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,22 +20,32 @@ const EasebuzzDirectPayment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     
     try {
-      const functions = getFunctions();
-      const initiatePayment = httpsCallable(functions, 'initiateEasebuzzPayment');
-      const result = await initiatePayment(formData);
-      const data = result.data;
+      const response = await fetch(CLOUD_FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
+      const data = await response.json();
       setPaymentResponse(data);
 
       if (data.status === 1) {
         // Redirect to Easebuzz payment page
         window.location.href = data.data;
+      } else {
+        // Handle error
+        console.error('Payment initiation failed:', data.error);
       }
     } catch (error) {
       console.error('Error initiating payment:', error);
       setPaymentResponse({ status: 0, error: 'Failed to initiate payment' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -96,8 +108,9 @@ const EasebuzzDirectPayment = () => {
         <button 
           type="submit" 
           className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+          disabled={isLoading}
         >
-          Initiate Payment
+          {isLoading ? 'Processing...' : 'Initiate Payment'}
         </button>
       </form>
 
