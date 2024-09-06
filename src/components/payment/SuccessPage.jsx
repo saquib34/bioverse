@@ -12,6 +12,9 @@ const SuccessPage = (response) => {
   const navigate = useNavigate();
   const paymentResponse = location.state;
   const searchParams = new URLSearchParams(paymentResponse);
+  console.log(searchParams);
+  console.log(searchParams.get('txnid'));
+  console.log(paymentResponse);
 
   // Extract payment details from URL parameters
   const txnid = searchParams.get('txnid') || 'N/A';
