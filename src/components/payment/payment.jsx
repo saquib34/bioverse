@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import sha512 from 'crypto-js/sha512';
 import { useNavigate } from 'react-router-dom';
 
-const EASEBUZZ_KEY = "2PBP7IABZ2";
+const EASEBUZZ_KEY = import.meta.env.VITE_EASEBUZZ_KEY;
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
-const EASEBUZZ_SALT = "DAH88E3UWQ";
+const EASEBUZZ_SALT = import.meta.env.VITE_EASEBUZZ_SALT;
 
 const EasebuzzPayment = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [accessKey, setAccessKey] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -62,13 +61,13 @@ const EasebuzzPayment = () => {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
             }
 
             const result = await response.json();
 
             if (result.status === 1) {
-                setAccessKey(result.data);
                 proceedToPayment(result.data);
             } else {
                 setError(`Payment initiation failed: ${result.data}`);
@@ -88,10 +87,10 @@ const EasebuzzPayment = () => {
                 access_key: access_key,
                 onResponse: (response) => {
                     console.log(response);
-                    if (response.txnid && response.status === 'success') {
-                        navigate('/payment/success');
+                    if (response.status === 'success') {
+                        navigate('/payment/success', { state: { response } });
                     } else {
-                        navigate('/payment/failure');
+                        navigate('/payment/failure', { state: { response } });
                     }
                 },
                 theme: "#123456"
@@ -106,13 +105,13 @@ const EasebuzzPayment = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <button 
-                className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+                className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out disabled:opacity-50"
                 onClick={initiatePayment}
                 disabled={loading}
             >
                 {loading ? 'Processing...' : 'Proceed to Pay'}
             </button>
-            {error && <div className="mt-4 text-red-600">{error}</div>}
+            {error && <div className="mt-4 text-red-600 text-center">{error}</div>}
         </div>
     );
 }
