@@ -3,7 +3,7 @@ import sha512 from 'crypto-js/sha512';
 import { useNavigate } from 'react-router-dom';
 
 const EASEBUZZ_KEY = "2PBP7IABZ2";
-const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK
+const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_SALT = "DAH88E3UWQ";
 
 const EasebuzzPayment = () => {
@@ -13,7 +13,6 @@ const EasebuzzPayment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Load Easebuzz SDK
         const script = document.createElement('script');
         script.src = "https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/v2.0.0/easebuzz-checkout-v2.min.js";
         script.async = true;
@@ -38,32 +37,29 @@ const EasebuzzPayment = () => {
             const surl = 'https://bioverse.saquib.in/payment/success';
             const furl = 'https://bioverse.saquib.in/payment/failure';
 
-            // Generate hash
             const hashString = `${EASEBUZZ_KEY}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|||||||||||${EASEBUZZ_SALT}`;
-            console.log('Hash string:', hashString);
             const hash = sha512(hashString).toString();
-            console.log('Generated hash:', hash);
 
-            const formData = new URLSearchParams();
-            formData.append('key', EASEBUZZ_KEY);
-            formData.append('txnid', txnid);
-            formData.append('amount', amount);
-            formData.append('firstname', firstname);
-            formData.append('email', email);
-            formData.append('phone', phone);
-            formData.append('productinfo', productinfo);
-            formData.append('surl', surl);
-            formData.append('furl', furl);
-            formData.append('hash', hash);
+            const paymentData = {
+                key: EASEBUZZ_KEY,
+                txnid,
+                amount,
+                firstname,
+                email,
+                phone,
+                productinfo,
+                surl,
+                furl,
+                hash
+            };
 
-            console.log('Form data:', formData.toString());
-
+            // Use Cloudflare Worker URL instead of direct API call
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: formData,
+                body: JSON.stringify(paymentData),
             });
 
             if (!response.ok) {
@@ -71,14 +67,12 @@ const EasebuzzPayment = () => {
             }
 
             const result = await response.json();
-            console.log('API response:', result);
 
             if (result.status === 1) {
                 setAccessKey(result.data);
                 proceedToPayment(result.data);
             } else {
                 setError(`Payment initiation failed: ${result.data}`);
-                console.error('Error details:', result);
             }
         } catch (error) {
             console.error('Error initiating payment:', error);
@@ -90,7 +84,7 @@ const EasebuzzPayment = () => {
 
     const proceedToPayment = (access_key) => {
         if (window.EasebuzzCheckout) {
-            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test'); // Use 'prod' for production
+            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
             const options = {
                 access_key: access_key,
                 onResponse: (response) => {
@@ -100,10 +94,8 @@ const EasebuzzPayment = () => {
                     } else {
                         navigate('/payment/failure');
                     }
-
-                    // Handle the payment response here
                 },
-                theme: "#123456" // color hex
+                theme: "#123456"
             }
             easebuzzCheckout.initiatePayment(options);
         } else {
