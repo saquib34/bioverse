@@ -52,6 +52,8 @@ const EasebuzzPayment = () => {
                 hash
             };
 
+            console.log('Initiating payment with data:', paymentData);
+
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -60,12 +62,23 @@ const EasebuzzPayment = () => {
                 body: JSON.stringify(paymentData),
             });
 
+            console.log('Response status:', response.status);
+            const responseText = await response.text();
+            console.log('Response text:', responseText);
+
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                throw new Error(`HTTP error! status: ${response.status}, message: ${responseText}`);
             }
 
-            const result = await response.json();
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error('Failed to parse response as JSON:', responseText);
+                throw new Error('Invalid response from server');
+            }
+
+            console.log('Parsed response:', result);
 
             if (result.status === 1) {
                 proceedToPayment(result.data);
@@ -82,11 +95,11 @@ const EasebuzzPayment = () => {
 
     const proceedToPayment = (access_key) => {
         if (window.EasebuzzCheckout) {
-            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
+            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
             const options = {
                 access_key: access_key,
                 onResponse: (response) => {
-                    console.log(response);
+                    console.log('Easebuzz response:', response);
                     if (response.status === 'success') {
                         navigate('/payment/success', { state: { response } });
                     } else {
