@@ -16,6 +16,7 @@ const RegistrationForm = () => {
     teamName: '',
     teamLeadName: '',
     teamLeadEmail: '',
+    teamLeadPhone: '',
     password: '',
     projectTheme: '',
     projectDescription: ''
@@ -74,8 +75,8 @@ const RegistrationForm = () => {
   }, [formData]);
 
   const validateForm = useCallback(() => {
-    const { member1, member2, member3, teamName, teamLeadName, teamLeadEmail, password, projectTheme, projectDescription } = formData;
-    return teamName && teamLeadName && teamLeadEmail && password && projectTheme && projectDescription &&
+    const { member1, member2, member3, teamName, teamLeadName, teamLeadEmail,teamLeadPhone, password, projectTheme, projectDescription } = formData;
+    return teamName && teamLeadName && teamLeadEmail && teamLeadPhone&& password && projectTheme && projectDescription &&
       member1.name && member1.regNumber && member1.email && member1.mobile &&
       member2.name && member2.regNumber && member2.email && member2.mobile &&
       member3.name && member3.regNumber && member3.email && member3.mobile;
