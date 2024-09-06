@@ -11,6 +11,7 @@ const EasebuzzPayment = () => {
     const location = useLocation();
     const { state } = location;
     const { response: locationResponse } = state || {};
+    console.log(locationResponse);
 
     useEffect(() => {
         const loadScript = () => {
