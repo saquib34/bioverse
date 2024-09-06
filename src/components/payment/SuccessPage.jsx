@@ -12,14 +12,13 @@ const SuccessPage = (response) => {
   const navigate = useNavigate();
   const paymentResponse = location.state;
   const searchParams = new URLSearchParams(paymentResponse);
-  console.log(searchParams);
-  console.log(searchParams.get('txnid'));
-  console.log(paymentResponse);
+
+  console.log('pay'+paymentResponse);
 
   // Extract payment details from URL parameters
-  const txnid = searchParams.get('txnid') || 'N/A';
-  const amount = searchParams.get('amount') || 'N/A';
-  const status = searchParams.get('status') || 'Success';
+  const txnid = paymentResponse.response.txnid || 'N/A';
+  const amount = searchParams.response.amount || 'N/A';
+  const status = searchParams.response.status|| 'Success';
 
   useEffect(() => {
     const auth = getAuth();
