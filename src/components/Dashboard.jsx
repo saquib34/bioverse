@@ -72,6 +72,16 @@ const Dashboard = () => {
   const handlePay = () => {
     // Implement payment logic here
     console.log("Redirecting to payment gateway...");
+    navigate('/payment',{state:
+      {
+        email: userData.teamLeadEmail,
+        firstname: userData.teamLeadName,
+        phone: userData.member1.mobile,
+        
+
+      }
+    });
+    
   };
 
   const handleEdit = () => {

@@ -36,7 +36,7 @@ const RegistrationForm = () => {
       const { teamLeadName, member1, member2, member3 } = prevData;
       let teamLeadEmail = '';
 
-      if (member1.name === teamLeadName) teamLeadEmail = member1.email;
+      if (member1.name === teamLeadName){ teamLeadEmail = member1.email; teamLeadPhone = member1.mobile;}
       else if (member2.name === teamLeadName) teamLeadEmail = member2.email;
       else if (member3.name === teamLeadName) teamLeadEmail = member3.email;
 
@@ -83,7 +83,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = useCallback(async () => {
     if (isSubmittingRef.current) {
-      console.log('Submission already in progress');
+      ;
       return;
     }
 

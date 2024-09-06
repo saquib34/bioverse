@@ -58,36 +58,37 @@ function App() {
 
   return (
     <Routes>
-    <Route path="/" element={<Frame />} />
-    <Route path="/signup" element={<Signup />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/registration" element={<RegistrationForm />} />
-    <Route path="/additional-details" element={
-      <ProtectedRoute>
-        <AdditionalDetails />
-      </ProtectedRoute>
-    } />
-    <Route path="/dashboard" element={
-      <ProtectedRoute>
-        <Dashboard />
-      </ProtectedRoute>
-    } />
-    <Route path="/submissions" element={
-      <ProtectedRoute>
-        <SubmissionPage />
-      </ProtectedRoute>
-    } />
-    <Route path="/edit" element={
-      <ProtectedRoute>
-        <EditPage />
-      </ProtectedRoute>
-    } />
-    <Route path="/verify-email" element={<EmailVerificationPage />} />
-    <Route path="/contactus" element={<ContactUsPage />} />
-    <Route path="/payment" element={<EasebuzzPayment />} />
-    <Route path="/payment/success" component={SuccessPage} />
-    <Route path="/payment/failure" component={FailurePage} />
-  </Routes>
+      <Route path="/" element={<Frame />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registration" element={<RegistrationForm />} />
+      <Route path="/additional-details" element={
+        <ProtectedRoute>
+          <AdditionalDetails />
+        </ProtectedRoute>
+      } />
+      <Route path="/dashboard" element={
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/submissions" element={
+        <ProtectedRoute>
+          <SubmissionPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/edit" element={
+        <ProtectedRoute>
+          <EditPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/verify-email" element={<EmailVerificationPage />} />
+      <Route path="/contactus" element={<ContactUsPage />} />
+      <Route path="/payment" element={<EasebuzzPayment />} />
+      <Route path="/payment/success" element={<SuccessPage />} />
+      <Route path="/payment/failure" element={<FailurePage />} />
+    </Routes>
   );
 }
+
 export default App;

@@ -1,15 +1,72 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CheckCircleIcon } from 'lucide-react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { db } from '../../config/firebase';
+import { collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
 
 const SuccessPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+ const { state } = location;
+  const { response } = state || {};
+
+  const navigate = useNavigate();
+ 
+
 
   // Extract payment details from URL parameters
-  const txnid = searchParams.get('txnid') || 'N/A';
-  const amount = searchParams.get('amount') || 'N/A';
-  const status = searchParams.get('status') || 'Success';
+  const txnid = response.txnid || 'N/A';
+  const amount = response.amount || 'N/A';
+  const status = response.status || 'Success';
+
+  useEffect(() => {
+    const auth = getAuth();
+    
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const email = user.email;
+        const registrationsRef = collection(db, 'registrations');
+        const q = query(registrationsRef, where("teamLeadEmail", "==", email));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          setIsAuthenticated(true);
+          const registrationDoc = querySnapshot.docs[0];
+          const userDoc = querySnapshot.docs[0];
+          const data = userDoc.data();
+          await updateDoc(registrationDoc.ref, {
+            pay: true,          
+            payment: {
+              txnid,
+              amount,
+              status,
+            },
+          });
+        } else {
+          navigate('/login', { state: { from: location } });
+        }
+      } else {
+        navigate('/login', { state: { from: location } });
+      }
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [navigate, location, txnid, amount, status]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <p className="text-lg font-semibold">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null; // This will prevent the content from flashing before redirect
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -46,10 +103,10 @@ const SuccessPage = () => {
         </div>
         <div className="mt-6">
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => navigate('/dashboard')}
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Return to Home
+            Return to DashBoard
           </button>
         </div>
       </div>

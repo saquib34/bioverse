@@ -52,7 +52,7 @@ const FailurePage = () => {
             Try Again
           </button>
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => window.location.href = '/dashboard'}
             className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             Return to Home
