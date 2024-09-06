@@ -32,9 +32,9 @@ const SubmissionPage = () => {
                 const querySnapshot = await getDocs(q);
                 const data= querySnapshot.docs[0].data();
                 if(data.pay!=true){
-                    alert("Payment is not completed");
+                    alert("Payment is not complete yet, Please complete the payment to submit the presentation");
                     console.error("Payment not done");
-                    navigate('/payment');
+                    navigate('/dashboard');
                 }
 
             }
