@@ -3,7 +3,7 @@ import sha512 from 'crypto-js/sha512';
 import { useNavigate } from 'react-router-dom';
 
 const EASEBUZZ_KEY = "2PBP7IABZ2";
-const API_URL = "/api/payment/initiateLink";
+const API_URL = "https://pay.easebuzz.in/api/payment/initiateLink";
 const EASEBUZZ_SALT = "DAH88E3UWQ";
 
 const EasebuzzPayment = () => {
