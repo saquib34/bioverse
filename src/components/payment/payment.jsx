@@ -10,6 +10,11 @@ const EasebuzzPayment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('Environment variables:');
+        console.log('VITE_APP_EASEBUZZ_LINK:', API_URL);
+        console.log('VITE_EASEBUZZ_KEY:', EASEBUZZ_KEY);
+        console.log('All env variables:', JSON.stringify(import.meta.env, null, 2));
+
         const script = document.createElement('script');
         script.src = "https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/v2.0.0/easebuzz-checkout-v2.min.js";
         script.async = true;
@@ -25,7 +30,7 @@ const EasebuzzPayment = () => {
         setError(null);
 
         try {
-            const txnid = 'TXN' + Date.now()+'test';
+            const txnid = 'TXN' + Date.now();
             const amount = '1.1';
             const firstname = 'saquib';
             const email = 'shadmanshahin6@gmail.com';
@@ -87,6 +92,10 @@ const EasebuzzPayment = () => {
     }
 
     const proceedToPayment = (access_key) => {
+        console.log('Proceeding to payment. Access key:', access_key);
+        console.log('EASEBUZZ_KEY from env:', EASEBUZZ_KEY);
+        console.log('Window object keys:', Object.keys(window));
+        
         if (window.EasebuzzCheckout) {
             if (!EASEBUZZ_KEY) {
                 console.error('Easebuzz key is not set in environment variables');
