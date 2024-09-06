@@ -46,7 +46,7 @@ const EditPage = () => {
                 setDocId(userDoc.id);
                 const data = userDoc.data();
                 setUserData(data);
-                console.log("Fetched Data:", data); // For debugging
+                ; // For debugging
                 setEditedData({
                     teamName: data.teamName,
                     teamLeadEmail: data.teamLeadEmail,
@@ -71,7 +71,7 @@ const EditPage = () => {
                     projectTheme: data.projectTheme || '',
                     projectDescription: data.projectDescription || ''
                 });
-                console.log("Fetched Data:", data); // For debugging
+                ; // For debugging
             } else {
                 console.error("No matching document found for the current user");
                 navigate('/login');

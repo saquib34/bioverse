@@ -47,7 +47,7 @@ const EasebuzzPayment = () => {
                 furl
             };
 
-            console.log('Initiating payment with data:', paymentData);
+            ;
 
             const response = await fetch(API_URL, {
                 method: 'POST',
@@ -57,9 +57,9 @@ const EasebuzzPayment = () => {
                 body: JSON.stringify(paymentData),
             });
 
-            console.log('Response status:', response.status);
+            ;
             const responseText = await response.text();
-            console.log('Response text:', responseText);
+            ;
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}, message: ${responseText}`);
@@ -73,7 +73,7 @@ const EasebuzzPayment = () => {
                 throw new Error('Invalid response from server');
             }
 
-            console.log('Parsed response:', result);
+            ;
 
             if (result.status === 1) {
                 proceedToPayment(result.data);
@@ -89,9 +89,9 @@ const EasebuzzPayment = () => {
     }
 
     const proceedToPayment = (access_key) => {
-        console.log('Proceeding to payment. Access key:', access_key);
-        console.log('EASEBUZZ_KEY from env:', EASEBUZZ_KEY);
-        console.log('Window object keys:', Object.keys(window));
+        ;
+        ;
+        );
         
         if (window.EasebuzzCheckout) {
             if (!EASEBUZZ_KEY) {
@@ -100,12 +100,12 @@ const EasebuzzPayment = () => {
                 return;
             }
             
-            console.log('Initializing EasebuzzCheckout with key:', EASEBUZZ_KEY);
+            ;
             const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
             const options = {
                 access_key: access_key,
                 onResponse: (response) => {
-                    console.log('Easebuzz response:', response);
+                    ;
                     if (response.status === 'success') {
                         navigate('/payment/success', { state: { response } });
                     } else {

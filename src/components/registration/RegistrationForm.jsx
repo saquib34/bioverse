@@ -83,7 +83,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = useCallback(async () => {
     if (isSubmittingRef.current) {
-      console.log('Submission already in progress');
+      ;
       return;
     }
 

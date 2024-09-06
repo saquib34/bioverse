@@ -8,15 +8,15 @@ import { collection, query, where, getDocs, updateDoc } from 'firebase/firestore
 const SuccessPage = (response) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
   const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
+  const paymentResponse = location.state;
+  const searchParams = new URLSearchParams(paymentResponse);
 
   // Extract payment details from URL parameters
-  console.log(response);
-  const txnid = response.txnid || 'N/A';
-  const amount = response.amount || 'N/A';
+  const txnid = searchParams.get('txnid') || 'N/A';
+  const amount = searchParams.get('amount') || 'N/A';
   const status = searchParams.get('status') || 'Success';
-
 
   useEffect(() => {
     const auth = getAuth();
