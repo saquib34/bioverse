@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
-const EASEBUZZ_KEY = import.meta.env.VITE_EASEBUZZ_KEY;
+const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
 
 const EasebuzzPayment = () => {
     const [error, setError] = useState(null);
