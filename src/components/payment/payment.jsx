@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import sha512 from 'crypto-js/sha512';
 import { useNavigate } from 'react-router-dom';
 
-const EASEBUZZ_KEY = import.meta.env.VITE_EASEBUZZ_KEY;
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
-const EASEBUZZ_SALT = import.meta.env.VITE_EASEBUZZ_SALT;
 
 const EasebuzzPayment = () => {
     const [error, setError] = useState(null);
@@ -36,11 +33,8 @@ const EasebuzzPayment = () => {
             const surl = 'https://bioverse.saquib.in/payment/success';
             const furl = 'https://bioverse.saquib.in/payment/failure';
 
-            const hashString = `${EASEBUZZ_KEY}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|||||||||||${EASEBUZZ_SALT}`;
-            const hash = sha512(hashString).toString();
-
             const paymentData = {
-                key: EASEBUZZ_KEY,
+                
                 txnid,
                 amount,
                 firstname,
@@ -48,8 +42,7 @@ const EasebuzzPayment = () => {
                 phone,
                 productinfo,
                 surl,
-                furl,
-                hash
+                furl
             };
 
             console.log('Initiating payment with data:', paymentData);
@@ -95,7 +88,7 @@ const EasebuzzPayment = () => {
 
     const proceedToPayment = (access_key) => {
         if (window.EasebuzzCheckout) {
-            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
+            const easebuzzCheckout = new window.EasebuzzCheckout(import.meta.env.VITE_EASEBUZZ_KEY, 'test');
             const options = {
                 access_key: access_key,
                 onResponse: (response) => {
