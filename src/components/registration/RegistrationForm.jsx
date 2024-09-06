@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react';
-import { collection, addDoc, query, where, getDocs, or } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { db } from '../../config/firebase';
 import Step1 from './Step1';
@@ -55,37 +55,28 @@ const RegistrationForm = () => {
 
   const checkExistingMembers = useCallback(async () => {
     const members = [formData.member1, formData.member2, formData.member3];
-    
     for (const member of members) {
-      const regConditions = [
+      const regQuery = query(collection(db, "registrations"),
         where("member1.regNumber", "==", member.regNumber),
         where("member2.regNumber", "==", member.regNumber),
         where("member3.regNumber", "==", member.regNumber)
-      ];
-      const emailConditions = [
+      );
+      const emailQuery = query(collection(db, "registrations"),
         where("member1.email", "==", member.email),
         where("member2.email", "==", member.email),
         where("member3.email", "==", member.email)
-      ];
+      );
 
-      const regQuery = query(collection(db, "registrations"), or(...regConditions));
-      const emailQuery = query(collection(db, "registrations"), or(...emailConditions));
+      const [regQuerySnapshot, emailQuerySnapshot] = await Promise.all([
+        getDocs(regQuery),
+        getDocs(emailQuery)
+      ]);
 
-      try {
-        const [regQuerySnapshot, emailQuerySnapshot] = await Promise.all([
-          getDocs(regQuery),
-          getDocs(emailQuery)
-        ]);
-
-        if (!regQuerySnapshot.empty) {
-          return `Member with registration number ${member.regNumber} is already registered in a team.`;
-        }
-        if (!emailQuerySnapshot.empty) {
-          return `Member with email ${member.email} is already registered in a team.`;
-        }
-      } catch (error) {
-        console.error("Error checking existing members:", error);
-        return "An error occurred while checking for existing members. Please try again.";
+      if (!regQuerySnapshot.empty) {
+        return `Member with registration number ${member.regNumber} is already registered in a team.`;
+      }
+      if (!emailQuerySnapshot.empty) {
+        return `Member with email ${member.email} is already registered in a team.`;
       }
     }
     return null;
@@ -101,6 +92,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = useCallback(async () => {
     if (isSubmittingRef.current) {
+      console.log('Submission already in progress');
       return;
     }
 
