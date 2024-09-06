@@ -48,7 +48,7 @@ const MobileMid = () => {
         Unprecedented Innovation and Creative Exploration."
       </div>
       <b className="absolute top-[324px] left-[calc(50%_-_61.95px)] text-3xs tracking-[-0.03em] leading-[120%]">
-        September 29th and 30th, 2024
+        October 4th and 5th, 2024
       </b>
       <div
         className="absolute top-[434px] left-[calc(50%_-_82.95px)] rounded-[23.28px] [background:linear-gradient(87.44deg,_#8b4c5e,_#863a7b_3%,_#802a91_13.5%,_#7d219e_13.51%,_#7125c5_49.5%,_#1b298f_73.5%,_#361064)] w-[193.2px] flex flex-col items-center justify-center py-[11.3px] px-[16.4px] box-border cursor-pointer text-right text-[15.1px]"
@@ -72,10 +72,10 @@ const MobileMid = () => {
           </div>
           <div className="self-stretch w-[165.3px] [backdrop-filter:blur(11.87px)] rounded-[15.18px] bg-gray-400 overflow-hidden shrink-0 flex flex-col items-center justify-center py-[6.8px] px-[13.6px] box-border">
             <div className="relative leading-[27.14px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#1fcff1,_#20abe1_61%,_#234db6)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-              28th and 29th
+              4th and 5th
             </div>
             <div className="relative text-4xs-9 tracking-[0.05em] leading-[13.57px] font-outfit">
-              September, 2024
+              October, 2024
             </div>
           </div>
           <div className="flex flex-col items-start justify-start text-left">

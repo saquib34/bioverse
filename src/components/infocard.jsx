@@ -42,7 +42,7 @@ const InfoCard = () => {
               intersection of biology and computer science. Organized by the
               Innovation Incubation and Entrepreneurship Center of SRM Institute
               of Science and Technology, Ramapuram, this event will take place
-              on September 29-30, 2024.
+              on October 29-30, 2024.
             </div>
             <div className="absolute h-[25.44%] w-[72.11%] top-[0%] left-[0%] text-21xl leading-[44px] font-extrabold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#ef86fe,_#ae52e6_67%,_#8a36d8)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] text-left inline-block">
               What is Bioverse ASIA?"

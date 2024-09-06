@@ -164,7 +164,7 @@ const MobileNavbar = () => {
         </button>
       </div>
       <div
-        className={`fixed top-[100px] right-0 w-3/4 h-auto bg-black z-10 bg-opacity-95 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-[100px] right-0 w-3/4 h-auto bg-black z-10 bg-opacity-50 transform transition-transform duration-300 ease-in-out ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

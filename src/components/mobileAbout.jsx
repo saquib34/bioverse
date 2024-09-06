@@ -41,7 +41,7 @@ const MobileAbout = () => {
           <div className="absolute top-[49px] left-[128px] leading-[122.57%] font-medium inline-block w-[266px]">
             BioVerse Asia, the pioneering Bio Hackathon in Asia*, is poised to
             transform the landscape where biology meets computer science.
-            Scheduled for September 28-29, 2024, this intensive 36-hour event is
+            Scheduled for October 28-29, 2024, this intensive 36-hour event is
             being orchestrated by the Innovation Incubation and Entrepreneurship
             Center of SRM Institute of Science and Technology, Ramapuram.
             BioVerse Asia aims to create a dynamic platform where students,

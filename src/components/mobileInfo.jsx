@@ -18,7 +18,7 @@ const MobileInfo = () => {
           {[
             {
               title: "What is Bioverse ASIA?",
-              content: "A 36-hour Bio Hackathon that aims to revolutionize the intersection of biology and computer science. Organized by the Innovation Incubation and Entrepreneurship Center of SRM Institute of Science and Technology, Ramapuram, this event will take place on September 29-30, 2024.",
+              content: "A 36-hour Bio Hackathon that aims to revolutionize the intersection of biology and computer science. Organized by the Innovation Incubation and Entrepreneurship Center of SRM Institute of Science and Technology, Ramapuram, this event will take place on October 29-30, 2024.",
               gradient: "from-[#ef86fe] via-[#ae52e6] to-[#8a36d8]"
             },
             {
