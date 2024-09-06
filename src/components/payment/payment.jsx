@@ -53,7 +53,6 @@ const EasebuzzPayment = () => {
                 hash
             };
 
-            // Use Cloudflare Worker URL instead of direct API call
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -105,15 +104,15 @@ const EasebuzzPayment = () => {
     }
 
     return (
-        <div>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <button 
-                className="btn btn-primary" 
+                className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
                 onClick={initiatePayment}
                 disabled={loading}
             >
                 {loading ? 'Processing...' : 'Proceed to Pay'}
             </button>
-            {error && <div className="error-message">{error}</div>}
+            {error && <div className="mt-4 text-red-600">{error}</div>}
         </div>
     );
 }
