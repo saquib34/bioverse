@@ -36,47 +36,64 @@ const RegistrationForm = () => {
     setFormData(prevData => {
       const { teamLeadName, member1, member2, member3 } = prevData;
       let teamLeadEmail = '';
+      let teamLeadPhone = '';
 
-      if (member1.name === teamLeadName){ teamLeadEmail = member1.email; teamLeadPhone = member1.mobile;}
-      else if (member2.name === teamLeadName) teamLeadEmail = member2.email;
-      else if (member3.name === teamLeadName) teamLeadEmail = member3.email;
+      if (member1.name === teamLeadName) {
+        teamLeadEmail = member1.email;
+        teamLeadPhone = member1.mobile;
+      } else if (member2.name === teamLeadName) {
+        teamLeadEmail = member2.email;
+        teamLeadPhone = member2.mobile;
+      } else if (member3.name === teamLeadName) {
+        teamLeadEmail = member3.email;
+        teamLeadPhone = member3.mobile;
+      }
 
-      return { ...prevData, teamLeadEmail };
+      return { ...prevData, teamLeadEmail, teamLeadPhone };
     });
   }, []);
 
   const checkExistingMembers = useCallback(async () => {
     const members = [formData.member1, formData.member2, formData.member3];
+    
     for (const member of members) {
-      const regQuery = query(collection(db, "registrations"),
-        where("member1.regNumber", "==", member.regNumber),
-        where("member2.regNumber", "==", member.regNumber),
-        where("member3.regNumber", "==", member.regNumber)
+      const regQuery = query(
+        collection(db, "registrations"),
+        where("member1.regNumber", "==", member.regNumber)
       );
-      const emailQuery = query(collection(db, "registrations"),
-        where("member1.email", "==", member.email),
-        where("member2.email", "==", member.email),
-        where("member3.email", "==", member.email)
+      const emailQuery = query(
+        collection(db, "registrations"),
+        where("member1.email", "==", member.email)
       );
 
-      const [regQuerySnapshot, emailQuerySnapshot] = await Promise.all([
-        getDocs(regQuery),
-        getDocs(emailQuery)
-      ]);
-
-      if (!regQuerySnapshot.empty) {
-        return `Member with registration number ${member.regNumber} is already registered in a team.`;
+      for (let i = 2; i <= 3; i++) {
+        regQuery.push(where(`member${i}.regNumber`, "==", member.regNumber));
+        emailQuery.push(where(`member${i}.email`, "==", member.email));
       }
-      if (!emailQuerySnapshot.empty) {
-        return `Member with email ${member.email} is already registered in a team.`;
+
+      try {
+        const [regQuerySnapshot, emailQuerySnapshot] = await Promise.all([
+          getDocs(regQuery),
+          getDocs(emailQuery)
+        ]);
+
+        if (!regQuerySnapshot.empty) {
+          return `Member with registration number ${member.regNumber} is already registered in a team.`;
+        }
+        if (!emailQuerySnapshot.empty) {
+          return `Member with email ${member.email} is already registered in a team.`;
+        }
+      } catch (error) {
+        console.error("Error checking existing members:", error);
+        return "An error occurred while checking for existing members. Please try again.";
       }
     }
     return null;
   }, [formData]);
 
   const validateForm = useCallback(() => {
-    const { member1, member2, member3, teamName, teamLeadName, teamLeadEmail,teamLeadPhone, password, projectTheme, projectDescription } = formData;
-    return teamName && teamLeadName && teamLeadEmail && teamLeadPhone&& password && projectTheme && projectDescription &&
+    const { member1, member2, member3, teamName, teamLeadName, teamLeadEmail, teamLeadPhone, password, projectTheme, projectDescription } = formData;
+    return teamName && teamLeadName && teamLeadEmail && teamLeadPhone && password && projectTheme && projectDescription &&
       member1.name && member1.regNumber && member1.email && member1.mobile &&
       member2.name && member2.regNumber && member2.email && member2.mobile &&
       member3.name && member3.regNumber && member3.email && member3.mobile;
@@ -84,7 +101,6 @@ const RegistrationForm = () => {
 
   const handleSubmit = useCallback(async () => {
     if (isSubmittingRef.current) {
-      ;
       return;
     }
 
