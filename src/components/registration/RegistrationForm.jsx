@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail } from "firebase/auth";
 import { db } from '../../config/firebase';
 import Step1 from './Step1';
 import Step2 from './Step2';
@@ -53,41 +53,63 @@ const RegistrationForm = () => {
     });
   }, []);
 
-  const checkExistingMembers = useCallback(async () => {
-    const members = [formData.member1, formData.member2, formData.member3];
-    for (const member of members) {
-      const regQuery = query(collection(db, "registrations"),
-        where("member1.regNumber", "==", member.regNumber),
-        where("member2.regNumber", "==", member.regNumber),
-        where("member3.regNumber", "==", member.regNumber)
-      );
-      const emailQuery = query(collection(db, "registrations"),
-        where("member1.email", "==", member.email),
-        where("member2.email", "==", member.email),
-        where("member3.email", "==", member.email)
-      );
-
-      const [regQuerySnapshot, emailQuerySnapshot] = await Promise.all([
-        getDocs(regQuery),
-        getDocs(emailQuery)
-      ]);
-
-      if (!regQuerySnapshot.empty) {
-        return `Member with registration number ${member.regNumber} is already registered in a team.`;
-      }
-      if (!emailQuerySnapshot.empty) {
-        return `Member with email ${member.email} is already registered in a team.`;
-      }
-    }
-    return null;
-  }, [formData]);
-
   const validateForm = useCallback(() => {
     const { member1, member2, member3, teamName, teamLeadName, teamLeadEmail, teamLeadPhone, password, projectTheme, projectDescription } = formData;
     return teamName && teamLeadName && teamLeadEmail && teamLeadPhone && password && projectTheme && projectDescription &&
       member1.name && member1.regNumber && member1.email && member1.mobile &&
       member2.name && member2.regNumber && member2.email && member2.mobile &&
       member3.name && member3.regNumber && member3.email && member3.mobile;
+  }, [formData]);
+
+  const checkExistingMembers = useCallback(async () => {
+    const auth = getAuth();
+    const members = [formData.member1, formData.member2, formData.member3];
+
+    for (const member of members) {
+      // Check Firebase Auth
+      try {
+        const signInMethods = await fetchSignInMethodsForEmail(auth, member.email);
+        if (signInMethods.length > 0) {
+          return `Email ${member.email} is already registered in our authentication system.`;
+        }
+      } catch (error) {
+        console.error("Error checking email in Auth:", error);
+        return "An error occurred while checking email availability. Please try again.";
+      }
+
+      // Check Firestore
+      const regQuery = query(collection(db, "registrations"), 
+        where("member1.regNumber", "==", member.regNumber)
+      );
+      const emailQuery = query(collection(db, "registrations"), 
+        where("member1.email", "==", member.email)
+      );
+      const phoneQuery = query(collection(db, "registrations"), 
+        where("member1.mobile", "==", member.mobile)
+      );
+
+      try {
+        const [regQuerySnapshot, emailQuerySnapshot, phoneQuerySnapshot] = await Promise.all([
+          getDocs(regQuery),
+          getDocs(emailQuery),
+          getDocs(phoneQuery)
+        ]);
+
+        if (!regQuerySnapshot.empty) {
+          return `Registration number ${member.regNumber} is already registered.`;
+        }
+        if (!emailQuerySnapshot.empty) {
+          return `Email ${member.email} is already registered in our database.`;
+        }
+        if (!phoneQuerySnapshot.empty) {
+          return `Phone number ${member.mobile} is already registered.`;
+        }
+      } catch (error) {
+        console.error("Error checking Firestore:", error);
+        return "An error occurred while checking registration data. Please try again.";
+      }
+    }
+    return null;
   }, [formData]);
 
   const handleSubmit = useCallback(async () => {
@@ -105,6 +127,7 @@ const RegistrationForm = () => {
       setSubmissionStatus('error');
       setErrorMessage('Please fill in all required fields.');
       isSubmittingRef.current = false;
+      alert('Please fill in all required fields.');
       return;
     }
 
@@ -114,9 +137,11 @@ const RegistrationForm = () => {
         setSubmissionStatus('error');
         setErrorMessage(existingMemberError);
         isSubmittingRef.current = false;
+        alert(existingMemberError);
         return;
       }
 
+      // If all checks pass, proceed with registration
       await addDoc(collection(db, "registrations"), formData);
       
       const auth = getAuth();
@@ -129,8 +154,19 @@ const RegistrationForm = () => {
       nextStep(); // Move to completion step
     } catch (e) {
       console.error("Error during submission: ", e);
+      let errorMsg = "An error occurred while submitting the form. ";
+      if (e.code === "auth/weak-password") {
+        errorMsg += "The password is too weak. Please choose a stronger password.";
+      } else if (e.code === "auth/email-already-in-use") {
+        errorMsg += "The email address is already in use.";
+      } else if (e.code === "auth/invalid-email") {
+        errorMsg += "The email address is not valid.";
+      } else {
+        errorMsg += e.message;
+      }
       setSubmissionStatus('error');
-      setErrorMessage(`An error occurred while submitting the form: ${e.message}`);
+      setErrorMessage(errorMsg);
+      alert(errorMsg);
     } finally {
       isSubmittingRef.current = false;
     }
