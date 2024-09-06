@@ -89,9 +89,7 @@ const EasebuzzPayment = () => {
     }
 
     const proceedToPayment = (access_key) => {
-        ;
-        ;
-        );
+    
         
         if (window.EasebuzzCheckout) {
             if (!EASEBUZZ_KEY) {
