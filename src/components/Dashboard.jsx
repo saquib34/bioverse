@@ -39,7 +39,7 @@ const Dashboard = () => {
         const userDoc = querySnapshot.docs[0];
         const data = userDoc.data();
         setUserData(data);
-        setPaymentStatus(data.pay === true);
+        // setPaymentStatus(data.pay === true);
       } else {
         console.error("No matching document found for the current user");
         setError('No user data found. Please try logging in again.');
