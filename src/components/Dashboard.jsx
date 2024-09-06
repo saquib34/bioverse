@@ -71,8 +71,9 @@ const Dashboard = () => {
 
   const handlePay = () => {
     // Implement payment logic here
-    ;
+    console.log("Redirecting to payment gateway...");
     navigate('/payment');
+    
   };
 
   const handleEdit = () => {
