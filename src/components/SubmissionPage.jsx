@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import {getAuth, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
 import text from "/bio-verse.svg";
 import { db } from '../config/firebase';
-
-
 const SubmissionPage = () => {
     const [userData, setUserData] = useState(null);
     const [docId, setDocId] = useState(null);
@@ -20,11 +18,27 @@ const SubmissionPage = () => {
     const navigate = useNavigate();
     const db = getFirestore();
 
+     
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
+            if (user
+                && user.emailVerified) {
                 await checkSubmissionStatus(user.email);
-            } else {
+                const auth= getAuth();
+                const email = user.email;
+                const registrationsRef = collection(db, 'registrations');
+                const q = query(registrationsRef, where("teamLeadEmail", "==", email));
+                const querySnapshot = await getDocs(q);
+                const data= querySnapshot.docs[0].data();
+                if(data.pay!=true){
+                    alert("Payment is not completed");
+                    console.error("Payment not done");
+                    navigate('/payment');
+                }
+
+            }
+             else {
                 navigate('/login');
             }
             setLoading(false);
@@ -32,20 +46,6 @@ const SubmissionPage = () => {
 
         return () => unsubscribe();
     }, [navigate, db]);
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const email = user.email;
-    const registrationsRef = collection(db, 'registrations');
-    const q = query(registrationsRef, where("teamLeadEmail", "==", email));
-    const querySnapshot =  getDocs(q);
-    const registrationDoc = querySnapshot.docs[0];
-    const userDoc = querySnapshot.docs[0];
-    const data = userDoc.data();
-
-    if(data.pay===false){
-        navigate('/payment');
-    }
-    
 
     const checkSubmissionStatus = async (email) => {
         try {

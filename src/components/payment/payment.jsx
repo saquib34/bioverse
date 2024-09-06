@@ -10,8 +10,8 @@ const EasebuzzPayment = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { state } = location;
-    const { response: locationResponse } = state || {};
-    console.log(locationResponse);
+    const { email,firstname,phone } = state || {};
+ 
 
     useEffect(() => {
         const loadScript = () => {
@@ -29,7 +29,8 @@ const EasebuzzPayment = () => {
         loadScript();
     }, []);
    
-    const initiatePayment = async () => {
+   const initiatePayment = async () => {
+
 
         try {
  
@@ -38,10 +39,10 @@ const EasebuzzPayment = () => {
             const paymentData = {
                 txnid,
                 amount: '250',
-                firstname: locationResponse?.teamLeadEmail,
-                email: locationResponse?.teamLeadName,
+                firstname: firstname,
+                email: email,
 
-                phone: locationResponse?.teamLeadPhone,
+                phone: phone,
                 productinfo: 'Bioverse Registration',
                 surl: 'https://bioverse.saquib.in/payment/success',
                 furl: 'https://bioverse.saquib.in/payment/failure'
