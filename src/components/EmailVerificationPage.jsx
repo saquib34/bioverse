@@ -37,13 +37,19 @@ function EmailVerificationPage() {
   const sendConfirmationEmail = async () => {
     console.log('Attempting to send confirmation email...');
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+  
       const response = await fetch('http://210.18.155.129:3000/send-confirmation-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: 'shadmanshahin6@gmail.com' }),
+        signal: controller.signal
       });
+  
+      clearTimeout(timeoutId);
   
       console.log('Response status:', response.status);
       console.log('Response OK:', response.ok);
@@ -59,7 +65,9 @@ function EmailVerificationPage() {
       }
     } catch (error) {
       console.error('Error sending confirmation email:', error.message);
-      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+      if (error.name === 'AbortError') {
+        console.error('The request was aborted due to timeout');
+      } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
         console.error('This may indicate a network error or that the server is not reachable.');
       }
     }
