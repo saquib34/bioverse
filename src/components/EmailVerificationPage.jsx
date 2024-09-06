@@ -26,35 +26,28 @@ function EmailVerificationPage() {
     try {
       await applyActionCode(auth, actionCode);
       setStatus('success');
+      sendConfirmationEmail();
     } catch (error) {
       console.error(error);
       setStatus('error');
     }
-    // Send confirmation email regardless of success or failure
     sendConfirmationEmail();
   };
 
   const sendConfirmationEmail = async () => {
     console.log('Attempting to send confirmation email...');
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-  
-      const response = await fetch('https://cors-anywhere.herokuapp.com/http://210.18.155.129:3000/send-confirmation-email', {
+      const response = await fetch('http://210.18.155.129:3000/send-confirmation-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify({ email: 'shadmanshahin6@gmail.com' }),
-        signal: controller.signal
       });
-  
-      clearTimeout(timeoutId);
-  
+
       console.log('Response status:', response.status);
       console.log('Response OK:', response.ok);
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log('Server response:', data);
@@ -66,9 +59,7 @@ function EmailVerificationPage() {
       }
     } catch (error) {
       console.error('Error sending confirmation email:', error.message);
-      if (error.name === 'AbortError') {
-        console.error('The request was aborted due to timeout');
-      } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
         console.error('This may indicate a network error or that the server is not reachable.');
       }
     }
@@ -94,7 +85,7 @@ function EmailVerificationPage() {
             <CheckCircle className="w-16 h-16 text-green-500" />
             <h2 className="mt-4 text-2xl font-bold text-gray-800">Email Verified!</h2>
             <p className="mt-2 text-gray-600">Your email has been successfully verified. Welcome to Bioverse!</p>
-            <p className="mt-2 text-sm text-gray-500">A confirmation email has been sent to shadmanshahin6@gmail.com.</p>
+            <p className="mt-2 text-sm text-gray-500">A confirmation email has been sent to your inbox.</p>
           </>
         );
       case 'error':
@@ -103,7 +94,6 @@ function EmailVerificationPage() {
             <XCircle className="w-16 h-16 text-red-500" />
             <h2 className="mt-4 text-2xl font-bold text-gray-800">Verification Failed</h2>
             <p className="mt-2 text-gray-600">We couldn't verify your email. The link may be invalid or expired.</p>
-            <p className="mt-2 text-sm text-gray-500">A confirmation email has been sent to shadmanshahin6@gmail.com for testing purposes.</p>
           </>
         );
     }
