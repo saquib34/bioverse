@@ -10,10 +10,7 @@ const EasebuzzPayment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log('Environment variables:');
-        console.log('VITE_APP_EASEBUZZ_LINK:', API_URL);
-        console.log('VITE_EASEBUZZ_KEY:', EASEBUZZ_KEY);
-        console.log('All env variables:', JSON.stringify(import.meta.env, null, 2));
+   
 
         const script = document.createElement('script');
         script.src = "https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/v2.0.0/easebuzz-checkout-v2.min.js";

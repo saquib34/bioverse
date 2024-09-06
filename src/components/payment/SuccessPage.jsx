@@ -5,16 +5,15 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../../config/firebase';
 import { collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
 
-const SuccessPage = () => {
+const SuccessPage = (response) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
 
   // Extract payment details from URL parameters
-  const txnid = searchParams.get('txnid') || 'N/A';
-  const amount = searchParams.get('amount') || 'N/A';
+  const txnid = response.txnid || 'N/A';
+  const amount = response.amount || 'N/A';
   const status = searchParams.get('status') || 'Success';
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const SuccessPage = () => {
           const userDoc = querySnapshot.docs[0];
           const data = userDoc.data();
           await updateDoc(registrationDoc.ref, {
-            data: true,          
+            pay: true,          
             payment: {
               txnid,
               amount,
