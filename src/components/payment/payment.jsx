@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
+const EASEBUZZ_KEY = import.meta.env.VITE_EASEBUZZ_KEY;
 
 const EasebuzzPayment = () => {
     const [error, setError] = useState(null);
@@ -24,7 +25,7 @@ const EasebuzzPayment = () => {
         setError(null);
 
         try {
-            const txnid = 'TXN' + Date.now();
+            const txnid = 'TXN' + Date.now()+'test';
             const amount = '1.1';
             const firstname = 'saquib';
             const email = 'shadmanshahin6@gmail.com';
@@ -34,7 +35,6 @@ const EasebuzzPayment = () => {
             const furl = 'https://bioverse.saquib.in/payment/failure';
 
             const paymentData = {
-                
                 txnid,
                 amount,
                 firstname,
@@ -88,7 +88,14 @@ const EasebuzzPayment = () => {
 
     const proceedToPayment = (access_key) => {
         if (window.EasebuzzCheckout) {
-            const easebuzzCheckout = new window.EasebuzzCheckout(import.meta.env.VITE_EASEBUZZ_KEY, 'test');
+            if (!EASEBUZZ_KEY) {
+                console.error('Easebuzz key is not set in environment variables');
+                setError('Payment configuration error. Please contact support.');
+                return;
+            }
+            
+            console.log('Initializing EasebuzzCheckout with key:', EASEBUZZ_KEY);
+            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
             const options = {
                 access_key: access_key,
                 onResponse: (response) => {
