@@ -40,10 +40,11 @@ function EmailVerificationPage() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
   
-      const response = await fetch('http://210.18.155.129:3000/send-confirmation-email', {
+      const response = await fetch('https://cors-anywhere.herokuapp.com/http://210.18.155.129:3000/send-confirmation-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify({ email: 'shadmanshahin6@gmail.com' }),
         signal: controller.signal
