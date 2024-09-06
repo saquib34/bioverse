@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
+
 
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
@@ -7,6 +8,9 @@ const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
 const EasebuzzPayment = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
+    const { state } = location;
+    const { response: locationResponse } = state || {};
 
     useEffect(() => {
         const loadScript = () => {
@@ -23,17 +27,21 @@ const EasebuzzPayment = () => {
 
         loadScript();
     }, []);
-
+   
     const initiatePayment = async () => {
+
         try {
-            const txnid = 'TXN' + Date.now();
+ 
+            
+            const txnid = 'TXN' + Date.now()+Math.floor(Math.random() * 1000);
             const paymentData = {
                 txnid,
                 amount: '250',
-                firstname: 'saquib',
-                email: 'shadmanshahin6@gmail.com',
-                phone: '7070927837',
-                productinfo: '1223',
+                firstname: locationResponse?.teamLeadEmail,
+                email: locationResponse?.teamLeadName,
+
+                phone: locationResponse?.teamLeadPhone,
+                productinfo: 'Bioverse Registration',
                 surl: 'https://bioverse.saquib.in/payment/success',
                 furl: 'https://bioverse.saquib.in/payment/failure'
             };

@@ -6,6 +6,8 @@ import { auth } from '../firebase';
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
 import text from "/bio-verse.svg";
+import { db } from '../config/firebase';
+
 
 const SubmissionPage = () => {
     const [userData, setUserData] = useState(null);
@@ -30,6 +32,20 @@ const SubmissionPage = () => {
 
         return () => unsubscribe();
     }, [navigate, db]);
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const email = user.email;
+    const registrationsRef = collection(db, 'registrations');
+    const q = query(registrationsRef, where("teamLeadEmail", "==", email));
+    const querySnapshot =  getDocs(q);
+    const registrationDoc = querySnapshot.docs[0];
+    const userDoc = querySnapshot.docs[0];
+    const data = userDoc.data();
+
+    if(data.pay===false){
+        navigate('/payment');
+    }
+    
 
     const checkSubmissionStatus = async (email) => {
         try {
