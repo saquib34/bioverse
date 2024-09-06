@@ -106,28 +106,30 @@ const FAQ = () => {
       </div>
       <div ref={containerRef} className="absolute top-[1052px] left-[668px] w-[1477.2px] flex flex-row items-center justify-center flex-wrap content-center gap-x-[76px] gap-y-28 text-[25.88px]">
         {faqData.map((faq, index) => (
-          <div key={index} className="w-[682.6px] relative h-[148.9px] transition-all duration-300 ease-in-out">
-            <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] shadow-[0px_2.4120004177093506px_7.24px_rgba(19,_18,_66,_0.07)] rounded-lgi-3 bg-gray-600" />
-            <div 
-              className="absolute h-[34.18%] w-[7.32%] top-[32.93%] right-[5.75%] bottom-[32.89%] left-[86.93%] cursor-pointer"
-              onClick={() => toggleExpand(index)}
-            >
-              <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%]">
-                <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-[9.65px] [background:linear-gradient(180deg,_#f7f7ff,_#b9b9bf_63%,_#949499)]" />
-                {expandedIndex === index ? (
-                  <ChevronUp className="absolute h-[21.61%] w-2/5 top-[37.28%] right-[30.74%] bottom-[41.11%] left-[29.26%] text-gray-800" />
-                ) : (
-                  <ChevronDown className="absolute h-[21.61%] w-2/5 top-[37.28%] right-[30.74%] bottom-[41.11%] left-[29.26%] text-gray-800" />
-                )}
-              </div>
-            </div>
-            <div className="absolute h-[22.83%] w-[75.15%] top-[32.91%] right-[19.13%] bottom-[44.26%] left-[5.71%]">
-              <div className={`absolute h-full w-full top-[0%] left-[0%] leading-[33.77px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_${faq.color === 'pink' ? '#ef86fe,_#ae52e6_67%,_#8a36d8' : '#18f69a,_#0f827b_71%,_#076f69'})] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] inline-block`}>
-                {faq.question}
+          <div key={index} className="w-[682.6px] relative transition-all duration-300 ease-in-out">
+            <div className={`shadow-[0px_2.4120004177093506px_7.24px_rgba(19,_18,_66,_0.07)] bg-gray-600 ${
+              expandedIndex === index ? 'rounded-t-lgi-3' : 'rounded-lgi-3'
+            }`}>
+              <div className="p-4 h-[148.9px] relative">
+                <div className={`absolute top-1/2 left-4 transform -translate-y-1/2 w-[75%] leading-[33.77px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_${faq.color === 'pink' ? '#ef86fe,_#ae52e6_67%,_#8a36d8' : '#18f69a,_#0f827b_71%,_#076f69'})] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]`}>
+                  {faq.question}
+                </div>
+                <div 
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                  onClick={() => toggleExpand(index)}
+                >
+                  <div className="w-12 h-12 rounded-[9.65px] [background:linear-gradient(180deg,_#f7f7ff,_#b9b9bf_63%,_#949499)] flex items-center justify-center">
+                    {expandedIndex === index ? (
+                      <ChevronUp className="text-gray-800" />
+                    ) : (
+                      <ChevronDown className="text-gray-800" />
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
             {expandedIndex === index && (
-              <div className="absolute top-[100%] left-[0%] w-full bg-gray-700 p-4 rounded-b-lgi-3 text-white text-sm">
+              <div className="bg-gray-700 p-4 rounded-b-lgi-3 text-white text-sm">
                 {faq.answer}
               </div>
             )}

@@ -26,16 +26,16 @@ const MobileFooter = () => {
         <div className="flex flex-wrap justify-center gap-8 mb-6 text-sm">
           <div className="flex flex-col items-center">
             <b className="mb-2">Impact</b>
-            <a href="#" className="hover:underline">Home</a>
-            <a href="#" className="hover:underline">About</a>
-            <a href="#" className="hover:underline">FAQ</a>
-            <a href="#" className="hover:underline">Team</a>
-            <a href="/contactus" className="hover:underline">Contact</a>
+            <a href="#" className="text-current no-underline hover:underline  ">Home</a>
+            <a href="#" className="text-current no-underline hover:underline">About</a>
+            <a href="#" className="text-current no-underline hover:underline">FAQ</a>
+            <a href="#" className="text-current no-underline hover:underline">Team</a>
+            <a href="/contactus" className="text-current no-underline hover:underline">Contact</a>
           </div>
           
           <div className="flex flex-col items-center">
             <b className="mb-2">Downloads</b>
-            <a href="#" className="hover:underline">Broucher</a>
+            <a href="#" className="text-current no-underline hover:underline">Broucher</a>
           </div>
         </div>
         
