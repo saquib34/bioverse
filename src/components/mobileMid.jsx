@@ -2,25 +2,26 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const MobileMid = () => {
-
   const navigate = useNavigate();
-    const onButtonContainerClick = () => {
-        // console.log$&
-        navigate('/login');
-        //make bg blur
-    };
+  const onButtonContainerClick = () => {
+    // console.log$&
+    navigate("/login");
+    //make bg blur
+  };
 
-    return (
-        <>
-        <img
-        className="absolute h-[59.37%] w-[46.35%] top-[28.15%] right-[53.65%] bottom-[12.48%] left-[0%] max-w-full overflow-hidden max-h-full"
+  return (
+    <div className="relative w-full h-full">
+      <img
+        className="absolute h-[59.37%] top-[28.15%] left-[-190px] w-full object-fit"
         alt=""
         src="/group-37375.svg"
       />
+
       <img
-        className="absolute h-[60.32%] w-[55.59%] top-[0%] right-[-0.01%] bottom-[39.68%] left-[44.42%] max-w-full overflow-hidden max-h-full"
+        className="absolute h-[60.32%] w-full top-[0%] bottom-[39.68%] left-[44.42%] max-w-full overflow-hidden max-h-full"
         alt=""
-        src="/group-37376.svg" id="home"
+        src="/group-37376.svg"
+        id="home"
       />
       <div className="absolute h-[19.5%] w-[53.09%] top-[21.77%] right-[21.16%] bottom-[58.74%] left-[25.76%] text-left text-[31.07px] font-barlow">
         <img
@@ -42,9 +43,9 @@ const MobileMid = () => {
         </div>
       </div>
       <div className="absolute top-[370px] left-[calc(50%_-_141.95px)] text-[8px] tracking-[-0.03em] leading-[120%] inline-block w-[312.4px]">
-        "Join Us for an Epic Biohacking Journey! Collaborate with Pioneers,
-        Push the Boundaries of Science, and Shape the Future of Biotechnology
-        Through Unprecedented Innovation and Creative Exploration."
+        "Join Us for an Epic Biohacking Journey! Collaborate with Pioneers, Push
+        the Boundaries of Science, and Shape the Future of Biotechnology Through
+        Unprecedented Innovation and Creative Exploration."
       </div>
       <b className="absolute top-[324px] left-[calc(50%_-_61.95px)] text-3xs tracking-[-0.03em] leading-[120%]">
         September 29th and 30th, 2024
@@ -105,8 +106,8 @@ const MobileMid = () => {
           </div>
         </div>
       </div>
-    </>
-    );
+    </div>
+  );
 };
 
 export default MobileMid;
