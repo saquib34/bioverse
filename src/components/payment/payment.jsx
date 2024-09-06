@@ -105,8 +105,10 @@ const EasebuzzPayment = () => {
                 onResponse: (response) => {
                     ;
                     if (response.status === 'success') {
+                        console.log('Payment successful:', response);
                         navigate('/payment/success', { state: { response } });
                     } else {
+                        console.error('Payment failed:', response);
                         navigate('/payment/failure', { state: { response } });
                     }
                 },
