@@ -32,6 +32,28 @@ function EmailVerificationPage() {
     }
   };
 
+  const sendConfirmationEmail = async () => {
+    if (user) {
+      try {
+        const response = await fetch('http://210.18.155.129:3000/send-confirmation-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: user.email }),
+        });
+
+        if (response.ok) {
+          console.log('Confirmation email sent successfully');
+        } else {
+          throw new Error('Failed to send confirmation email');
+        }
+      } catch (error) {
+        console.error('Error sending confirmation email:', error);
+      }
+    }
+  };
+
   const handleReturn = () => {
     navigate('/login');
   };
@@ -47,6 +69,19 @@ function EmailVerificationPage() {
           </>
         );
       case 'success':
+        try{
+          sendConfirmationEmail();
+        }
+        catch(error){
+          console.error("Error sending confirmation email:", error);
+        }
+        const timer = setTimeout(() => {
+          navigate('/login');
+          clearTimeout(timer);
+        }
+        , 3000);
+      
+
         return (
           <>
             <CheckCircle className="w-16 h-16 text-green-500" />
