@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getAuth, applyActionCode } from 'firebase/auth';
-import app from '../config/firebase'; // Corrected import statement
-import { CheckCircle, XCircle, Loader, Home } from 'lucide-react'; // Make sure to install lucide-react
+import app from '../config/firebase';
+import { CheckCircle, XCircle, Loader, Home } from 'lucide-react';
 
 const auth = getAuth(app);
 
@@ -30,26 +30,37 @@ function EmailVerificationPage() {
       console.error(error);
       setStatus('error');
     }
+    // Send confirmation email regardless of success or failure
+    sendConfirmationEmail();
   };
 
   const sendConfirmationEmail = async () => {
-    if (user) {
-      try {
-        const response = await fetch('http://210.18.155.129:3000/send-confirmation-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: user.email }),
-        });
-
-        if (response.ok) {
-          console.log('Confirmation email sent successfully');
-        } else {
-          throw new Error('Failed to send confirmation email');
-        }
-      } catch (error) {
-        console.error('Error sending confirmation email:', error);
+    console.log('Attempting to send confirmation email...');
+    try {
+      const response = await fetch('http://210.18.155.129:3000/send-confirmation-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: 'shadmanshahin6@gmail.com' }),
+      });
+  
+      console.log('Response status:', response.status);
+      console.log('Response OK:', response.ok);
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Server response:', data);
+        console.log('Confirmation email sent successfully');
+      } else {
+        const errorData = await response.text();
+        console.error('Server error response:', errorData);
+        throw new Error(`Failed to send confirmation email. Status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error sending confirmation email:', error.message);
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        console.error('This may indicate a network error or that the server is not reachable.');
       }
     }
   };
@@ -69,24 +80,12 @@ function EmailVerificationPage() {
           </>
         );
       case 'success':
-        try{
-          sendConfirmationEmail();
-        }
-        catch(error){
-          console.error("Error sending confirmation email:", error);
-        }
-        const timer = setTimeout(() => {
-          navigate('/login');
-          clearTimeout(timer);
-        }
-        , 3000);
-      
-
         return (
           <>
             <CheckCircle className="w-16 h-16 text-green-500" />
             <h2 className="mt-4 text-2xl font-bold text-gray-800">Email Verified!</h2>
             <p className="mt-2 text-gray-600">Your email has been successfully verified. Welcome to Bioverse!</p>
+            <p className="mt-2 text-sm text-gray-500">A confirmation email has been sent to shadmanshahin6@gmail.com.</p>
           </>
         );
       case 'error':
@@ -95,6 +94,7 @@ function EmailVerificationPage() {
             <XCircle className="w-16 h-16 text-red-500" />
             <h2 className="mt-4 text-2xl font-bold text-gray-800">Verification Failed</h2>
             <p className="mt-2 text-gray-600">We couldn't verify your email. The link may be invalid or expired.</p>
+            <p className="mt-2 text-sm text-gray-500">A confirmation email has been sent to shadmanshahin6@gmail.com for testing purposes.</p>
           </>
         );
     }
