@@ -95,7 +95,7 @@ const EasebuzzPayment = () => {
             }
             
             console.log('Initializing EasebuzzCheckout with key:', EASEBUZZ_KEY);
-            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
+            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
             const options = {
                 access_key: access_key,
                 onResponse: (response) => {
