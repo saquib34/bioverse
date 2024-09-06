@@ -99,7 +99,7 @@ const EasebuzzPayment = () => {
             }
             
             ;
-            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
+            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
             const options = {
                 access_key: access_key,
                 onResponse: (response) => {
