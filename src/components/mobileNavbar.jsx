@@ -4,14 +4,13 @@ const MobileNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = () => {
-    // console.log$&
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
     <>
       <div className="fixed top-0 left-0 right-0 bg-gray-200 h-[100px] overflow-hidden text-left font-barlow z-50">
-      <div className="absolute h-3/4 w-auto top-[12.86%] right-[66.14%] bottom-[12.14%] left-[4.42%] scale-125 transform origin-left">
+        <div className="absolute h-3/4 w-auto top-[12.86%] right-[66.14%] bottom-[12.14%] left-[4.42%] scale-125 transform origin-left">
           <img
             className="absolute h-[96.95%] w-[38.23%] top-[0%] right-[53.21%] bottom-[3.05%] left-[8.56%] max-w-full overflow-hidden max-h-full object-cover"
             alt=""
@@ -153,9 +152,9 @@ const MobileNavbar = () => {
           onClick={handleClick}
           data-collapse-toggle="navbar-default"
           type="button"
-          className="absolute top-[calc(50%_-_25px)] right-6 w-[50px] h-[50px] inline-flex items-center justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 z-20"
+          className="absolute top-[calc(50%_-_25px)] bg-black right-6 w-[50px] h-[50px] inline-flex items-center justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 z-20"
           aria-controls="navbar-default"
-          aria-expanded={isMenuOpen ? 'true' : 'false'}
+          aria-expanded={isMenuOpen ? "true" : "false"}
         >
           <img
             className="w-full h-full"
@@ -164,16 +163,50 @@ const MobileNavbar = () => {
           />
         </button>
       </div>
-      <div className={`fixed top-[100px] right-0 w-3/4 h-auto bg-black bg-opacity-90 transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div
+        className={`fixed top-[100px] right-0 w-3/4 h-auto bg-black z-10 bg-opacity-95 transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
         <nav className="py-6 h-full flex flex-col justify-center">
-          <ul className="text-right list-none">
-            <li><a href="#home" className="block px-12 py-3 text-white text-lg hover:bg-blue-700 ">Home</a></li>
-            <li><a href="#about" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">About</a></li>
-            <li><a href="#info" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">Info</a></li>
-            <li><a href="#faq" className="block px-12 py-3 text-white text-lg hover:bg-blue-700">FAQ</a></li>
+          <ul className="text-left list-none">
+            <li>
+              <a
+                href="#home"
+                className="block px-12 py-3 text-white text-lg hover:bg-blue-700 "
+              >
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                className="block px-12 py-3 text-white text-lg hover:bg-blue-700"
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="#info"
+                className="block px-12 py-3 text-white text-lg hover:bg-blue-700"
+              >
+                Info
+              </a>
+            </li>
+            <li>
+              <a
+                href="#faq"
+                className="block px-12 py-3 text-white text-lg hover:bg-blue-700"
+              >
+                FAQ
+              </a>
+            </li>
             <li>
               <button className="rounded-3xl bg-white text-blue-800 hover:bg-gray-200 transition-all duration-300 mt-6 w-3/4 mx-auto">
-                <a href="/login" className="block px-12 py-3 text-lg">Register/Login</a>
+                <a href="/login" className="block px-12 py-3 text-lg">
+                  Register/Login
+                </a>
               </button>
             </li>
           </ul>
