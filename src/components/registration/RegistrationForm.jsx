@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, or } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { db } from '../../config/firebase';
 import Step1 from './Step1';
@@ -57,19 +57,19 @@ const RegistrationForm = () => {
     const members = [formData.member1, formData.member2, formData.member3];
     
     for (const member of members) {
-      const regQuery = query(
-        collection(db, "registrations"),
-        where("member1.regNumber", "==", member.regNumber)
-      );
-      const emailQuery = query(
-        collection(db, "registrations"),
-        where("member1.email", "==", member.email)
-      );
+      const regConditions = [
+        where("member1.regNumber", "==", member.regNumber),
+        where("member2.regNumber", "==", member.regNumber),
+        where("member3.regNumber", "==", member.regNumber)
+      ];
+      const emailConditions = [
+        where("member1.email", "==", member.email),
+        where("member2.email", "==", member.email),
+        where("member3.email", "==", member.email)
+      ];
 
-      for (let i = 2; i <= 3; i++) {
-        regQuery.push(where(`member${i}.regNumber`, "==", member.regNumber));
-        emailQuery.push(where(`member${i}.email`, "==", member.email));
-      }
+      const regQuery = query(collection(db, "registrations"), or(...regConditions));
+      const emailQuery = query(collection(db, "registrations"), or(...emailConditions));
 
       try {
         const [regQuerySnapshot, emailQuerySnapshot] = await Promise.all([
