@@ -12,9 +12,11 @@ const SuccessPage = (response) => {
   const searchParams = new URLSearchParams(location.search);
 
   // Extract payment details from URL parameters
+  console.log(response);
   const txnid = response.txnid || 'N/A';
   const amount = response.amount || 'N/A';
   const status = searchParams.get('status') || 'Success';
+
 
   useEffect(() => {
     const auth = getAuth();
