@@ -5,7 +5,6 @@ import app from '../config/firebase';
 import { CheckCircle, XCircle, Loader, Home } from 'lucide-react';
 
 const auth = getAuth(app);
-const email = auth.currentUser.email;
 
 
 function EmailVerificationPage() {
@@ -28,9 +27,14 @@ function EmailVerificationPage() {
     try {
     
       await applyActionCode(auth, actionCode);
-      setStatus('success');
-
+      const email = auth.currentUser.email;
+      if (email) {
+        setStatus('success');      
       await sendConfirmationEmail(email);
+    } else {
+      console.error('User is not authenticated or email is missing');
+      setStatus('error');
+    }
     
     } catch (error) {
       console.error(error);
