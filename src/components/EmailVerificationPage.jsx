@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getAuth, applyActionCode, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, applyActionCode, checkActionCode } from 'firebase/auth';
 import app from '../config/firebase';
 import { CheckCircle, XCircle, Loader, Home } from 'lucide-react';
 
@@ -9,6 +9,7 @@ const auth = getAuth(app);
 function EmailVerificationPage() {
   const [status, setStatus] = useState('verifying');
   const [error, setError] = useState(null);
+  const [email, setEmail] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,22 +27,51 @@ function EmailVerificationPage() {
 
   const verifyEmail = async (actionCode) => {
     try {
-      await applyActionCode(auth, actionCode);
+      console.log('Starting email verification process');
       
-      const user = await new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-          unsubscribe();
-          resolve(user);
-        });
-      });
+      // First, check the action code
+      const checkResult = await checkActionCode(auth, actionCode);
+      
+      console.log('Action code check result:', checkResult);
 
-      if (user && user.email) {
-        console.log('Email:', user.email);
-        setStatus('success');
-        await sendConfirmationEmail(user.email);
-      } else {
-        throw new Error('User email not found after verification');
+      // Extract email based on the operation type
+      let extractedEmail;
+      switch (checkResult.operation) {
+        case 'VERIFY_EMAIL':
+          extractedEmail = checkResult.data.email || auth.currentUser?.email;
+          console.log('VERIFY_EMAIL case - extracted email:', extractedEmail);
+          break;
+        case 'PASSWORD_RESET':
+          extractedEmail = checkResult.data.email;
+          console.log('PASSWORD_RESET case - extracted email:', extractedEmail);
+          break;
+        case 'RECOVER_EMAIL':
+          extractedEmail = checkResult.data.previousEmail;
+          console.log('RECOVER_EMAIL case - extracted email:', extractedEmail);
+          break;
+        case 'VERIFY_AND_CHANGE_EMAIL':
+          extractedEmail = checkResult.data.email;
+          console.log('VERIFY_AND_CHANGE_EMAIL case - extracted email:', extractedEmail);
+          break;
+        default:
+          console.log('Unexpected operation:', checkResult.operation);
+          throw new Error(`Unsupported operation: ${checkResult.operation}`);
       }
+
+      if (!extractedEmail) {
+        console.log('Email extraction failed. Auth current user:', auth.currentUser);
+        throw new Error('Email not found in action code info or current user');
+      }
+
+      setEmail(extractedEmail);
+
+      // Now apply the action code
+      console.log('Applying action code');
+      await applyActionCode(auth, actionCode);
+
+      console.log('Email verified:', extractedEmail);
+      setStatus('success');
+      await sendConfirmationEmail(extractedEmail);
     } catch (error) {
       console.error('Verification error:', error);
       setStatus('error');
@@ -102,6 +132,7 @@ function EmailVerificationPage() {
             <CheckCircle className="w-16 h-16 text-green-500" />
             <h2 className="mt-4 text-2xl font-bold text-gray-800">Email Verified!</h2>
             <p className="mt-2 text-gray-600">Your email has been successfully verified. Welcome to Bioverse!</p>
+            {email && <p className="mt-2 text-sm text-gray-500">Verified email: {email}</p>}
             <p className="mt-2 text-sm text-gray-500">A confirmation email has been sent to your inbox.</p>
           </>
         );
