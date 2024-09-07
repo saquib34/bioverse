@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react';
-import { collection, query, where, getDocs,addDoc } from 'firebase/firestore';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { collection, query, where, getDocs, addDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail } from "firebase/auth";
 import { db } from '../../config/firebase';
 import Step1 from './Step1';
@@ -61,6 +61,10 @@ const RegistrationForm = () => {
       member3.name && member3.regNumber && member3.email && member3.mobile;
   }, [formData]);
 
+  useEffect(() => {
+    setTeamLeadEmail();
+  }, [formData.teamLeadName, setTeamLeadEmail]);
+
   const checkExistingMembers = useCallback(async () => {
     const auth = getAuth();
     const members = [formData.member1, formData.member2, formData.member3];
@@ -121,7 +125,6 @@ const RegistrationForm = () => {
     isSubmittingRef.current = true;
     setSubmissionStatus('submitting');
     setErrorMessage('');
-    setTeamLeadEmail();
 
     if (!validateForm()) {
       setSubmissionStatus('error');
@@ -170,7 +173,7 @@ const RegistrationForm = () => {
     } finally {
       isSubmittingRef.current = false;
     }
-  }, [formData, validateForm, checkExistingMembers, setTeamLeadEmail, nextStep]);
+  }, [formData, validateForm, checkExistingMembers, nextStep]);
 
   const renderStep = useMemo(() => {
     switch (step) {
