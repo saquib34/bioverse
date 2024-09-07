@@ -59,6 +59,10 @@ const FAQ = () => {
       const expandedHeight = 300; // Estimated height when expanded
       const gap = 28; // Vertical gap between items
       const columns = 2; // Number of columns in the grid
+      const totalItems = items.length;
+      const lastRowStartIndex = totalItems - (totalItems % columns || columns);
+
+      let containerYOffset = 0;
 
       Array.from(items).forEach((item, idx) => {
         const itemElement = item;
@@ -73,22 +77,36 @@ const FAQ = () => {
           const expandedRow = Math.floor(expandedIndex / columns);
           let yOffset = 0;
 
-          if (idx === expandedIndex) {
-            // Keep the expanded item in place
-            yOffset = 0;
-            itemElement.style.zIndex = '10';
-          } else if (itemRow === expandedRow && itemColumn !== expandedColumn) {
-            // Move the adjacent item in the same row further away
-            yOffset = expandedHeight - itemHeight + gap;
-          } else if (itemRow > expandedRow) {
-            // Move items below the expanded item down
-            yOffset = (expandedHeight - itemHeight) + gap;
+          if (expandedIndex >= lastRowStartIndex) {
+            // Last row expansion: move all items upwards
+            yOffset = -(expandedHeight - itemHeight) - gap;
+            if (idx >= lastRowStartIndex && idx !== expandedIndex) {
+              // Adjust position for last row items
+              yOffset += (expandedHeight - itemHeight) / 2;
+            }
+          } else {
+            // Normal behavior for non-last row expansions
+            if (itemRow === expandedRow && itemColumn !== expandedColumn) {
+              // Move the adjacent item in the same row further away
+              yOffset = (expandedHeight - itemHeight) / 2;
+            } else if (itemRow > expandedRow) {
+              // Move items below the expanded item down
+              yOffset = (expandedHeight - itemHeight) + gap;
+            }
           }
 
           itemElement.style.transform = `translateY(${yOffset}px)`;
           itemElement.style.zIndex = idx === expandedIndex ? '10' : '1';
+
+          // Update container offset for last row expansion
+          if (expandedIndex >= lastRowStartIndex && idx === expandedIndex) {
+            containerYOffset = -(expandedHeight - itemHeight) - gap;
+          }
         }
       });
+
+      // Apply offset to the container to prevent collision
+      containerRef.current.style.transform = `translateY(${containerYOffset}px)`;
     }
   }, [expandedIndex]);
 
@@ -104,7 +122,10 @@ const FAQ = () => {
           FAQ
         </div>
       </div>
-      <div ref={containerRef} className="absolute top-[1052px] left-[668px] w-[1477.2px] flex flex-row items-center justify-center flex-wrap content-center gap-x-[76px] gap-y-28 text-[25.88px]">
+      <div 
+        ref={containerRef} 
+        className="absolute top-[1052px] left-[668px] w-[1477.2px] flex flex-row items-center justify-center flex-wrap content-center gap-x-[76px] gap-y-28 text-[25.88px] transition-transform duration-300 ease-in-out"
+      >
         {faqData.map((faq, index) => (
           <div key={index} className="w-[682.6px] relative transition-all duration-300 ease-in-out">
             <div className={`shadow-[0px_2.4120004177093506px_7.24px_rgba(19,_18,_66,_0.07)] bg-gray-600 ${
@@ -115,7 +136,7 @@ const FAQ = () => {
                   {faq.question}
                 </div>
                 <div 
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer z-10"
                   onClick={() => toggleExpand(index)}
                 >
                   <div className="w-12 h-12 rounded-[9.65px] [background:linear-gradient(180deg,_#f7f7ff,_#b9b9bf_63%,_#949499)] flex items-center justify-center">
