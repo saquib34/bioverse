@@ -27,49 +27,39 @@ function EmailVerificationPage() {
 
   const verifyEmail = async (actionCode) => {
     try {
-      console.log('Starting email verification process');
       
       // First, check the action code
       const checkResult = await checkActionCode(auth, actionCode);
       
-      console.log('Action code check result:', checkResult);
 
       // Extract email based on the operation type
       let extractedEmail;
       switch (checkResult.operation) {
         case 'VERIFY_EMAIL':
           extractedEmail = checkResult.data.email || auth.currentUser?.email;
-          console.log('VERIFY_EMAIL case - extracted email:', extractedEmail);
           break;
         case 'PASSWORD_RESET':
           extractedEmail = checkResult.data.email;
-          console.log('PASSWORD_RESET case - extracted email:', extractedEmail);
           break;
         case 'RECOVER_EMAIL':
           extractedEmail = checkResult.data.previousEmail;
-          console.log('RECOVER_EMAIL case - extracted email:', extractedEmail);
           break;
         case 'VERIFY_AND_CHANGE_EMAIL':
           extractedEmail = checkResult.data.email;
-          console.log('VERIFY_AND_CHANGE_EMAIL case - extracted email:', extractedEmail);
           break;
         default:
-          console.log('Unexpected operation:', checkResult.operation);
           throw new Error(`Unsupported operation: ${checkResult.operation}`);
       }
 
       if (!extractedEmail) {
-        console.log('Email extraction failed. Auth current user:', auth.currentUser);
         throw new Error('Email not found in action code info or current user');
       }
 
       setEmail(extractedEmail);
 
-      // Now apply the action code
-      console.log('Applying action code');
+   
       await applyActionCode(auth, actionCode);
 
-      console.log('Email verified:', extractedEmail);
       setStatus('success');
       await sendConfirmationEmail(extractedEmail);
     } catch (error) {
@@ -80,7 +70,6 @@ function EmailVerificationPage() {
   };
 
   const sendConfirmationEmail = async (email) => {
-    console.log('Attempting to send confirmation email...');
     try {
       const response = await fetch(import.meta.env.VITE_APP_CONFORMATION_EMAIL, {
         method: 'POST',
@@ -91,15 +80,11 @@ function EmailVerificationPage() {
           name: 'Bioverse',
          }),
       });
-      console.log('Request body:', { email: email });
-
-      console.log('Response status:', response.status);
-      console.log('Response OK:', response.ok);
+ 
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Server response:', data);
-        console.log('Confirmation email sent successfully');
+    
       } else {
         const errorData = await response.text();
         console.error('Server error response:', errorData);
