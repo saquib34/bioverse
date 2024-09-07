@@ -28,13 +28,11 @@ function EmailVerificationPage() {
     
       await applyActionCode(auth, actionCode);
       const email = auth.currentUser.email;
-      if (email) {
+      console.log('Email:', email);
+     
         setStatus('success');      
       await sendConfirmationEmail(email);
-    } else {
-      console.error('User is not authenticated or email is missing');
-      setStatus('error');
-    }
+    
     
     } catch (error) {
       console.error(error);
