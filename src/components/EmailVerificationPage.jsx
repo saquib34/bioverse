@@ -5,6 +5,8 @@ import app from '../config/firebase';
 import { CheckCircle, XCircle, Loader, Home } from 'lucide-react';
 
 const auth = getAuth(app);
+const email = auth.currentUser.email;
+
 
 function EmailVerificationPage() {
   const [status, setStatus] = useState('verifying');
@@ -24,26 +26,32 @@ function EmailVerificationPage() {
 
   const verifyEmail = async (actionCode) => {
     try {
+    
       await applyActionCode(auth, actionCode);
       setStatus('success');
-      sendConfirmationEmail();
+
+      await sendConfirmationEmail(email);
+    
     } catch (error) {
       console.error(error);
+
       setStatus('error');
     }
-    sendConfirmationEmail();
   };
 
-  const sendConfirmationEmail = async () => {
+
+  const sendConfirmationEmail = async (email) => {
     console.log('Attempting to send confirmation email...');
     try {
-      const response = await fetch('http://210.18.155.129:3000/send-confirmation-email', {
+      const response = await fetch(import.meta.env.VITE_APP_CONFORMATION_EMAIL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: 'shadmanshahin6@gmail.com' }),
+        body: JSON.stringify({ email: email
+         }),
       });
+      console.log(Request.body);
 
       console.log('Response status:', response.status);
       console.log('Response OK:', response.ok);
@@ -80,6 +88,7 @@ function EmailVerificationPage() {
           </>
         );
       case 'success':
+     
         return (
           <>
             <CheckCircle className="w-16 h-16 text-green-500" />
@@ -89,6 +98,7 @@ function EmailVerificationPage() {
           </>
         );
       case 'error':
+        
         return (
           <>
             <XCircle className="w-16 h-16 text-red-500" />
