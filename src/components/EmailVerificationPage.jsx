@@ -27,6 +27,8 @@ function EmailVerificationPage() {
     try {
     
       await applyActionCode(auth, actionCode);
+      await auth.currentUser?.reload();
+
       const email = auth.currentUser.email;
       console.log('Email:', email);
      
