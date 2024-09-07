@@ -8,6 +8,7 @@ const auth = getAuth(app);
 
 function EmailVerificationPage() {
   const [status, setStatus] = useState('verifying');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,34 +20,32 @@ function EmailVerificationPage() {
       verifyEmail(actionCode);
     } else {
       setStatus('error');
+      setError('No verification code found in the URL.');
     }
   }, [location]);
 
   const verifyEmail = async (actionCode) => {
     try {
-      const result = await applyActionCode(auth, actionCode);
+      await applyActionCode(auth, actionCode);
       
-      // Wait for the auth state to be updated
-      await new Promise((resolve) => {
+      const user = await new Promise((resolve) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
           unsubscribe();
           resolve(user);
         });
       });
 
-      // Get the email from the verification result
-      const email = result.data.email;
-      console.log('Email:', email);
-
-      if (email) {
+      if (user && user.email) {
+        console.log('Email:', user.email);
         setStatus('success');
-        await sendConfirmationEmail(email);
+        await sendConfirmationEmail(user.email);
       } else {
-        throw new Error('Email not found in verification result');
+        throw new Error('User email not found after verification');
       }
     } catch (error) {
-      console.error(error);
+      console.error('Verification error:', error);
       setStatus('error');
+      setError(error.message || 'An error occurred during email verification');
     }
   };
 
@@ -79,6 +78,7 @@ function EmailVerificationPage() {
       if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
         console.error('This may indicate a network error or that the server is not reachable.');
       }
+      // We're not setting an error state here as the email verification was successful
     }
   };
 
@@ -111,6 +111,7 @@ function EmailVerificationPage() {
             <XCircle className="w-16 h-16 text-red-500" />
             <h2 className="mt-4 text-2xl font-bold text-gray-800">Verification Failed</h2>
             <p className="mt-2 text-gray-600">We couldn't verify your email. The link may be invalid or expired.</p>
+            {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
           </>
         );
     }
