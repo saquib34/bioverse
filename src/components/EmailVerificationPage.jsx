@@ -71,7 +71,7 @@ function EmailVerificationPage() {
 
   const sendConfirmationEmail = async (email) => {
     try {
-      const response = await fetch(import.meta.env.VITE_APP_CONFORMATION_EMAIL, {
+      const response = await fetch('https://api.saquib.in/send-confirmation-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
