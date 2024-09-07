@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getAuth, applyActionCode } from 'firebase/auth';
+import { getAuth, applyActionCode, onAuthStateChanged } from 'firebase/auth';
 import app from '../config/firebase';
 import { CheckCircle, XCircle, Loader, Home } from 'lucide-react';
 
 const auth = getAuth(app);
-
 
 function EmailVerificationPage() {
   const [status, setStatus] = useState('verifying');
@@ -25,24 +24,31 @@ function EmailVerificationPage() {
 
   const verifyEmail = async (actionCode) => {
     try {
-    
-      await applyActionCode(auth, actionCode);
-      await auth.currentUser?.reload();
+      const result = await applyActionCode(auth, actionCode);
+      
+      // Wait for the auth state to be updated
+      await new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          unsubscribe();
+          resolve(user);
+        });
+      });
 
-      const email = auth.currentUser.email;
+      // Get the email from the verification result
+      const email = result.data.email;
       console.log('Email:', email);
-     
-        setStatus('success');      
-      await sendConfirmationEmail(email);
-    
-    
+
+      if (email) {
+        setStatus('success');
+        await sendConfirmationEmail(email);
+      } else {
+        throw new Error('Email not found in verification result');
+      }
     } catch (error) {
       console.error(error);
-
       setStatus('error');
     }
   };
-
 
   const sendConfirmationEmail = async (email) => {
     console.log('Attempting to send confirmation email...');
@@ -52,10 +58,9 @@ function EmailVerificationPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email
-         }),
+        body: JSON.stringify({ email: email }),
       });
-      console.log(Request.body);
+      console.log('Request body:', { email: email });
 
       console.log('Response status:', response.status);
       console.log('Response OK:', response.ok);
@@ -92,7 +97,6 @@ function EmailVerificationPage() {
           </>
         );
       case 'success':
-     
         return (
           <>
             <CheckCircle className="w-16 h-16 text-green-500" />
@@ -102,7 +106,6 @@ function EmailVerificationPage() {
           </>
         );
       case 'error':
-        
         return (
           <>
             <XCircle className="w-16 h-16 text-red-500" />
