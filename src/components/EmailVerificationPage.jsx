@@ -27,10 +27,10 @@ function EmailVerificationPage() {
 
   const verifyEmail = async (actionCode) => {
     try {
-      
+
       // First, check the action code
       const checkResult = await checkActionCode(auth, actionCode);
-      
+
 
       // Extract email based on the operation type
       let extractedEmail;
@@ -57,7 +57,7 @@ function EmailVerificationPage() {
 
       setEmail(extractedEmail);
 
-   
+
       await applyActionCode(auth, actionCode);
 
       setStatus('success');
@@ -76,15 +76,15 @@ function EmailVerificationPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body:{ email: email,
-          name: 'Bioverse',
-         },
+        body: JSON.stringify({ email: email, name: 'Bioverse' }),
+
+
       });
- 
+
 
       if (response.ok) {
         const data = await response.json();
-    
+
       } else {
         const errorData = await response.text();
         console.error('Server error response:', errorData);
