@@ -13,7 +13,7 @@ const Phone = () => {
   }, []);
 
   return (
-    <div className="w-full relative bg-gray-100 h-[5600px] overflow-hidden text-left text-[12.35px] text-white font-poppins">
+    <div className="w-full relative bg-gray-100 h-[4800px] overflow-hidden text-left text-[12.35px] text-white font-poppins">
       <div className="absolute top-[-25px] left-[calc(50%_-_313px)] w-[597.9px] h-[721.2px] text-center">
         <MobileNavbar />
         <MobileMid />
