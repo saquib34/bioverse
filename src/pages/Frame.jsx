@@ -8,13 +8,19 @@ import Sponsors from "../components/sponsors";
 import InfoCard from "../components/infocard";
 import FAQ from "../components/faq";
 import Phone from "../components/Phone";
-
+import Tablet from "../components/Tablet";
 const Frame = () => {
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [deviceType, setDeviceType] = useState('desktop');
 
   useEffect(() => {
     const checkDeviceSize = () => {
-      setIsDesktop(window.innerWidth >= 1500); // Consider devices with width >= 1024px as desktop
+      if (window.innerWidth >= 1516) {
+        setDeviceType('desktop');
+      } else if (window.innerWidth >= 850) {
+        setDeviceType('tablet');
+      } else {
+        setDeviceType('mobile');
+      }
     };
 
     checkDeviceSize();
@@ -27,8 +33,11 @@ const Frame = () => {
     // Please sync "Login page" to the project
   }, []);
 
-  if (!isDesktop) {
+  if (deviceType === 'mobile') {
     return <Phone />;
+  }
+  else if(deviceType === 'tablet'){
+    return <Tablet />;
   }
 
   return (

@@ -70,7 +70,7 @@ const Home = () => {
           </div>
           <div className="absolute top-[90px] left-[calc(50%_+_100.14px)] [backdrop-filter:blur(38.06px)] rounded-[32.63px] bg-gray-200 w-[580.3px] h-[174.5px] overflow-hidden flex flex-col items-center justify-center py-[21.8px] px-[50.5px] box-border">
             <div className="relative leading-[87px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#1fcff1,_#20abe1_61%,_#234db6)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-              Asia’s First
+              Asia’s First*
             </div>
             <div className="relative text-[28.55px] tracking-[0.05em] leading-[43.5px] font-outfit">
               Bio Hackathon
