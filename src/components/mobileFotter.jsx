@@ -9,7 +9,7 @@ const MobileFooter = () => {
   };
 
   return (
-    <div className="absolute top-[4500px] bg-gray-400 w-full py-8 px-4 overflow-hidden text-white">
+    <div className="absolute top-[4600px] bg-gray-400 w-full py-8 px-4 overflow-hidden text-white">
       <img
         className="absolute h-full w-full top-0 left-0 object-cover opacity-20"
         alt=""
