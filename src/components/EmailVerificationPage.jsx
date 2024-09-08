@@ -76,7 +76,7 @@ function EmailVerificationPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email, name: 'Bioverse' }),
+        body: JSON.stringify({ email: email, name: 'Participant' }),
 
 
       });
