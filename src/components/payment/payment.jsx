@@ -44,8 +44,8 @@ const EasebuzzPayment = () => {
 
                 phone: phone,
                 productinfo: 'Bioverse Registration',
-                surl: 'https://bioverse.saquib.in/payment/success',
-                furl: 'https://bioverse.saquib.in/payment/failure'
+                surl: 'https://bioverse.asia/payment/success',
+                furl: 'https://bioverse.asia/payment/failure'
             };
 
             const response = await fetch(API_URL, {
@@ -94,6 +94,11 @@ const EasebuzzPayment = () => {
                 access_key: access_key,
                 onResponse: (response) => {
                     if (response.status === 'success') {
+                        console.log('Payment successful:', response);
+                        // if(response.amount === '100')
+                        // {
+                        //     return;
+                        // }
                         navigate('/payment/success', { state: { response } });
                     } else {
                         console.error('Payment failed:', response);
