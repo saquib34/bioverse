@@ -305,7 +305,7 @@ const PaperPresentationRegistration = () => {
                             await setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
                             
                             // Use the new function here
-                            const emailSent = await sendConfirmationEmailWithRetry(formData.firstAuthorEmail, formData.firstAuthorName, response.txnid);
+                            const emailSent = await sendConfirmationEmailWithRetry(formData.firstAuthorEmail, formData.firstAuthorName, response.txnid,'https://api.saquib.in/send-confirmation-email/send-paper-presentation-email');
                             if (emailSent) {
                                 console.log('Confirmation email sent successfully');
                             } else {

@@ -2,7 +2,6 @@ import { db } from '../firebase'; // Ensure this import is correct
 import { collection, addDoc, deleteDoc, query, where, getDocs } from 'firebase/firestore';
 
 const sendConfirmationEmailWithRetry = async (email, name, transactionId,endpoint) => {
-    const endpoint = endpoint;
     const requestData = { email, name, transactionId, endpoint };
 
     const sendEmail = async (data) => {
