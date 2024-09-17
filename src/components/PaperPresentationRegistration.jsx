@@ -26,6 +26,8 @@ const PaperPresentationRegistration = () => {
     aadharImage: null,
     researchPaper: null,
   });
+  const [error, setError] = useState(null);
+
   const [isRetrieving, setIsRetrieving] = useState(false);
   const [errors, setErrors] = useState({});
   const [isPaid, setIsPaid] = useState(false);
