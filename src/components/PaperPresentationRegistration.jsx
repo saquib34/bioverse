@@ -190,7 +190,7 @@ const PaperPresentationRegistration = () => {
     }
   };
 
-  const handlePayment = async () => {
+  const initiatePayment = async () => {
     console.log("Payment initiated");
    
     try {
@@ -581,7 +581,7 @@ const PaperPresentationRegistration = () => {
             <p className="text-lg mb-6 text-gray-600">Thank you for registering for the Paper Presentation.</p>
             {!isPaid && (
               <button
-                onClick={handlePayment}
+                onClick={initiatePayment}
                 className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-base font-semibold"
               >
                 Proceed to Payment
