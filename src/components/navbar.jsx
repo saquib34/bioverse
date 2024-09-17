@@ -187,11 +187,11 @@ const Navbar = () => {
               FAQ
             </a>
           </div>
-          <img
+          {/* <img
             className="absolute h-[23.33%] w-[11.73%] top-[40%] right-[-0.03%] bottom-[36.67%] left-[88.3%] max-w-full overflow-hidden max-h-full"
             alt=""
             src="/vector26.svg"
-          />
+          /> */}
         </div>
         <div className="absolute top-[0px] left-[403px] w-[124.3px] h-[30px] z-10">
           <div className="absolute top-[0px] left-[0px]">

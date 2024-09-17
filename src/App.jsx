@@ -19,6 +19,9 @@ import EmailVerificationPage from "./components/EmailVerificationPage";
 import EasebuzzPayment from "./components/payment/payment";
 import SuccessPage from "./components/payment/SuccessPage";
 import FailurePage from "./components/payment/FailurePage";
+import EventSelection from "./components/EventSelection";
+import PaperPresentationRegistration from "./components/PaperPresentationRegistration";
+import BioverseLaunch from "./components/BioverseLaunch";
 
 function App() {
   const action = useNavigationType();
@@ -62,6 +65,9 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registration" element={<RegistrationForm />} />
+      <Route path="/event-selection" element={<EventSelection />} />
+      <Route path="/paper-presentation-registration" element={<PaperPresentationRegistration />} />
+      <Route path="/bioverse-launch" element={<BioverseLaunch />} />
       <Route path="/additional-details" element={
         <ProtectedRoute>
           <AdditionalDetails />

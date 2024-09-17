@@ -33,15 +33,16 @@ const faqData = [
     color: "green"
   },
   {
-    question: "Who can participate in the Hackathon?",
-    answer: "Our hackathon is open to students, professionals, and anyone passionate about technology and innovation. We welcome participants from all backgrounds, including developers, designers, and creative thinkers. Whether you're a coding whiz or have great ideas, there's a place for you!",
-    color: "green"
+    "question": "What events are there?",
+    "answer": "Our event features a variety of exciting activities, including a Paper Presentation where participants can showcase their research and innovative ideas, a Panel Discussion with industry experts to explore the latest trends and insights, and a Hackathon open to all tech enthusiasts. Whether you love presenting, discussing, or building, there's something for everyone!",
+    "color": "green"
   },
   {
-    question: "What should I bring to the Hackathon?",
-    answer: "Bring your laptop, charger, any hardware you plan to use, and your enthusiasm! Don't forget your student ID if you're a student. It's also a good idea to bring any specific software or tools you might need for your project, as well as personal items like a water bottle and snacks.",
-    color: "pink"
+    "question": "Registration Fees",
+    "answer": "The registration fees for our events are as follows:- Hackathon: ₹250             -                                            Paper Presentation: ₹150 Please make sure to register in advance to secure your spot!",
+    "color": "pink"
   }
+  
 ];
 
 const FAQ = () => {
