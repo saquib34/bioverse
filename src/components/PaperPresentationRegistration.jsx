@@ -35,6 +35,7 @@ const PaperPresentationRegistration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitProgress, setSubmitProgress] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
+    const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
