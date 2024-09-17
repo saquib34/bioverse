@@ -194,80 +194,76 @@ const PaperPresentationRegistration = () => {
     console.log("Payment initiated");
    
     try {
-        const txid= 'TXNpaper'+Date.now()+Math.floor(Math.random()*1000);
-        const paymentData = {
-            txid,
-            amount: '100',
-            firstname: formData.firstAuthorName,
-            email: formData.firstAuthorEmail,
-            phone: formData.firstAuthorMobile,
-            productinfo: 'Paper Presentation Registration',
-            surl: 'https://bioverse.asia/payment/success',
-            furl: 'https://bioverse.asia/payment/failure'
-        };
-        const response =await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(paymentData),
-        });
-        const responseText = await response.text();
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}, message: ${responseText}`);
-        }
-        let result;
-        try {
-            result = JSON.parse(responseText);
-        } catch (e) {
-            console.error('Failed to parse response as JSON:', responseText);
-            throw new Error('Invalid response from server');
-        }
-        if (result.status === 1) {
-            console.log('Payment initiated:', result.data);
-            proceedToPayment(result.data);           
-    
-        } else {
-            setError(`Payment initiation failed: ${result.data}`);
-        }
+      const txid = 'TXNpaper' + Date.now() + Math.floor(Math.random() * 1000);
+      const paymentData = {
+        txid,
+        amount: '100',
+        firstname: formData.firstAuthorName,
+        email: formData.firstAuthorEmail,
+        phone: formData.firstAuthorMobile,
+        productinfo: 'Paper Presentation Registration',
+        surl: 'https://bioverse.asia/payment/success',
+        furl: 'https://bioverse.asia/payment/failure'
+      };
+      
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if (result.status === 1) {
+        console.log('Payment initiated:', result.data);
+        proceedToPayment(result.data);
+      } else {
+        setError(`Payment initiation failed: ${result.data}`);
+      }
     } catch (error) {
-    console.error("Payment error:", error);
-    setErrors({ payment: "Payment failed. Please try again." });
       console.error("Payment error:", error);
       setErrors({ payment: "Payment failed. Please try again." });
     }
   };
 
+
   const proceedToPayment = (access_key) => {
     if (window.EasebuzzCheckout) {
-        if (!EASEBUZZ_KEY) {
-            console.error('Easebuzz key is not set in environment variables');
-            setError('Payment configuration error. Please contact support.');
-            return;
-        }
-        
-        const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
-        const options = {
-            access_key: access_key,
-            onResponse: (response) =>  {
-                if (response.status === 'success') {
-                    console.log('Payment successful:', response);
-                     setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
-                    setIsPaid(true);
-                    setStep(5);
-                } else {
-                    console.error('Payment failed:', response);
-                    navigate('/payment/failure', { state: { response } });
-                }
-            },
-            theme: "#123456"
-        };
-        easebuzzCheckout.handlePayment(options);
+      if (!EASEBUZZ_KEY) {
+        console.error('Easebuzz key is not set in environment variables');
+        setError('Payment configuration error. Please contact support.');
+        return;
+      }
+      
+      const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
+      const options = {
+        access_key: access_key,
+        onResponse: (response) => {
+          console.log('Payment response:', response);
+          if (response.status === 'success') {
+            console.log('Payment successful:', response);
+            setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
+            setIsPaid(true);
+            setStep(5);
+          } else {
+            console.error('Payment failed:', response);
+            navigate('/payment/failure', { state: { response } });
+          }
+        },
+        theme: "#123456"
+      };
+      easebuzzCheckout.initiatePayment(options);
     } else {
-        console.error('Easebuzz SDK not loaded');
-        setError('Payment gateway not available. Please try again later.');
+      console.error('Easebuzz SDK not loaded');
+      setError('Payment gateway not available. Please try again later.');
     }
-};
+  };
 
   const steps = [
     { title: "Retrieve", icon: FiSearch },
