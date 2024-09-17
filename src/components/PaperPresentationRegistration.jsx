@@ -191,17 +191,8 @@ const PaperPresentationRegistration = () => {
   };
 
   const handlePayment = async () => {
-    // console.log("Redirecting to payment gateway...");
-    // navigate('/payment', {
-    //   state: {
-    //     email: formData.firstAuthorEmail,
-    //     firstname: formData.firstAuthorName,
-    //     phone: formData.firstAuthorMobile,
-    //     amount: '100', // Change this to the actual registration fee
-    //   }
-    // });
-
-    
+    console.log("Payment initiated");
+   
     try {
         const txid= 'TXNpaper'+Date.now()+Math.floor(Math.random()*1000);
         const paymentData = {
@@ -247,7 +238,7 @@ const PaperPresentationRegistration = () => {
     }
   };
 
-  const proceedToPayment =     (access_key) => {
+  const proceedToPayment = (access_key) => {
     if (window.EasebuzzCheckout) {
         if (!EASEBUZZ_KEY) {
             console.error('Easebuzz key is not set in environment variables');
