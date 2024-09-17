@@ -238,7 +238,7 @@ const PaperPresentationRegistration = () => {
         }
 
         if (result.status === 1) {
-           return  proceedToPayment(result.data);
+            proceedToPayment(result.data);
         } else {
             setError(`Payment initiation failed: ${result.data}`);
         }
@@ -262,7 +262,6 @@ const proceedToPayment = (access_key) => {
             onResponse: (response) => {
                 if (response.status === 'success') {
                     console.log('Payment successful:', response);
-                    return true;
   
                 } else {
                     console.error('Payment failed:', response);
@@ -291,16 +290,11 @@ const proceedToPayment = (access_key) => {
 
     
     try {
-        if (initiatePayment()) {
-            console.log('Payment initiated');
-            setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
-            setIsPaid(true);
-            setStep(5); 
-        } else {
-            console.error('Payment initiation failed');
-        }
-
-// Move to success step
+        initiatePayment();
+        
+      await setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
+      setIsPaid(true);
+      setStep(5); // Move to success step
     } catch (error) {
       console.error("Payment error:", error);
       setErrors({ payment: "Payment failed. Please try again." });
