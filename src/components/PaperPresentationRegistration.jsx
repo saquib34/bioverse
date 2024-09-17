@@ -13,16 +13,6 @@ const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
 
 
-useEffect(() => {
-    const retryPendingEmails = async () => {
-        const pendingRequests = JSON.parse(localStorage.getItem('pendingEmailRequests')) || [];
-        for (const request of pendingRequests) {
-            await sendConfirmationEmailWithRetry(request.email, request.name, request.transactionId);
-        }
-    };
-
-    retryPendingEmails();
-}, []);
 
 const PaperPresentationRegistration = () => {
     const [step, setStep] = useState(0);
@@ -49,7 +39,17 @@ const PaperPresentationRegistration = () => {
 
     const navigate = useNavigate();
 
-
+    useEffect(() => {
+        const retryPendingEmails = async () => {
+            const pendingRequests = JSON.parse(localStorage.getItem('pendingEmailRequests')) || [];
+            for (const request of pendingRequests) {
+                await sendConfirmationEmailWithRetry(request.email, request.name, request.transactionId);
+            }
+        };
+    
+        retryPendingEmails();
+    }, []);
+    
     useEffect(() => {
         const loadScript = () => {
             const script = document.createElement('script');
@@ -303,9 +303,10 @@ const PaperPresentationRegistration = () => {
                     if (response.status === 'success') {
                         try {
                             await setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
+                            const endpoint = 'https://api.saquib.in/send-paper-presentation-email';
                             
                             // Use the new function here
-                            const emailSent = await sendConfirmationEmailWithRetry(formData.firstAuthorEmail, formData.firstAuthorName, response.txnid,'https://api.saquib.in/send-confirmation-email/send-paper-presentation-email');
+                            const emailSent = await sendConfirmationEmailWithRetry(formData.firstAuthorEmail, formData.firstAuthorName, response.txnid,endpoint);
                             if (emailSent) {
                                 console.log('Confirmation email sent successfully');
                             } else {
