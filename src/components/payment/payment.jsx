@@ -10,7 +10,7 @@ const EasebuzzPayment = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { state } = location;
-    const { email,firstname,phone } = state || {};
+    const { email,firstname,phone,amount } = state || {};
  
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const EasebuzzPayment = () => {
             const txnid = 'TXN' + Date.now()+Math.floor(Math.random() * 1000);
             const paymentData = {
                 txnid,
-                amount: '250',
+                amount: amount,
                 firstname: firstname,
                 email: email,
 
