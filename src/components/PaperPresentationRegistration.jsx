@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiUser, FiMail, FiFileText, FiUpload, FiCheck, FiSearch, FiEdit, FiFlag, FiUsers, FiBook, FiPhone } from 'react-icons/fi';
 import { doc, setDoc, getDoc, query, where, getDocs, collection } from 'firebase/firestore';
@@ -10,10 +10,11 @@ import 'react-circular-progressbar/dist/styles.css';
 import LoginNavbar from './loginNavbar';
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
-console.log('me'+API_URL);
+
+
+
 
 const PaperPresentationRegistration = () => {
-    
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     registrationType: 'fresh',
@@ -28,8 +29,6 @@ const PaperPresentationRegistration = () => {
     aadharImage: null,
     researchPaper: null,
   });
-  const [error, setError] = useState(null);
-
   const [isRetrieving, setIsRetrieving] = useState(false);
   const [errors, setErrors] = useState({});
   const [isPaid, setIsPaid] = useState(false);
@@ -38,7 +37,8 @@ const PaperPresentationRegistration = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const navigate = useNavigate();
-  
+
+
   useEffect(() => {
     const loadScript = () => {
         const script = document.createElement('script');
@@ -192,76 +192,115 @@ const PaperPresentationRegistration = () => {
     }
   };
 
+
+  
   const initiatePayment = async () => {
-    console.log("Payment initiated");
-   
+
+
     try {
-      const txid = 'TXNpaper' + Date.now() + Math.floor(Math.random() * 1000);
-      const paymentData = {
-        txid,
-        amount: '100',
-        firstname: formData.firstAuthorName,
-        email: formData.firstAuthorEmail,
-        phone: formData.firstAuthorMobile,
-        productinfo: 'Paper Presentation Registration',
-        surl: 'https://bioverse.asia/payment/success',
-        furl: 'https://bioverse.asia/payment/failure'
-      };
-      
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(paymentData),
-      });
-      
-      const responseText = await response.text();
-      console.log('API response:', responseText);
-  
-      let result;
-      try {
-        result = JSON.parse(responseText);
-      } catch (e) {
-        console.error('Failed to parse response as JSON:', responseText);
-        throw new Error('Invalid response from server');
-      }
-  
-      if (result.status === 1) {
-        console.log('Payment initiated:', result.data);
-        proceedToPayment(result.data);
-      } else {
-        throw new Error(`Payment initiation failed: ${JSON.stringify(result)}`);
-      }
+
+        
+        const txnid = 'TXN' + Date.now()+Math.floor(Math.random() * 1000);
+        const paymentData = {
+            txnid,
+            amount: '100',
+            firstname: formData.firstAuthorName,
+            email: formData.firstAuthorEmail,
+
+            phone: formData.firstAuthorMobile,
+            productinfo: 'Bioverse Registration',
+            surl: 'https://bioverse.asia/payment/success',
+            furl: 'https://bioverse.asia/payment/failure'
+        };
+
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(paymentData),
+        });
+
+        const responseText = await response.text();
+        console.log(responseText);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}, message: ${responseText}`);
+        }
+
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (e) {
+            console.error('Failed to parse response as JSON:', responseText);
+            throw new Error('Invalid response from server');
+        }
+
+        if (result.status === 1) {
+            proceedToPayment(result.data);
+        } else {
+            setError(`Payment initiation failed: ${result.data}`);
+        }
+    } catch (error) {
+        console.error('Error initiating payment:', error);
+        setError(`Error initiating payment: ${error.message}`);
+    }
+};
+
+const proceedToPayment = (access_key) => {
+    if (window.EasebuzzCheckout) {
+        if (!EASEBUZZ_KEY) {
+            console.error('Easebuzz key is not set in environment variables');
+            setError('Payment configuration error. Please contact support.');
+            return;
+        }
+        
+        const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
+        const options = {
+            access_key: access_key,
+            onResponse: (response) => {
+                if (response.status === 'success') {
+                    console.log('Payment successful:', response);
+                    // if(response.amount === '100')
+                    // {
+                    //     return;
+                    // }
+                    navigate('/payment/success', { state: { response } });
+                } else {
+                    console.error('Payment failed:', response);
+                    navigate('/payment/failure', { state: { response } });
+                }
+            },
+            theme: "#123456"
+        };
+        easebuzzCheckout.initiatePayment(options);
+    } else {
+        console.error('Easebuzz SDK not loaded');
+        setError('Payment gateway not available. Please try again later.');
+    }
+};
+
+  const handlePayment = async () => {
+    // console.log("Redirecting to payment gateway...");
+    // navigate('/payment', {
+    //   state: {
+    //     email: formData.firstAuthorEmail,
+    //     firstname: formData.firstAuthorName,
+    //     phone: formData.firstAuthorMobile,
+    //     amount: '100', // Change this to the actual registration fee
+    //   }
+    // });
+
+    
+    try {
+        initiatePayment();
+        
+      await setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
+      setIsPaid(true);
+      setStep(5); // Move to success step
     } catch (error) {
       console.error("Payment error:", error);
-      setErrors({ payment: `Payment failed: ${error.message}` });
-    }
-  };
-
-  const proceedToPayment = (access_key) => {
-    if (window.EasebuzzCheckout) {
-      const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
-      const options = {
-        access_key: access_key,
-        onResponse: (response) => {
-          console.log('Easebuzz response:', response);
-          if (response.status === 'success') {
-            console.log('Payment successful:', response);
-            setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
-            setIsPaid(true);
-            setStep(5);
-          } else {
-            console.error('Payment failed:', response);
-            setErrors({ payment: `Payment failed: ${response.error.message}` });
-          }
-        },
-        theme: "#123456"
-      };
-      easebuzzCheckout.initiatePayment(options);
-    } else {
-      console.error('Easebuzz SDK not loaded');
-      setErrors({ payment: 'Payment gateway not available. Please try again later.' });
+      setErrors({ payment: "Payment failed. Please try again." });
     }
   };
 
@@ -581,7 +620,7 @@ const PaperPresentationRegistration = () => {
             <p className="text-lg mb-6 text-gray-600">Thank you for registering for the Paper Presentation.</p>
             {!isPaid && (
               <button
-                onClick={initiatePayment}
+                onClick={handlePayment}
                 className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-base font-semibold"
               >
                 Proceed to Payment
