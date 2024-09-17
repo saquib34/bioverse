@@ -233,6 +233,7 @@ const PaperPresentationRegistration = () => {
             throw new Error('Invalid response from server');
         }
         if (result.status === 1) {
+            console.log('Payment initiated:', result.data);
             proceedToPayment(result.data);           
     
         } else {
