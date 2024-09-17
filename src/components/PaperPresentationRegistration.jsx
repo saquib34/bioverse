@@ -10,6 +10,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import LoginNavbar from './loginNavbar';
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
+console.log('me'+API_URL);
 
 const PaperPresentationRegistration = () => {
     
@@ -215,38 +216,36 @@ const PaperPresentationRegistration = () => {
         body: JSON.stringify(paymentData),
       });
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const responseText = await response.text();
+      console.log('API response:', responseText);
+  
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (e) {
+        console.error('Failed to parse response as JSON:', responseText);
+        throw new Error('Invalid response from server');
       }
-      
-      const result = await response.json();
-      
+  
       if (result.status === 1) {
         console.log('Payment initiated:', result.data);
         proceedToPayment(result.data);
       } else {
-        setError(`Payment initiation failed: ${result.data}`);
+        throw new Error(`Payment initiation failed: ${JSON.stringify(result)}`);
       }
     } catch (error) {
       console.error("Payment error:", error);
-      setErrors({ payment: "Payment failed. Please try again." });
+      setErrors({ payment: `Payment failed: ${error.message}` });
     }
   };
 
-
   const proceedToPayment = (access_key) => {
     if (window.EasebuzzCheckout) {
-      if (!EASEBUZZ_KEY) {
-        console.error('Easebuzz key is not set in environment variables');
-        setError('Payment configuration error. Please contact support.');
-        return;
-      }
-      
-      const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
+      const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
       const options = {
         access_key: access_key,
         onResponse: (response) => {
-          console.log('Payment response:', response);
+          console.log('Easebuzz response:', response);
           if (response.status === 'success') {
             console.log('Payment successful:', response);
             setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
@@ -254,7 +253,7 @@ const PaperPresentationRegistration = () => {
             setStep(5);
           } else {
             console.error('Payment failed:', response);
-            navigate('/payment/failure', { state: { response } });
+            setErrors({ payment: `Payment failed: ${response.error.message}` });
           }
         },
         theme: "#123456"
@@ -262,7 +261,7 @@ const PaperPresentationRegistration = () => {
       easebuzzCheckout.initiatePayment(options);
     } else {
       console.error('Easebuzz SDK not loaded');
-      setError('Payment gateway not available. Please try again later.');
+      setErrors({ payment: 'Payment gateway not available. Please try again later.' });
     }
   };
 
