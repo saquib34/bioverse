@@ -8,11 +8,21 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import LoginNavbar from './loginNavbar';
+import sendConfirmationEmailWithRetry from './sendConfirmationEmailWithRetry';
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
 
 
+useEffect(() => {
+    const retryPendingEmails = async () => {
+        const pendingRequests = JSON.parse(localStorage.getItem('pendingEmailRequests')) || [];
+        for (const request of pendingRequests) {
+            await sendConfirmationEmailWithRetry(request.email, request.name, request.transactionId);
+        }
+    };
 
+    retryPendingEmails();
+}, []);
 
 const PaperPresentationRegistration = () => {
     const [step, setStep] = useState(0);
@@ -248,6 +258,36 @@ const PaperPresentationRegistration = () => {
         }
     };
 
+    // const sendConfirmationEmail = async (email, name, transactionId) => {
+    //     try {
+    //         const response = await fetch('https://api.saquib.in/send-paper-presentation-email', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ email: email, name: name, transactionId: transactionId }),
+
+
+    //         });
+
+
+    //         if (response.ok) {
+    //             const data = await response.json();
+
+    //         } else {
+    //             const errorData = await response.text();
+    //             console.error('Server error response:', errorData);
+    //             throw new Error(`Failed to send confirmation email. Status: ${response.status}`);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error sending confirmation email:', error.message);
+    //         if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+    //             console.error('This may indicate a network error or that the server is not reachable.');
+    //         }
+    //         // We're not setting an error state here as the email verification was successful
+    //     }
+    // };
+
     const proceedToPayment = (access_key) => {
         if (window.EasebuzzCheckout) {
             if (!EASEBUZZ_KEY) {
@@ -255,16 +295,29 @@ const PaperPresentationRegistration = () => {
                 setError('Payment configuration error. Please contact support.');
                 return;
             }
-
+    
             const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
             const options = {
                 access_key: access_key,
                 onResponse: async (response) => {
                     if (response.status === 'success') {
-                        await setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
-                        setIsPaid(true);
-                        setStep(5); // Move to success step
-
+                        try {
+                            await setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
+                            
+                            // Use the new function here
+                            const emailSent = await sendConfirmationEmailWithRetry(formData.firstAuthorEmail, formData.firstAuthorName, response.txnid);
+                            if (emailSent) {
+                                console.log('Confirmation email sent successfully');
+                            } else {
+                                console.log('Confirmation email will be retried later');
+                            }
+    
+                            setIsPaid(true);
+                            setStep(5); // Move to success step
+                        } catch (error) {
+                            console.error('Error updating payment status or sending email:', error);
+                            setError('Payment successful, but there was an issue updating your information. Please contact support.');
+                        }
                     } else {
                         console.error('Payment failed:', response);
                         navigate('/payment/failure', { state: { response } });
