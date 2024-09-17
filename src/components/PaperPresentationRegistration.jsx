@@ -262,11 +262,7 @@ const proceedToPayment = (access_key) => {
             onResponse: (response) => {
                 if (response.status === 'success') {
                     console.log('Payment successful:', response);
-                    // if(response.amount === '100')
-                    // {
-                    //     return;
-                    // }
-                    navigate('/payment/success', { state: { response } });
+  
                 } else {
                     console.error('Payment failed:', response);
                     navigate('/payment/failure', { state: { response } });
@@ -296,7 +292,7 @@ const proceedToPayment = (access_key) => {
     try {
         initiatePayment();
         
-      await setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
+       setDoc(doc(db, 'paperPresentations', formData.firstAuthorEmail), { isPaid: true }, { merge: true });
       setIsPaid(true);
       setStep(5); // Move to success step
     } catch (error) {
