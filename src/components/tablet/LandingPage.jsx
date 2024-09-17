@@ -32,7 +32,7 @@ const LandingPage = () => {
       <main className="relative z-20 container mx-auto px-4 flex flex-col items-center justify-center min-h-screen">
         <div className="max-w-4xl mx-auto text-center text-white mb-16">
           <img src="/group-37337.svg" alt="BIOVERSE" className="mx-auto mb-16 w-[600px]" />
-          <p className="mb-8 tracking-[-0.03em] leading-[120%] text-17xl">October 4th and 5th, 2024</p>
+          <p className="mb-8 tracking-[-0.03em] leading-[120%] text-17xl">October 17th and 18th, 2024</p>
           <p className="text-14xl tracking-[-0.03em] leading-[120%] inline-block  mb-16 max-w-3xl mx-auto">
             "Join Us for an Epic Biohacking Journey! Collaborate with Pioneers, Push the Boundaries of Science, and Shape the Future of Biotechnology Through Unprecedented Innovation and Creative Exploration."
           </p>
@@ -55,7 +55,7 @@ const LandingPage = () => {
             </div>
             <div className="self-stretch  w-[430px]  [backdrop-filter:blur(38.06px)] rounded-[32.63px] bg-gray-200 overflow-hidden shrink-0 flex flex-col items-center justify-center  box-border">
               <div className="relative text-[30.1px] leading-[87px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#1fcff1,_#20abe1_61%,_#234db6)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-                4th and 5th
+                17th and 18th
               </div>
               <div className="relative text-[28.55px] tracking-[0.05em] leading-[43.5px] font-outfit">
                 October, 2024

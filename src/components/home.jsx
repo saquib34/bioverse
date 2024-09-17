@@ -19,7 +19,7 @@ const Home = () => {
             Exploration."
           </div>
           <b className="absolute top-[964.99px] left-[calc(50%_-_677.16px)] text-17xl tracking-[-0.03em] leading-[120%] inline-block w-[1354.3px]">
-            October 4th and 5th, 2024
+            October 17th and 18th, 2024
           </b>
           <div className="absolute top-[1157.99px] left-[calc(50%_-_160.88px)] rounded-18xl [background:linear-gradient(87.44deg,_#8b4c5e,_#863a7b_3%,_#802a91_13.5%,_#7d219e_13.51%,_#7125c5_49.5%,_#1b298f_73.5%,_#361064)] w-[322.8px] flex flex-col items-center justify-center py-[18px] px-[26px] box-border text-right text-5xl">
             <div className="w-[157px] relative h-9">
@@ -43,7 +43,7 @@ const Home = () => {
             </div>
             <div className="self-stretch w-[530px] [backdrop-filter:blur(38.06px)] rounded-[32.63px] bg-gray-200 overflow-hidden shrink-0 flex flex-col items-center justify-center py-[21.8px] px-[43.5px] box-border">
               <div className="relative leading-[87px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#1fcff1,_#20abe1_61%,_#234db6)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-                4th and 5th
+                17th and 18th
               </div>
               <div className="relative text-[28.55px] tracking-[0.05em] leading-[43.5px] font-outfit">
                 October, 2024
