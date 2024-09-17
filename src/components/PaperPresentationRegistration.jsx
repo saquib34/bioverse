@@ -12,6 +12,7 @@ const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
 
 const PaperPresentationRegistration = () => {
+    
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     registrationType: 'fresh',
