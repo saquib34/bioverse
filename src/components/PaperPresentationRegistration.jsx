@@ -42,7 +42,7 @@ const PaperPresentationRegistration = () => {
         const script = document.createElement('script');
         script.src = "https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/v2.0.0/easebuzz-checkout-v2.min.js";
         script.async = true;
-        script.onload = handlePayment;
+        script.onload = initiatePayment;
         document.body.appendChild(script);
 
         return () => {
