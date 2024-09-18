@@ -1,8 +1,10 @@
 import React from 'react';
 import Navbar from './navbar';
+import { useNavigate } from 'react-router-dom';
 
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen  relative overflow-hidden bg-gray-100">
       {/* Background images */}
@@ -36,7 +38,12 @@ const LandingPage = () => {
           <p className="text-14xl tracking-[-0.03em] leading-[120%] inline-block  mb-16 max-w-3xl mx-auto">
             "Join Us for an Epic Biohacking Journey! Collaborate with Pioneers, Push the Boundaries of Science, and Shape the Future of Biotechnology Through Unprecedented Innovation and Creative Exploration."
           </p>
-          <button className="[background:linear-gradient(87.44deg,_#8b4c5e,_#863a7b_3%,_#802a91_13.5%,_#7d219e_13.51%,_#7125c5_49.5%,_#1b298f_73.5%,_#361064)] text-white px-12 py-3 rounded-18xl text-xl font-semibold hover:bg-purple-700 transition duration-300">
+          <button className="[background:linear-gradient(87.44deg,_#8b4c5e,_#863a7b_3%,_#802a91_13.5%,_#7d219e_13.51%,_#7125c5_49.5%,_#1b298f_73.5%,_#361064)] text-white px-12 py-3 rounded-18xl text-xl font-semibold hover:bg-purple-700 transition duration-300"
+          onClick={() => {
+            navigate("/event-selection");
+          }
+          }
+          >
             Register Now
           </button>
         </div>

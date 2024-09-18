@@ -5,7 +5,7 @@ const MobileMid = () => {
   const navigate = useNavigate();
   const onButtonContainerClick = () => {
     // console.log$&
-    navigate("/login");
+    navigate("/event-selection");
     //make bg blur
   };
 

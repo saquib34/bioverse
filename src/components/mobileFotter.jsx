@@ -5,7 +5,7 @@ const MobileFooter = () => {
   const navigate = useNavigate();
   const onButtonContainerClick = () => {
     // console.log$&
-    navigate("/login");
+    navigate("/event-selection");
   };
 
   return (

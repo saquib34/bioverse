@@ -1,21 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginNavbar from './loginNavbar';
+import sendConfirmationEmailWithRetry from './sendConfirmationEmailWithRetry';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { db, } from '../firebase';
+
+
 
 const EventSelection = () => {
   const [selectedEvent, setSelectedEvent] = useState('');
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [showThanks, setShowThanks] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const retryPendingEmails = async () => {
+        const pendingRequests = JSON.parse(localStorage.getItem('pendingEmailRequests')) || [];
+        const updatedPendingRequests = [];
+
+        for (const request of pendingRequests) {
+            const isDataStillValid = await checkDataValidity(request);
+            
+            if (isDataStillValid) {
+                try {
+                    await sendConfirmationEmailWithRetry(request.email, request.name, request.transactionId, request.endpoint);
+                } catch (error) {
+                    console.error('Failed to send email:', error);
+                    updatedPendingRequests.push(request);
+                }
+            }
+        }
+
+        localStorage.setItem('pendingEmailRequests', JSON.stringify(updatedPendingRequests));
+    };
+
+    retryPendingEmails();
+}, []);
+
+async function checkDataValidity(request) {
+  // Check if any required field is undefined
+  const requiredFields = ['email', 'name', 'transactionId', 'endpoint'];
+  for (const field of requiredFields) {
+      if (request[field] === undefined) {
+          console.log(`Invalid request: ${field} is undefined`);
+          return false;
+      }
+  }
+
+  // Add any additional validity checks here if needed
+  // For example, you might want to check if the email is in a valid format
+  // or if the transactionId matches a specific pattern
+
+  return true;
+}
+
+  const handleSubmit =async  (e) => {
     e.preventDefault();
     if (selectedEvent === 'panel') {
-      setShowThanks(true);
+      // Handle panel discussion registration
+      // console.log('Panel Discussion Registration:', { name, email });
+      try {
+        // Store registration data in Firebase
+        const docRef = await  addDoc(collection(db, "panelRegistrations"), {
+          name,
+          email,
+          registrationDate: new Date()
+        });
+        // console.log("Panel Discussion Registration stored with ID: ", docRef.id);
+  
+        // Send confirmation email
+       await  sendConfirmationEmailWithRetry(email, name, 'txn', 'https://api.saquib.in/panel-discussion');
+        
+        // Update UI
+        setShowThanks(true);
+      } catch (error) {
+        console.error("Error registering for panel discussion: ", error);
+        // Handle error (e.g., show error message to user)
+      }
     } else if (selectedEvent === 'hackathon') {
       navigate('/registration');
     } else if (selectedEvent === 'paper') {
-      navigate('/Pannelregistartion');
+      navigate('/paper-presentation-registration');
     }
   };
 
@@ -26,6 +92,19 @@ const EventSelection = () => {
           <div className="mt-4 p-4 bg-blue-50 rounded-lg">
             <h4 className="font-semibold mb-2">Panel Discussion Details:</h4>
             <p>Join our expert-led discussions on cutting-edge biotechnology topics.</p>
+            <p>Registration is free for all participants. Sign up now to reserve your spot!</p>
+            <h4 className="font-semibold mt-4">Name:</h4>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your Name for Panel Discussion"
+              className="w-full p-2 border rounded mt-2"
+              required
+            />
+
+
+            <h4 className="font-semibold mt-4">Email Address:</h4>
             <input
               type="email"
               value={email}

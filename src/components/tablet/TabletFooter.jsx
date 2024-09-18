@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const TabletFooter = () => {
   const navigate = useNavigate();
   const onButtonContainerClick = () => {
-    navigate("/login");
+    navigate("/event-selection");
   };
 
   return (

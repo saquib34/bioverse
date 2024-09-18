@@ -40,7 +40,7 @@ const Navbar = () => {
           <a href="/" onClick={(e) => { e.preventDefault(); handleLinkClick('/'); }} className="block py-2 text-white hover:underline">Home</a>
           <a href="#about" onClick={scrollToAbout} className="block py-2 text-white hover:underline">About</a>
           <a href="/contactus" onClick={(e) => { e.preventDefault(); handleLinkClick('/contactus'); }} className="block py-2 text-white hover:underline">Contact Us</a>
-          <a href="/login" onClick={(e) => { e.preventDefault(); handleLinkClick('/login'); }} className="block py-2 text-white hover:underline">Register/Login</a>
+          <a href="/event-selection" onClick={(e) => { e.preventDefault(); handleLinkClick('/event-selection'); }} className="block py-2 text-white hover:underline">Register/Login</a>
         </div>
       )}
     </div>

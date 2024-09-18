@@ -42,13 +42,44 @@ const PaperPresentationRegistration = () => {
     useEffect(() => {
         const retryPendingEmails = async () => {
             const pendingRequests = JSON.parse(localStorage.getItem('pendingEmailRequests')) || [];
+            const updatedPendingRequests = [];
+    
             for (const request of pendingRequests) {
-                await sendConfirmationEmailWithRetry(request.email, request.name, request.transactionId);
+                const isDataStillValid = await checkDataValidity(request);
+                
+                if (isDataStillValid) {
+                    try {
+                        await sendConfirmationEmailWithRetry(request.email, request.name, request.transactionId, request.endpoint);
+                    } catch (error) {
+                        console.error('Failed to send email:', error);
+                        updatedPendingRequests.push(request);
+                    }
+                }
             }
+    
+            localStorage.setItem('pendingEmailRequests', JSON.stringify(updatedPendingRequests));
         };
     
         retryPendingEmails();
     }, []);
+    
+    async function checkDataValidity(request) {
+      // Check if any required field is undefined
+      const requiredFields = ['email', 'name', 'transactionId', 'endpoint'];
+      for (const field of requiredFields) {
+          if (request[field] === undefined) {
+              console.log(`Invalid request: ${field} is undefined`);
+              return false;
+          }
+      }
+    
+      // Add any additional validity checks here if needed
+      // For example, you might want to check if the email is in a valid format
+      // or if the transactionId matches a specific pattern
+    
+      return true;
+    }
+    
     
     useEffect(() => {
         const loadScript = () => {

@@ -204,7 +204,7 @@ const MobileNavbar = () => {
             </li>
             <li>
               <button className="rounded-3xl bg-white text-blue-800 hover:bg-gray-200 transition-all duration-300 mt-6 w-3/4 mx-auto">
-                <a href="/login" className="block px-12 py-3 text-lg">
+                <a href="/event-selection" className="block px-12 py-3 text-lg">
                   Register/Login
                 </a>
               </button>

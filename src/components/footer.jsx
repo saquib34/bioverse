@@ -7,7 +7,7 @@ const Footer = () => {
 
   const onButtonContainerClick = () => {
       // Navigate to the login page
-      navigate('/login');
+      navigate('/event-selection');
   }
 return (
  

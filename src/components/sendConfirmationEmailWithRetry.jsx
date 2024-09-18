@@ -3,6 +3,7 @@ import { collection, addDoc, deleteDoc, query, where, getDocs } from 'firebase/f
 
 const sendConfirmationEmailWithRetry = async (email, name, transactionId,endpoint) => {
     const requestData = { email, name, transactionId, endpoint };
+    console.log(requestData)
 
     const sendEmail = async (data) => {
         try {
@@ -35,7 +36,7 @@ const sendConfirmationEmailWithRetry = async (email, name, transactionId,endpoin
             pendingRequests.push(data);
         } else if (action === 'remove') {
             pendingRequests = pendingRequests.filter(
-                req => req.email !== data.email || req.transactionId !== data.transactionId
+                req => req.email !== data.email || req.transactionId !== data.transactionId || data.endpoint
             );
         }
 
