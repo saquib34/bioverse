@@ -24,6 +24,8 @@ const LoginNavbar = () => {
           <div className="hidden lg:flex space-x-4">
             <Link to="/" className="hover:text-purple-300 text-white px-3 py-2">Home</Link>
             <Link to="/contactUs" className="hover:text-purple-300 text-white px-3 py-2">Contact Us</Link>
+            <Link to="/login" className="hover:text-purple-300 text-white px-3 py-2"> Login</Link>
+
           </div>
         </div>
 
@@ -32,6 +34,8 @@ const LoginNavbar = () => {
           <div className="lg:hidden mt-4 bg-purple-900 bg-opacity-75 rounded-lg p-2">
             <Link to="/" className="block py-2 px-4 hover:text-purple-300 text-white" onClick={() => setIsOpen(false)}>Home</Link>
             <Link to="/contactUs" className="block py-2 px-4 hover:text-purple-300 text-white" onClick={() => setIsOpen(false)}>Contact Us</Link>
+            <Link to="/login" className="block py-2 px-4 hover:text-purple-300 text-white" onClick={() => setIsOpen(false)}>Login Us</Link>
+
           </div>
         )}
       </div>
