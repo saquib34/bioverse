@@ -245,7 +245,7 @@ const PaperPresentationRegistration = () => {
             const txnid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
             const paymentData = {
                 txnid,
-                amount: '100',
+                amount: '150',
                 firstname: formData.firstAuthorName,
                 email: formData.firstAuthorEmail,
 

@@ -9,7 +9,7 @@ const MobileAbout = () => {
         >
           About
         </div>
-        <div className="relative top-[16.2%] left-[calc(50%_-_176px)] text-[13px] leading-[99%] capitalize">
+        <div className="relative top-[17.2%] left-[calc(50%_-_176px)] text-[13px] leading-[99%] capitalize">
           <p className="[margin-block-start:0] [margin-block-end:.77px]">{`join a 36 hours verse of `}</p>
           <p className="m-0">infinite possibilities</p>
         </div>
@@ -41,7 +41,7 @@ const MobileAbout = () => {
           <div className="absolute top-[49px] left-[128px] leading-[122.57%] font-medium inline-block w-[266px]">
             BioVerse Asia, the pioneering Bio Hackathon in Asia*, is poised to
             transform the landscape where biology meets computer science.
-            Scheduled for October 28-29, 2024, this intensive 36-hour event is
+            Scheduled for October 18-19, 2024, this intensive 36-hour event is
             being orchestrated by the Innovation Incubation and Entrepreneurship
             Center of SRM Institute of Science and Technology, Ramapuram.
             BioVerse Asia aims to create a dynamic platform where students,

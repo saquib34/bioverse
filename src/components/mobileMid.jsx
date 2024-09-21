@@ -48,7 +48,7 @@ const MobileMid = () => {
         Unprecedented Innovation and Creative Exploration."
       </div>
       <b className="absolute top-[324px] left-[calc(50%_-_61.95px)] text-3xs tracking-[-0.03em] leading-[120%]">
-        October 17th and 18th, 2024
+        October 18th and 19th, 2024
       </b>
       <div
         className="absolute top-[434px] left-[calc(50%_-_82.95px)] rounded-[23.28px] [background:linear-gradient(87.44deg,_#8b4c5e,_#863a7b_3%,_#802a91_13.5%,_#7d219e_13.51%,_#7125c5_49.5%,_#1b298f_73.5%,_#361064)] w-[193.2px] flex flex-col items-center justify-center py-[11.3px] px-[16.4px] box-border cursor-pointer text-right text-[15.1px]"
@@ -64,15 +64,15 @@ const MobileMid = () => {
         <div className="absolute top-[0px] left-[calc(50%_-_202.2px)] w-[404.4px] h-14 flex flex-row items-center justify-center gap-2.5">
           <div className="self-stretch w-[129.1px] [backdrop-filter:blur(11.87px)] rounded-[15.18px] bg-gray-400 overflow-hidden shrink-0 flex flex-col items-center justify-center py-[6.8px] px-[13.6px] box-border">
             <div className="relative leading-[27.14px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#f087ff,_#de78f8_50%,_#8935d8)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-              Prize Money
+            ₹ 100000
             </div>
             <div className="relative text-4xs-9 tracking-[0.05em] leading-[13.57px] font-outfit">
-              ₹ 70,000
+            Prize Pool
             </div>
           </div>
           <div className="self-stretch w-[165.3px] [backdrop-filter:blur(11.87px)] rounded-[15.18px] bg-gray-400 overflow-hidden shrink-0 flex flex-col items-center justify-center py-[6.8px] px-[13.6px] box-border">
             <div className="relative leading-[27.14px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#1fcff1,_#20abe1_61%,_#234db6)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-              17th and 18th
+            18th and 19th
             </div>
             <div className="relative text-4xs-9 tracking-[0.05em] leading-[13.57px] font-outfit">
               October, 2024
@@ -88,23 +88,30 @@ const MobileMid = () => {
           </div>
         </div>
       </div>
-      <div className="absolute top-[662px] left-[151px] w-[324.6px] h-[59.2px] text-[15.56px] font-plus-jakarta-sans">
-        <div className="absolute top-[0px] left-[0px] [backdrop-filter:blur(12.63px)] rounded-[15.83px] bg-gray-400 w-[137.4px] h-[57.9px] overflow-hidden flex flex-col items-center justify-center py-[7.2px] px-[14.4px] box-border">
+      <div className="absolute top-[662px] left-[100px] w-[324.6px] h-[59.2px] text-2xl-2 font-plus-jakarta-sans">
+        <div className="absolute top-[0px] left-[30px] [backdrop-filter:blur(12.63px)] rounded-[15.83px] bg-gray-400 w-[100.4px] h-[57.9px] overflow-hidden flex flex-col items-center justify-center py-[7.2px] px-[14.4px] box-border">
           <div className="relative leading-[28.88px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#f087ff,_#de78f8_50%,_#8935d8)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-            Entry Fees
+          Paper Symposium
           </div>
           <div className="relative text-[9.48px] tracking-[0.05em] leading-[14.44px] font-outfit">
-            ₹ 250
           </div>
         </div>
-        <div className="absolute top-[1.33px] left-[calc(50%_-_13.6px)] [backdrop-filter:blur(12.63px)] rounded-[15.83px] bg-gray-400 w-[175.9px] h-[57.9px] overflow-hidden flex flex-col items-center justify-center py-[7.2px] px-[14.4px] box-border">
+        <div className="absolute top-[1.33px]  left-[calc(50%_-_15.6px)] [backdrop-filter:blur(12.63px)] rounded-[15.83px] bg-gray-400 w-[120.9px] h-[57.9px] overflow-hidden flex flex-col items-center justify-center py-[7.2px] px-[14.4px] box-border">
+          <div className="relative leading-[28.88px]  font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#1fcff1,_#20abe1_61%,_#234db6)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+          Bio Hackathon
+          </div>
+          <div className="relative text-[9.48px] tracking-[0.05em] leading-[14.44px] font-outfit">
+          </div>
+        </div>
+        {/* add bio conference */}
+        <div className="absolute top-[1.33px] left-[calc(50%_+_120px)] [backdrop-filter:blur(12.63px)] rounded-[15.83px] bg-gray-400 w-[120.9px] h-[57.9px] overflow-hidden flex flex-col items-center justify-center py-[7.2px] px-[14.4px] box-border">
           <div className="relative leading-[28.88px] font-semibold text-transparent !bg-clip-text [background:linear-gradient(90deg,_#1fcff1,_#20abe1_61%,_#234db6)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-            Asia’s* First
+          Bio Conference
           </div>
           <div className="relative text-[9.48px] tracking-[0.05em] leading-[14.44px] font-outfit">
-            Bio Hackathon
           </div>
         </div>
+      
       </div>
     </div>
   );
