@@ -40,7 +40,7 @@ const faqData = [
   ,
   {
     "question": "Registration Fees",
-    "answer": "The registration fees for our events are as follows:\n- Hackathon: ₹250\n- Paper Presentation: ₹150\n\nPlease make sure to register in advance to secure your spot!",
+    "answer": "The registration fees for our events are as follows:\n- Hackathon: ₹397\n- Paper Presentation: ₹150\n\nPlease make sure to register in advance to secure your spot!",
     "color": "pink"
   }
   

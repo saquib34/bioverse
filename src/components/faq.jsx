@@ -39,7 +39,7 @@ const faqData = [
   },
   {
     "question": "Registration Fees",
-    "answer": "The registration fees for our events are as follows:- Hackathon: ₹250             -                                            Paper Presentation: ₹150 Please make sure to register in advance to secure your spot!",
+    "answer": "The registration fees for our events are as follows:- Hackathon: ₹397             -                                            Paper Presentation: ₹150 Please make sure to register in advance to secure your spot!",
     "color": "pink"
   }
   

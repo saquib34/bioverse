@@ -77,7 +77,7 @@ const Dashboard = () => {
         email: userData.teamLeadEmail,
         firstname: userData.teamLeadName,
         phone: userData.member1.mobile,
-        amount: '250'
+        amount: '397'
         
 
       }

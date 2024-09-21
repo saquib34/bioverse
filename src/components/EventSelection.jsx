@@ -121,7 +121,7 @@ async function checkDataValidity(request) {
             <h4 className="font-semibold mb-2">BioHack Challenge Details:</h4>
             <ul className="list-disc list-inside space-y-1">
               <li>Open to both international and Indian participants</li>
-              <li>Registration fee: ₹250 or equivalent in USD</li>
+              <li>Registration fee: ₹397 or equivalent in USD</li>
               <li>Accommodation and meals provided for all participants</li>
               <li>48-hour intensive biotechnology innovation challenge</li>
             </ul>
