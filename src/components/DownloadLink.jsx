@@ -6,6 +6,9 @@ const DownloadLink = () => {
         <a href="/Sponsorship Deck BioVerse.pdf" download>
           Download Sponsorship Deck
         </a>
+        <a href="/Sponsorship_Deck.pdf" download>
+        SponsorshipDeck
+        </a>
       </div>
     );
   };
