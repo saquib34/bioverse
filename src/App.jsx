@@ -22,6 +22,7 @@ import FailurePage from "./components/payment/FailurePage";
 import EventSelection from "./components/EventSelection";
 import PaperPresentationRegistration from "./components/PaperPresentationRegistration";
 import BioverseLaunch from "./components/BioverseLaunch";
+import DownloadLink from "./components/DownloadLink"
 
 function App() {
   const action = useNavigationType();
@@ -68,6 +69,7 @@ function App() {
       <Route path="/event-selection" element={<EventSelection />} />
       <Route path="/paper-presentation-registration" element={<PaperPresentationRegistration />} />
       <Route path="/bioverse-launch" element={<BioverseLaunch />} />
+      <Route path="/sponsors" element={<DownloadLink/>} />
       <Route path="/additional-details" element={
         <ProtectedRoute>
           <AdditionalDetails />
