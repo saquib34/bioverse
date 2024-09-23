@@ -3,6 +3,7 @@ import { User, Mail, Phone, Hash } from "lucide-react";
 import bg from "/bg.svg";
 import bg2 from "/blob.svg";
 import text from "/bio-verse.svg";
+import LoginNavbar from "../loginNavbar";
 
 const Step1 = ({ onNext, onChange, formData }) => {
   const [error, setError] = useState("");
@@ -75,7 +76,10 @@ const Step1 = ({ onNext, onChange, formData }) => {
   );
 
   return (
+    <div className="flex flex-col min-h-screen bg-custom-gradient relative overflow-hidden">
+    <LoginNavbar className="z-20 " />
     <div className="relative min-h-screen flex items-center justify-center bg-custom-gradient px-4 sm:px-6 md:px-8 lg:px-10">
+  
       <img src={bg2} alt="" className="hidden sm:block absolute -top-28 right-0 w-[300px] md:w-[500px] lg:w-[630px] h-full object-cover" />
       <img src={bg} alt="" className="hidden sm:block absolute w-full h-full object-cover" />
       <img src={text} alt="" className="absolute inset-0 w-[300px] sm:w-[500px] md:w-[800px] lg:w-[1000px] xl:w-[1400px] mx-auto top-[240px]" />
@@ -106,6 +110,7 @@ const Step1 = ({ onNext, onChange, formData }) => {
           <span className="text-white">Step {currentStep} of 5</span>
         </div>
       </div>
+    </div>
     </div>
   );
 };
