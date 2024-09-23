@@ -22,7 +22,7 @@ const ContactUsPage = () => {
             <p className="text-gray-300 text-lg">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
             <div className="space-y-4">
               {[
-                { icon: FiMail, text: "shadmanshahin6@gmail.com" },
+                { icon: FiMail, text: "hello@bioverse.asia" },
                 { icon: FiMapPin, text: "SRM RAMAPURAM" },
                 { icon: FiPhone, text: "+91 7070927837" }
               ].map((item, index) => (
