@@ -57,6 +57,8 @@ const Step2 = ({ onNext,onPrev , onChange, formData }) => {
               <option value={formData.member1.name}>{formData.member1.name}</option>
               <option value={formData.member2.name}>{formData.member2.name}</option>
               <option value={formData.member3.name}>{formData.member3.name}</option>
+              <option value={formData.member4.name}>{formData.member4.name}</option>
+              <option value={formData.member5.name}>{formData.member5.name}</option>
             </select>
             
             {showPasswordField && (

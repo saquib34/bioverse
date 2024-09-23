@@ -13,6 +13,8 @@ const RegistrationForm = () => {
     member1: { name: '', regNumber: '', email: '', mobile: '' },
     member2: { name: '', regNumber: '', email: '', mobile: '' },
     member3: { name: '', regNumber: '', email: '', mobile: '' },
+    member4: { name: '', regNumber: '', email: '', mobile: '' },
+    member5: { name: '', regNumber: '', email: '', mobile: '' },
     teamName: '',
     teamLeadName: '',
     teamLeadEmail: '',
@@ -34,7 +36,7 @@ const RegistrationForm = () => {
 
   const setTeamLeadEmail = useCallback(() => {
     setFormData(prevData => {
-      const { teamLeadName, member1, member2, member3 } = prevData;
+      const { teamLeadName, member1, member2, member3,member4,member5 } = prevData;
       let teamLeadEmail = '';
       let teamLeadPhone = '';
 
@@ -48,17 +50,29 @@ const RegistrationForm = () => {
         teamLeadEmail = member3.email;
         teamLeadPhone = member3.mobile;
       }
+      else if (member4.name === teamLeadName) {
+        teamLeadEmail = member4.email;
+        teamLeadPhone = member4.mobile;
+      }
+      else if (member5.name === teamLeadName) {
+        teamLeadEmail = member5.email;
+        teamLeadPhone = member5.mobile;
+      }
+    
 
       return { ...prevData, teamLeadEmail, teamLeadPhone };
     });
   }, []);
 
   const validateForm = useCallback(() => {
-    const { member1, member2, member3, teamName, teamLeadName, teamLeadEmail, teamLeadPhone, password, projectTheme, projectDescription } = formData;
+    const { member1, member2, member3,member4,member5, teamName, teamLeadName, teamLeadEmail, teamLeadPhone, password, projectTheme, projectDescription } = formData;
     return teamName && teamLeadName && teamLeadEmail && teamLeadPhone && password && projectTheme && projectDescription &&
       member1.name && member1.regNumber && member1.email && member1.mobile &&
       member2.name && member2.regNumber && member2.email && member2.mobile &&
-      member3.name && member3.regNumber && member3.email && member3.mobile;
+      member3.name && member3.regNumber && member3.email && member3.mobile &&
+      member4.name && member4.regNumber && member4.email && member4.mobile &&
+      member5.name && member5.regNumber && member5.email && member5.mobile ;
+
   }, [formData]);
 
   useEffect(() => {

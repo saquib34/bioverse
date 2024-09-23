@@ -1,43 +1,50 @@
-import React, { useState } from "react";
-import ProgressBar from "./ProgressBar";
-import bg from "/bg.svg";
-import bg2 from "/blob.svg";
-import text from "/bio-verse.svg";
+import React, { useState, useEffect } from "react";
+import { User, Mail, Phone, Hash } from "lucide-react";
 
 const Step1 = ({ onNext, onChange, formData }) => {
   const [error, setError] = useState("");
+  const [localFormData, setLocalFormData] = useState({});
+
+  useEffect(() => {
+    if (Object.keys(localFormData).length === 0) {
+      const initialData = {};
+      for (let i = 1; i <= 5; i++) {
+        initialData[`member${i}`] = { name: '', regNumber: '', email: '', mobile: '' };
+      }
+      setLocalFormData(initialData);
+      onChange(initialData);
+    }
+  }, [localFormData, onChange]);
 
   const handleChange = (member, field, value) => {
     setError("");
-    onChange({ [member]: { ...formData[member], [field]: value } });
+    const updatedData = {
+      ...localFormData,
+      [member]: { ...localFormData[member], [field]: value }
+    };
+    setLocalFormData(updatedData);
+    onChange(updatedData);
   };
 
   const checkDuplicates = () => {
-    const regNumbers = [
-      formData.member1.regNumber,
-      formData.member2.regNumber,
-      formData.member3.regNumber
-    ].filter(Boolean);
-
+    const regNumbers = Object.values(localFormData)
+      .map(member => member.regNumber)
+      .filter(Boolean);
     const uniqueRegNumbers = new Set(regNumbers);
-
     if (regNumbers.length !== uniqueRegNumbers.size) {
       setError("Duplicate registration numbers are not allowed.");
       return true;
     }
-
     return false;
   };
 
   const handleNext = (e) => {
     e.preventDefault();
-    if (checkDuplicates()) {
-      return;
-    }
-
-    if (formData.member1.name && formData.member1.regNumber && formData.member1.email && formData.member1.mobile &&
-        formData.member2.name && formData.member2.regNumber && formData.member2.email && formData.member2.mobile &&
-        formData.member3.name && formData.member3.regNumber && formData.member3.email && formData.member3.mobile) {
+    if (checkDuplicates()) return;
+    const allFieldsFilled = Object.values(localFormData).every(member => 
+      member.name && member.regNumber && member.email && member.mobile
+    );
+    if (allFieldsFilled) {
       onNext();
     } else {
       setError("All fields are required");
@@ -45,61 +52,65 @@ const Step1 = ({ onNext, onChange, formData }) => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-custom-gradient px-4 sm:px-6 md:px-8 lg:px-10">
-      <img src={bg2} alt="" className="hidden sm:block absolute -top-28 right-0 w-[300px] md:w-[500px] lg:w-[630px] h-full object-cover" />
-      <img src={bg} alt="" className="hidden sm:block absolute w-full h-full object-cover" />
-      <img src={text} alt="" className="absolute inset-0 w-[300px] sm:w-[500px] md:w-[800px] lg:w-[1000px] xl:w-[1400px] mx-auto top-[240px]" />
-
-      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 bg-white bg-opacity-40 backdrop-blur-xs border shadow-md rounded-3xl max-w-4xl w-full">
-        <ProgressBar currentStep={0} />
-        <h2 className="text-xl text-white font-bold mb-4">Registration details</h2>
-        <p className="font-semibold mb-4 text-center sm:text-left">Please fill your information so we know you registered for the event.</p>
-        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-        <form onSubmit={handleNext}>
-          <div className="flex flex-col space-y-4">
-            {['member1', 'member2', 'member3'].map((member, index) => (
-              <div key={member} className="flex flex-col space-y-2">
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+    <div className="bg-purple-600 min-h-screen flex items-center justify-center p-4" style={{backgroundImage: "url('/bg.svg')", backgroundSize: "cover", backgroundPosition: "center"}}>
+      <div className="bg-purple-500 bg-opacity-90 backdrop-blur-sm rounded-3xl p-8 w-full max-w-3xl">
+        <h2 className="text-2xl text-white font-bold mb-4">Registration details</h2>
+        <p className="text-white mb-6">Please fill your information so we know you registered for the event.</p>
+        {error && <p className="text-red-300 mb-4 text-center">{error}</p>}
+        <form onSubmit={handleNext} className="space-y-6">
+          {Object.keys(localFormData).map((member, index) => (
+            <div key={member}>
+              <h3 className="text-white text-lg font-semibold mb-2">Member {index + 1}</h3>
+              <div className="space-y-2">
+                <div className="relative">
+                  <User className="absolute left-0.5  top-2.5 text-purple-200" size={18} />
                   <input
                     type="text"
-                    value={formData[member].name}
+                    value={localFormData[member].name}
                     onChange={(e) => handleChange(member, 'name', e.target.value)}
-                    placeholder={`Member Name ${index + 1}`}
+                    placeholder="   Your Name"
                     required
-                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white  backdrop-blur-xs rounded-3xl"
-                  />
-                  <input
-                    type="text"
-                    value={formData[member].regNumber}
-                    onChange={(e) => handleChange(member, 'regNumber', e.target.value)}
-                    placeholder="ID/Registration number"
-                    required
-                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white backdrop-blur-xs rounded-3xl"
+                    className="w-full bg-purple-400 bg-opacity-50 rounded-full py-2  pl-5 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
                   />
                 </div>
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                <div className="relative">
+                  <Hash className="absolute left-0.5  top-2.5 text-purple-200" size={18} />
+                  <input
+                    type="text"
+                    value={localFormData[member].regNumber}
+                    onChange={(e) => handleChange(member, 'regNumber', e.target.value)}
+                    placeholder="   ID/Registration Number"
+                    required
+                    className="w-full bg-purple-400 bg-opacity-50 rounded-full py-2  pl-5 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                  />
+                </div>
+                <div className="relative">
+                  <Mail className="absolute left-0.5  top-2.5 text-purple-200" size={18} />
                   <input
                     type="email"
-                    value={formData[member].email}
+                    value={localFormData[member].email}
                     onChange={(e) => handleChange(member, 'email', e.target.value)}
-                    placeholder="E-mail ID"
+                    placeholder="   E-mail ID"
                     required
-                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white backdrop-blur-xs rounded-3xl"
+                    className="w-full bg-purple-400 bg-opacity-50 rounded-full py-2  pl-5 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
                   />
+                </div>
+                <div className="relative">
+                  <Phone className="absolute left-0.5 top-2.5 text-purple-200" size={18} />
                   <input
                     type="tel"
-                    value={formData[member].mobile}
+                    value={localFormData[member].mobile}
                     onChange={(e) => handleChange(member, 'mobile', e.target.value)}
-                    placeholder="Mobile Number"
+                    placeholder="  Mobile Number"
                     required
-                    className="flex-1 p-3 border placeholder-black placeholder:text-sm placeholder:font-semibold bg-white  backdrop-blur-xs rounded-3xl"
+                    className="w-full bg-purple-400 bg-opacity-50 rounded-full py-2  pl-5 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
                   />
                 </div>
               </div>
-            ))}
-          </div>
-          <div className="flex justify-center mt-6">
-            <button type="submit" className="w-[100px] p-2 bg-purple-900 text-white rounded-3xl hover:bg-purple-300 hover:text-black">
+            </div>
+          ))}
+          <div className="flex justify-center mt-8">
+            <button type="submit" className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-8 rounded-full focus:outline-none focus:shadow-outline transition duration-300">
               Next
             </button>
           </div>
