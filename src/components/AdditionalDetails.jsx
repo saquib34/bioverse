@@ -103,6 +103,24 @@ const AdditionalDetails = () => {
                 university: '',
                 profilePic: null,
                 idCard: null
+              },
+              {
+                name: registrationData.member4.name,
+                email: registrationData.member4.email,
+                mobile: registrationData.member4.mobile,
+                regNumber : registrationData.member4.regNumber,
+                university: '',
+                profilePic: null,
+                idCard: null
+              }             ,
+              {
+                name: registrationData.member5.name,
+                email: registrationData.member5.email,
+                mobile: registrationData.member5.mobile,
+                regNumber : registrationData.member5.regNumber,
+                university: '',
+                profilePic: null,
+                idCard: null
               }
             ]
           }));
@@ -226,6 +244,8 @@ const AdditionalDetails = () => {
         member1: updatedMembers[0],
         member2: updatedMembers[1],
         member3: updatedMembers[2],
+        member4: updatedMembers[3],
+        member5: updatedMembers[4],
         additionalDetailsProvided: true
       });
 
