@@ -71,7 +71,7 @@ const EasebuzzPayment = () => {
             }
 
             if (result.status === 1) {
-                proceedToPayment(result.data);
+               await proceedToPayment(result.data);
             } else {
                 setError(`Payment initiation failed: ${result.data}`);
             }
@@ -81,7 +81,7 @@ const EasebuzzPayment = () => {
         }
     };
 
-    const proceedToPayment = (access_key) => {
+    const proceedToPayment = async (access_key) => {
         if (window.EasebuzzCheckout) {
             if (!EASEBUZZ_KEY) {
                 console.error('Easebuzz key is not set in environment variables');
