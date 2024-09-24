@@ -327,7 +327,7 @@ const PaperPresentationRegistration = () => {
                 return;
             }
     
-            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'test');
+            const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
             const options = {
                 access_key: access_key,
                 onResponse: async (response) => {
