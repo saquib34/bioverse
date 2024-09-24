@@ -377,7 +377,7 @@ const PaperPresentationRegistration = () => {
 
 
         try {
-            initiatePayment();
+           await initiatePayment();
 
 
         } catch (error) {
