@@ -3,32 +3,32 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 const faqData = [
   {
-    question: "What should I bring to BioVerse ??",
+    question: "What should I bring to BioVerse ?",
     answer: "Bring your laptops and chargers and any personal items you require.",
     color: "pink"
   },
   {
-    question: "Who can participate??",
+    question: "Who can participate?",
     answer: "Our hackathon is open for students faculty and professionals and anyone passionate about technology and innovation in the field of biotechnology.",
     color: "green"
   },
   {
-    question: "Do I need a team to participate??",
+    question: "Do I need a team to participate?",
     answer: "Yes you need a team of 5 members to participate in the hackathon and just 2 authors for Paper symposium",
     color: "green"
   },
   {
-    question: "What's the judging process ??",
+    question: "What's the judging process ?",
     answer: "Criteria such as innovation, technological complexity,originality, practicality and presentation are ranked at the top for judgement.",
     color: "pink"
   },
   {
-    question: "How to prepare for the hackathon ? ?",
+    question: "How to prepare for the hackathon ?",
     answer: "Familiarize yourself with the event's theme and rules. Brush up on your coding skills, brainstorm project ideas, and consider learning about new technologies and don't forget to get plenty of rest before the event.",
     color: "pink"
   },
   {
-    question: " What is the procedure of participation ?? (Outside India)",
+    question: " What is the procedure of participation ?",
     answer: "Register yourself for event of your choice from the Register Now Section of our website. If selected you will receive an invitation with further  instructions",
     color: "green"
   },
