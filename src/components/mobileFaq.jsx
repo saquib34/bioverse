@@ -34,8 +34,7 @@ const faqData = [
   },
   {
     "question": "Do I need to stay for the entire time duration ? and Food and accomodations ?",
-    "answer": "Staying for the entire time is encouraged but you can take breaks and  rest  in  between
-and  Food and living arrangements will be provided by the  institution.",
+    "answer": "Staying for the entire time is encouraged but you can take breaks and  rest  in  between and  Food and living arrangements will be provided by the  institution.",
     "color": "green"
   }
   ,
