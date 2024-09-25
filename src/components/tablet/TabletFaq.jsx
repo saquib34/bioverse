@@ -3,38 +3,39 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 const faqData = [
   {
-    question: "What should I bring to the Hackathon?",
-    answer: "Bring your laptop, charger, any hardware you plan to use, and your enthusiasm! Don't forget your student ID if you're a student. It's also a good idea to bring any specific software or tools you might need for your project, as well as personal items like a water bottle and snacks.",
+    question: "What should I bring to BioVerse ??",
+    answer: "Bring your laptops and chargers and any personal items you require.",
     color: "pink"
   },
   {
-    question: "Who can participate in the Hackathon?",
-    answer: "Our hackathon is open to students, professionals, and anyone passionate about technology and innovation. We welcome participants from all backgrounds, including developers, designers, and creative thinkers. Whether you're a coding whiz or have great ideas, there's a place for you!",
+    question: "Who can participate??",
+    answer: "Our hackathon is open for students faculty and professionals and anyone passionate about technology and innovation in the field of biotechnology.",
     color: "green"
   },
   {
-    question: "Do I need to have a team before the event?",
-    answer: "No, you don't need to have a team before the event. While you're welcome to come with a pre-formed team, we'll have team-forming activities at the beginning of the hackathon. This is a great opportunity to meet new people and collaborate with others who have complementary skills!",
+    question: "Do I need a team to participate??",
+    answer: "Yes you need a team of 5 members to participate in the hackathon and just 2 authors for Paper symposium",
     color: "green"
   },
   {
-    question: "How are projects judged?",
-    answer: "Projects are judged based on criteria such as innovation, technical complexity, practicality, and presentation. A panel of industry experts will evaluate each project, considering factors like originality, potential impact, and elegant solutions to real-world problems.",
+    question: "What's the judging process ??",
+    answer: "Criteria such as innovation, technological complexity,originality, practicality and presentation are ranked at the top for judgement.",
     color: "pink"
   },
   {
-    question: "How can I prepare for the Hackathon?",
-    answer: "To prepare, familiarize yourself with the event's theme and rules. Brush up on your coding skills, brainstorm project ideas, and consider learning about new technologies you might want to use. Don't forget to get plenty of rest before the event and come with an open mind ready to learn and collaborate!",
+    question: "How to prepare for the hackathon ? ?",
+    answer: "Familiarize yourself with the event's theme and rules. Brush up on your coding skills, brainstorm project ideas, and consider learning about new technologies and don't forget to get plenty of rest before the event.",
     color: "pink"
   },
   {
-    question: "What is the procedure to participate in the Hackathon? (Outside India)",
-    answer: "International participants can register on our website and submit the required application form. If selected, you'll receive an invitation with further instructions. Please note that while we can't provide travel assistance, we offer options for remote participation in certain tracks.",
+    question: " What is the procedure of participation ?? (Outside India)",
+    answer: "Register yourself for event of your choice from the Register Now Section of our website. If selected you will receive an invitation with further  instructions",
     color: "green"
   },
   {
-    "question": "What events are there?",
-    "answer": "Our event features a variety of exciting activities, including a Paper Presentation where participants can showcase their research and innovative ideas, a Panel Discussion with industry experts to explore the latest trends and insights, and a Hackathon open to all tech enthusiasts. Whether you love presenting, discussing, or building, there's something for everyone!",
+    "question": "Do I need to stay for the entire time duration ? and Food and accomodations ?",
+    "answer": "Staying for the entire time is encouraged but you can take breaks and  rest  in  between
+and  Food and living arrangements will be provided by the  institution.",
     "color": "green"
   }
   ,
