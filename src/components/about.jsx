@@ -31,7 +31,7 @@ const MidPage = () => {
                       <div className="absolute top-[18px] left-[20px] w-[238px] h-9">
                         <a
                           className="absolute top-[0px] left-[0px] font-medium text-[inherit] [text-decoration:none]"
-                          href={`https://www.figma.com/design/8c5RQyRQ8X91GtRDORQyxV/New-Bio-Verse?node-id=0-1&t=ipS0IujQHxvF61di-1`}
+                          href="/Brochure Bio-Verse.pdf"
                           target="_blank"
                         >
                           Download Brochure
