@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
-
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
 const EASEBUZZ_KEY = import.meta.env.VITE_APP_EASEBUZZ_KEY;
@@ -28,7 +29,19 @@ const EasebuzzPayment = () => {
 
         loadScript();
     }, []);
-   
+
+    const saveSuccessfulTransaction = async (txid) => {
+        const docRef = doc(db, 'registration', email);
+        await setDoc(docRef, { succesTx: txid }, { merge: true });
+    };
+
+    const saveFailedTransaction = async (txid) => {
+        const docRef = doc(db, 'registration', email);
+        const currentDate = new Date().toISOString();
+        await updateDoc(docRef, {
+            [`failedTx.${currentDate}`]: txid
+        });
+    };
    const initiatePayment = async () => {
 
 
@@ -92,16 +105,18 @@ const EasebuzzPayment = () => {
             const easebuzzCheckout = new window.EasebuzzCheckout(EASEBUZZ_KEY, 'prod');
             const options = {
                 access_key: access_key,
-                onResponse: (response) => {
+                onResponse: async (response) => {
                     if (response.status === 'success') {
                         console.log('Payment successful:', response);
                         // if(response.amount === '100')
                         // {
                         //     return;
                         // }
+                        await saveSuccessfulTransaction(response.txnid);
                         navigate('/payment/success', { state: { response } });
                     } else {
                         console.error('Payment failed:', response);
+                        await saveFailedTransaction(response.txnid);
                         navigate('/payment/failure', { state: { response } });
                     }
                 },
