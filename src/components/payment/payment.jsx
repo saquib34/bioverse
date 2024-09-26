@@ -32,15 +32,50 @@ const EasebuzzPayment = () => {
 
     const saveSuccessfulTransaction = async (txid) => {
         const docRef = doc(db, 'registrations', email);
-        await setDoc(docRef, { succesTx: txid }, { merge: true });
+        const q = query(docRef, where("teamLeadEmail", "==", email));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            console.error('No registration found for email:', email);
+            return;
+        }
+
+        const registrationDoc = querySnapshot.docs[0];
+
+        await updateDoc(registrationDoc.ref, {
+            pay: true,
+            payment: {
+                txnid: txid,
+                amount: amount,
+                status: 'success',
+            },
+        });
+
     };
 
     const saveFailedTransaction = async (txid) => {
         const docRef = doc(db, 'registrations', email);
-        const currentDate = new Date().toISOString();
-        await updateDoc(docRef, {
-            [`failedTx.${currentDate}`]: txid
+        const q = query(docRef, where("teamLeadEmail", "==", email));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            console.error('No registration found for email:', email);
+            return;
+        }
+
+        const registrationDoc = querySnapshot.docs[0];
+
+        await updateDoc(registrationDoc.ref, {
+            pay: false,
+            payment: {
+                txnid: txid,
+                amount: amount,
+                status: 'failed',
+            },
         });
+        
+        // const currentDate = new Date().toISOString();
+        // await updateDoc(docRef, {
+        //     [`failedTx.${currentDate}`]: txid
+        // });
     };
    const initiatePayment = async () => {
 
