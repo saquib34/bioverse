@@ -29,7 +29,7 @@ const MobileAbout = () => {
             <div className="absolute top-[8.34px] left-[9.26px] w-[110px] h-[17px] text-lg">
               <a
                 className="absolute top-[200px] left-[0px] font-medium text-[inherit] [text-decoration:none]"
-                href={`https://www.figma.com/design/8c5RQyRQ8X91GtRDORQyxV/New-Bio-Verse?node-id=0-1&t=ipS0IujQHxvF61di-1`}
+                href="/Brochure Bio-Verse.pdf"
                 target="_blank"
               >
                 <button className="bg-[#4b209c] w-[150px] h-[40px] text-[11px] text-white font-medium rounded-xl">
