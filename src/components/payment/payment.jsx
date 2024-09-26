@@ -31,12 +31,12 @@ const EasebuzzPayment = () => {
     }, []);
 
     const saveSuccessfulTransaction = async (txid) => {
-        const docRef = doc(db, 'registration', email);
+        const docRef = doc(db, 'registrations', teamLeadEmail);
         await setDoc(docRef, { succesTx: txid }, { merge: true });
     };
 
     const saveFailedTransaction = async (txid) => {
-        const docRef = doc(db, 'registration', email);
+        const docRef = doc(db, 'registrations', teamLeadEmail);
         const currentDate = new Date().toISOString();
         await updateDoc(docRef, {
             [`failedTx.${currentDate}`]: txid
