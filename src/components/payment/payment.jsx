@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 const API_URL = import.meta.env.VITE_APP_EASEBUZZ_LINK;
@@ -71,7 +71,7 @@ const EasebuzzPayment = () => {
                 status: 'failed',
             },
         });
-        
+
         // const currentDate = new Date().toISOString();
         // await updateDoc(docRef, {
         //     [`failedTx.${currentDate}`]: txid
