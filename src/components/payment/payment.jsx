@@ -31,7 +31,7 @@ const EasebuzzPayment = () => {
     }, []);
 
     const saveSuccessfulTransaction = async (txid) => {
-        const docRef = doc(db, 'registrations', email);
+        const docRef = collection(db, 'registrations');
         const q = query(docRef, where("teamLeadEmail", "==", email));
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) {
@@ -53,7 +53,7 @@ const EasebuzzPayment = () => {
     };
 
     const saveFailedTransaction = async (txid) => {
-        const docRef = doc(db, 'registrations', email);
+        const docRef = collection(db, 'registrations');
         const q = query(docRef, where("teamLeadEmail", "==", email));
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) {
